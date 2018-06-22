@@ -1,7 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Feather.SpotifyApiDotNetCore</PackageId>
+    <Title>SpotifyApiDotNetCore</Title>
+    <Description>Lightweight .NET Core client wrapper for the Spotify Web API </Description>
+    <Version>1.0.0-alpha</Version>
+    <Authors>Daniel Larsen</Authors>
+    <Company>Feather and Scale</Company>
+    <Copyright>Copyright 2018 Daniel Larsen</Copyright>
+    <PackageLicenseUrl>https://github.com/FeatherAndScale/SpotifyApiDotNetCore/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FeatherAndScale/SpotifyApiDotNetCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FeatherAndScale/SpotifyApiDotNetCore</RepositoryUrl>
+    <PackageTags>spotify;dotnet core;api;client;wrapper</PackageTags>
   </PropertyGroup>
-
 </Project>
