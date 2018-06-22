@@ -13,9 +13,18 @@ Push the Version number in `SpotifyApiDotNetCore.csproj`
 
     <Version>1.0.1-alpha</Version>
 
+Commit and push
+
+    git commit -a -m "Packing v1.0.1-alpha"
+    git push
+
 Pack
 
-    nuget pack src
+    dotnet pack src
+
+Publish
+
+    dotnet nuget push .\src\bin\Debug\Feather.SpotifyApiDotNetCore.1.0.1-alpha.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
 
 ## Links
 
