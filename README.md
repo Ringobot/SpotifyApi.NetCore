@@ -7,6 +7,16 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 * Raw responses
 * MIT
 
+## Publishing
+
+Push the Version number in `SpotifyApiDotNetCore.csproj`
+
+    <Version>1.0.1-alpha</Version>
+
+Pack
+
+    nuget pack src
+
 ## Links
 
 ### Nuget
