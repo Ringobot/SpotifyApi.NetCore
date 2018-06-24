@@ -9,7 +9,7 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
 ## Publishing
 
-Push the Version number in `SpotifyApiDotNetCore.csproj`
+Push the Version number in `SpotifyApi.NetCore.csproj`
 
     <Version>1.0.1-alpha</Version>
 
@@ -24,7 +24,7 @@ Pack
 
 Publish
 
-    dotnet nuget push .\src\bin\Debug\Feather.SpotifyApiDotNetCore.1.0.1-alpha.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
+    dotnet nuget push .\src\bin\Debug\Feather.SpotifyApi.NetCore.1.0.1-alpha.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
 
 ## Links
 

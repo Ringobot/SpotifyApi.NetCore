@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpotifyApiDotNetCore\SpotifyApiDotNetCore.csproj" />
+    <ProjectReference Include="..\SpotifyApi.NetCore\SpotifyApi.NetCore.csproj" />
   </ItemGroup>
 
 </Project>

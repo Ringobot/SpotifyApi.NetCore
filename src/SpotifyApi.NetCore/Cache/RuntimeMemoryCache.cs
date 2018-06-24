@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace SpotifyApiDotNetCore.Cache
+namespace SpotifyApi.NetCore.Cache
 {
     /// <summary>
     /// A Cache service based on <see cref="ObjectCache"/>

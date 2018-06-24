@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SpotifyApiDotNetCore
+namespace SpotifyApi.NetCore
 {
     /// <summary>
     /// Defines a wrapper for the Spotify Web Playlists API.

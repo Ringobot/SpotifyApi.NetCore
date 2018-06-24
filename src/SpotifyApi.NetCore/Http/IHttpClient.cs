@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace SpotifyApiDotNetCore.Http
+namespace SpotifyApi.NetCore.Http
 {
     /// <summary>
     /// Defines an asynchronous HTTP Client that is typically used to communicate with a Web API.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpotifyApiDotNetCore.Cache
+namespace SpotifyApi.NetCore.Cache
 {
     /// <summary>
     /// Defines a Cache object.

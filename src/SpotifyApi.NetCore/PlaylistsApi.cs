@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using SpotifyApiDotNetCore.Http;
+using SpotifyApi.NetCore.Http;
 
-namespace SpotifyApiDotNetCore
+namespace SpotifyApi.NetCore
 {
     /// <summary>
     /// An API Wrapper for the Spotify Web API Playlists endpoints.

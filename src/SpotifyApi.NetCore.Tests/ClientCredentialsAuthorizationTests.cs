@@ -4,10 +4,10 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using SpotifyApiDotNetCore.Cache;
-using SpotifyApiDotNetCore.Http;
+using SpotifyApi.NetCore.Cache;
+using SpotifyApi.NetCore.Http;
 
-namespace SpotifyApiDotNetCore.Tests
+namespace SpotifyApi.NetCore.Tests
 {
     [TestClass]
     public class ClientCredentialsAuthorizationTests

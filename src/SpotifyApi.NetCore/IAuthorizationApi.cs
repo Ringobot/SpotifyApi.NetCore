@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SpotifyApiDotNetCore
+namespace SpotifyApi.NetCore
 {
     /// <summary>
     /// Defines a Spotify Authorisation Token service.

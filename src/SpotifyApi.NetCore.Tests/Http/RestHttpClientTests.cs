@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-using SpotifyApiDotNetCore.Http;
+using SpotifyApi.NetCore.Http;
 
-namespace SpotifyApiDotNetCore.Tests.Http
+namespace SpotifyApi.NetCore.Tests.Http
 {
     [TestClass]
     public class RestHttpClientTests

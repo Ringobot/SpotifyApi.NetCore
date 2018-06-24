@@ -5,10 +5,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using SpotifyApiDotNetCore.Cache;
-using SpotifyApiDotNetCore.Http;
+using SpotifyApi.NetCore.Cache;
+using SpotifyApi.NetCore.Http;
 
-namespace SpotifyApiDotNetCore
+namespace SpotifyApi.NetCore
 {
     /// <summary>
     /// An API wrapper for the Spotify Authorization API, Client Credentials flow.

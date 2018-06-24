@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using SpotifyApiDotNetCore.Cache;
+using SpotifyApi.NetCore.Cache;
 
-namespace SpotifyApiDotNetCore.Tests.Cache
+namespace SpotifyApi.NetCore.Tests.Cache
 {
     [TestClass]
     public class RuntimeMemoryCacheTests

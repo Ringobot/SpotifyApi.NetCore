@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpotifyApiDotNetCore.Http
+namespace SpotifyApi.NetCore.Http
 {
     /// <summary>
     /// An HTTP Client for communicating with the Spotify Web API.

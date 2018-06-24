@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SpotifyApiDotNetCore
+namespace SpotifyApi.NetCore
 {
-    public class SpotifyWebApi : ISpotifyWebApi
+    internal class SpotifyWebApi : ISpotifyWebApi
     {
         public Task<dynamic> SearchArtists(string artist)
         {
