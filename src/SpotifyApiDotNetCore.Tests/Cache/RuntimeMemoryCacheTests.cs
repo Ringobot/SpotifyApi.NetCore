@@ -22,7 +22,7 @@ namespace SpotifyApiDotNetCore.Tests.Cache
             cache.Add("abc123", "def345", expiry);
 
             // Assert
-            mockObjectCache.Verify(c => c.Add("abc123", "def345", expiry, It.IsAny<string>()));
+            mockObjectCache.Verify(c => c.Set("abc123", "def345", expiry));
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace SpotifyApiDotNetCore.Tests.Cache
             cache.Get("abc123");
 
             // Assert
-            mockObjectCache.Verify(c => c.Get("abc123", It.IsAny<string>()));
+            mockObjectCache.Verify(c => c.Get("abc123"));
         }
     }
 }

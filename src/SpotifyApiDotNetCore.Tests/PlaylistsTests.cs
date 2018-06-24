@@ -27,12 +27,6 @@ namespace SpotifyApiDotNetCore.Tests
             // Act
             var result1 = await playlists.GetPlaylists(username);
             Trace.WriteLine((object)result1);
-            var result2 = await playlists.GetPlaylists<dynamic>(username);
-            Trace.WriteLine((object)result2);
-            var result3 = await playlists.GetPlaylists<object>(username);
-            Trace.WriteLine(result3);
-            var result4 = await playlists.GetPlaylists<TestPlaylistsModel>(username);
-            Trace.WriteLine(result4);
         }
 
         [TestMethod]
