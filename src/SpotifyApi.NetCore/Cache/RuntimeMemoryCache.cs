@@ -9,13 +9,13 @@ namespace SpotifyApi.NetCore.Cache
     /// </summary>
     public class RuntimeMemoryCache : ICache
     {
-        private readonly MemoryCache _cache;
+        private readonly IMemoryCache _cache;
         //MemoryCache myCache = new MemoryCache(new MemoryCacheOptions());
         /// <summary>
         /// Instantiates a new <see cref="RuntimeMemoryCache"/>
         /// </summary>
         /// <param name="objectCache"></param>
-        public RuntimeMemoryCache(MemoryCache objectCache)
+        public RuntimeMemoryCache(IMemoryCache objectCache)
         {
             _cache = objectCache;
         }

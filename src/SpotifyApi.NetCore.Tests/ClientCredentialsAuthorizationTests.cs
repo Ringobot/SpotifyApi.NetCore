@@ -123,8 +123,8 @@ namespace SpotifyApi.NetCore.Tests
             var tokenExpires = DateTime.Now;
             var cacheExpires = DateTime.Now;
             var mockCache = new Mock<ICache>();
-            mockCache.Setup(c => c.Get("Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken"))
-                .Returns("jkl901");
+            //mockCache.Setup(c => c.Get("Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken"))
+            //    .Returns("jkl901");
             mockCache.Setup(c => c.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTime>()))
                 .Callback((string k, object v, DateTime e) => cacheExpires = e);
 
