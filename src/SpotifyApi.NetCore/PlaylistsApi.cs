@@ -10,16 +10,10 @@ namespace SpotifyApi.NetCore
     /// <summary>
     /// An API Wrapper for the Spotify Web API Playlists endpoints.
     /// </summary>
-    public class PlaylistsApi : IPlaylistsApi
+    public class PlaylistsApi : SpotifyWebApi, IPlaylistsApi
     {
-        internal const string BaseUrl = "https://api.spotify.com/v1";
-        private readonly IHttpClient _http;
-        private readonly IAuthorizationApi _auth;
-
-        public PlaylistsApi(IHttpClient httpClient, IAuthorizationApi authorizationApi)
+        public PlaylistsApi(IHttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
         {
-            _http = httpClient;
-            _auth = authorizationApi;
         }
 
         /// <summary>

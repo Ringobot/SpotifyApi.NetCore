@@ -35,3 +35,5 @@ Create and publish a Nuget package: <https://docs.microsoft.com/en-nz/nuget/quic
 Nuget package versioning: <https://docs.microsoft.com/en-nz/nuget/reference/package-versioning>
 
 Nuget metadata properties: <https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties>
+
+<https://www.hanselman.com/blog/AddingResilienceAndTransientFaultHandlingToYourNETCoreHttpClientWithPolly.aspx>

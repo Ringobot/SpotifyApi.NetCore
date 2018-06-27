@@ -1,53 +1,21 @@
 using System;
-using System.Threading.Tasks;
+using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
-    internal class SpotifyWebApi : ISpotifyWebApi
+    /// <summary>
+    /// Base class helper for Spotify Web API service classes.
+    /// </summary>
+    public abstract class SpotifyWebApi 
     {
-        public Task<dynamic> SearchArtists(string artist)
-        {
-            throw new NotImplementedException();
-        }
+        protected internal const string BaseUrl = "https://api.spotify.com/v1";
+        protected internal readonly IHttpClient _http;
+        protected internal readonly IAuthorizationApi _auth;
 
-        public Task<dynamic> SearchArtists(string artist, int limit = 50)
+        public SpotifyWebApi(IHttpClient httpClient, IAuthorizationApi authorizationApi)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<dynamic> GetPlaylists(string username)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<dynamic> GetPlaylists(string username, int offset = 0)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<dynamic> GetRecommendation(string artistSeed)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<dynamic> GetRecommendation(string artistSeed, int limit = 20)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<dynamic> GetRelatedArtists(string artistId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<dynamic> GetArtist(string artistId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PlayArtist(string userHash, string spotifyUri)
-        {
-            throw new NotImplementedException();
+            _http = httpClient;
+            _auth = authorizationApi;
         }
     }
 }
