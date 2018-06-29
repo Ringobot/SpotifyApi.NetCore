@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SpotifyApi.NetCore.Cache;
 using SpotifyApi.NetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace SpotifyApi.NetCore
 {
@@ -17,25 +19,35 @@ namespace SpotifyApi.NetCore
     public class ClientCredentialsAuthorizationApi : IAuthorizationApi
     {
         private readonly ICache _cache;
-        private readonly IHttpClient _httpClient;
-        private readonly NameValueCollection _settings;
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Instantiates a new <see cref="ClientCredentialsAuthorizationApi"/> object.
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
-        /// <param name="settings"></param>
-        /// <param name="cache">An instance of <see cref="ICache"/> to cache the Bearer token. Null is accepted here but 
-        /// is not recommended and may not always be supported.</param>
-        public ClientCredentialsAuthorizationApi(IHttpClient httpClient, NameValueCollection settings, ICache cache)
+        /// <param name="configuration"></param>
+        /// <param name="cache">An instance of <see cref="ICache"/> to cache the Bearer token
+        public ClientCredentialsAuthorizationApi(HttpClient httpClient, IConfiguration configuration, ICache cache)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
-            if (settings == null) throw new ArgumentNullException("settings");
+            if (configuration == null) throw new ArgumentNullException("settings");
+            if (cache == null) throw new ArgumentNullException("cache");
 
             _httpClient = httpClient;
-            _settings = settings;
+            _configuration = configuration;
             _cache = cache;
         }
+
+        /// <summary>
+        /// Instantiates a new <see cref="ClientCredentialsAuthorizationApi"/> object.
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
+        /// <param name="configuration"></param>
+        public ClientCredentialsAuthorizationApi(HttpClient httpClient, IConfiguration configuration):
+            this(httpClient, configuration, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
+            {}
+
 
         /// <summary>
         /// Returns a bearer access token to use for a Request to the Spotify API.
@@ -50,8 +62,8 @@ namespace SpotifyApi.NetCore
             if (token == null)
             {
                 // post client ID and Secret to get bearer token
-                string clientId = _settings["SpotifyApiClientId"];
-                string clientSecret = _settings["SpotifyApiClientSecret"];
+                string clientId = _configuration["SpotifyApiClientId"];
+                string clientSecret = _configuration["SpotifyApiClientSecret"];
 
                 if (string.IsNullOrEmpty(clientId))
                     throw new InvalidOperationException("AppSetting SpotifyApiClientId is not set.");

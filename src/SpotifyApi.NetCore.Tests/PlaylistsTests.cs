@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,7 +17,7 @@ namespace SpotifyApi.NetCore.Tests
             // Arrange
             const string username = "abc123";
             
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
 
@@ -35,7 +36,7 @@ namespace SpotifyApi.NetCore.Tests
             // Arrange
             const string username = "abc123";
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
 
@@ -56,7 +57,7 @@ namespace SpotifyApi.NetCore.Tests
             // Arrange
             const string username = "abc123";
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
 
@@ -78,7 +79,7 @@ namespace SpotifyApi.NetCore.Tests
             const string username = "abc123";
             const string playlistId = "jkl012";
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
 
@@ -100,7 +101,7 @@ namespace SpotifyApi.NetCore.Tests
             const string username = "abc123";
             const string playlistId = "jkl012";
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
 

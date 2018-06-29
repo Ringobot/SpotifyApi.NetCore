@@ -8,22 +8,11 @@ using System.Threading.Tasks;
 namespace SpotifyApi.NetCore.Http
 {
     /// <summary>
-    /// An HTTP Client for communicating with the Spotify Web API.
+    /// Static helper extensions on HttpClient for communicating with the Spotify Web API.
     /// </summary>
     /// <remarks>See https://developer.spotify.com/web-api/ </remarks>
-    public class RestHttpClient : IHttpClient
+    public static class RestHttpClient 
     {
-        private readonly HttpClient _httpClient;
-
-        /// <summary>
-        /// Instantiates a new instance of <see cref="RestHttpClient"/>
-        /// </summary>
-        public RestHttpClient(HttpClient httpClient)
-        {
-            if (httpClient == null) throw new ArgumentNullException("httpClient");
-            _httpClient = httpClient;
-        }
-
         /// <summary>
         /// Makes an HTTP(S) GET request to <seealso cref="requestUrl"/> and returns the result as (awaitable Task of) <seealso cref="string"/>.
         /// </summary>
@@ -31,9 +20,9 @@ namespace SpotifyApi.NetCore.Http
         /// <returns>An (awaitable Task of) <seealso cref="string"/></returns>
         /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
         /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public async Task<string> Get(string requestUrl)
+        public static async Task<string> Get(this HttpClient http, string requestUrl)
         {
-            return await Get(requestUrl, null);
+            return await Get(http, requestUrl, null);
         }
 
         /// <summary>
@@ -44,14 +33,14 @@ namespace SpotifyApi.NetCore.Http
         /// <returns>An (awaitable Task of) <seealso cref="string"/></returns>
         /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
         /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public async Task<string> Get(string requestUrl, AuthenticationHeaderValue authenticationHeader)
+        public static async Task<string> Get(this HttpClient http, string requestUrl, AuthenticationHeaderValue authenticationHeader)
         {
             //TODO: Implement if-modified-since support, serving from cache if response = 304
 
             if (string.IsNullOrEmpty(requestUrl)) throw new ArgumentNullException(requestUrl);
 
-            _httpClient.DefaultRequestHeaders.Authorization = authenticationHeader;            
-            var response = await _httpClient.GetAsync(requestUrl);
+            http.DefaultRequestHeaders.Authorization = authenticationHeader;            
+            var response = await http.GetAsync(requestUrl);
             Trace.TraceInformation("Got {0} {1}", requestUrl, response.StatusCode);
             response.EnsureSuccessStatusCode();
 
@@ -66,9 +55,9 @@ namespace SpotifyApi.NetCore.Http
         /// <returns>An (awaitable Task of) <seealso cref="string"/> </returns>
         /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
         /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public async Task<string> Post(string requestUrl, string formData)
+        public static async Task<string> Post(this HttpClient http, string requestUrl, string formData)
         {
-            return await Post(requestUrl, formData, null);
+            return await Post(http, requestUrl, formData, null);
         }
 
         /// <summary>
@@ -80,15 +69,15 @@ namespace SpotifyApi.NetCore.Http
         /// <returns>An (awaitable Task of) <seealso cref="string"/> </returns>
         /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
         /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public async Task<string> Post(string requestUrl, string formData, AuthenticationHeaderValue headerValue)
+        public static async Task<string> Post(this HttpClient http, string requestUrl, string formData, AuthenticationHeaderValue headerValue)
         {
             if (string.IsNullOrEmpty(requestUrl)) throw new ArgumentNullException(requestUrl);
             if (string.IsNullOrEmpty(formData)) throw new ArgumentNullException(formData);
 
-            _httpClient.DefaultRequestHeaders.Authorization = headerValue;
+            http.DefaultRequestHeaders.Authorization = headerValue;
             var response =
                 await
-                    _httpClient.PostAsync(requestUrl,
+                    http.PostAsync(requestUrl,
                         new StringContent(formData, Encoding.UTF8, "application/x-www-form-urlencoded"));
             Trace.TraceInformation("Posted {0} {1}", requestUrl, response.StatusCode);
             response.EnsureSuccessStatusCode();

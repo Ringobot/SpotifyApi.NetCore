@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public class PlaylistsApi : SpotifyWebApi, IPlaylistsApi
     {
-        public PlaylistsApi(IHttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
+        public PlaylistsApi(HttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
         {
         }
 

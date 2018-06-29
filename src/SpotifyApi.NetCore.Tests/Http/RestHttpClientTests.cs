@@ -33,7 +33,7 @@ namespace SpotifyApi.NetCore.Tests.Http
                     }))
                 .Callback((HttpRequestMessage m, CancellationToken t) => message = m);
 
-            var http = new RestHttpClient(new HttpClient(mockHttpMessageHandler.Object));
+            var http = new HttpClient(mockHttpMessageHandler.Object);
 
             // Act
             await http.Get(requestUrl);
@@ -61,7 +61,7 @@ namespace SpotifyApi.NetCore.Tests.Http
                     }))
                 .Callback((HttpRequestMessage m, CancellationToken t) => message = m);
 
-            var http = new RestHttpClient(new HttpClient(mockHttpMessageHandler.Object));
+            var http = new HttpClient(mockHttpMessageHandler.Object);
 
             // Act
             await http.Get(requestUrl);
@@ -90,7 +90,7 @@ namespace SpotifyApi.NetCore.Tests.Http
                     }))
                 .Callback((HttpRequestMessage m, CancellationToken t) => message = m);
 
-            var http = new RestHttpClient(new HttpClient(mockHttpMessageHandler.Object));
+            var http = new HttpClient(mockHttpMessageHandler.Object);
 
             // Act
             await http.Post(requestUrl, formData);
@@ -119,7 +119,7 @@ namespace SpotifyApi.NetCore.Tests.Http
                     }))
                 .Callback((HttpRequestMessage m, CancellationToken t) => message = m);
 
-            var http = new RestHttpClient(new HttpClient(mockHttpMessageHandler.Object));
+            var http = new HttpClient(mockHttpMessageHandler.Object);
 
             // Act
             await http.Post(requestUrl, formData);

@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using SpotifyApi.NetCore.Http;
 
@@ -6,7 +7,7 @@ namespace SpotifyApi.NetCore
 {
     internal class PlayerApi : SpotifyWebApi, IPlayerApi
     {
-        public PlayerApi(IHttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
+        public PlayerApi(HttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
         {
         }
 

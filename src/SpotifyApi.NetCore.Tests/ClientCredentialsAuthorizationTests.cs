@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SpotifyApi.NetCore.Cache;
@@ -20,17 +23,21 @@ namespace SpotifyApi.NetCore.Tests
             // Arrange
             var mockCache = new Mock<ICache>();
             
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Post(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
-            
-            var settings = new NameValueCollection
+
+            var settings = new Dictionary<string, string>
             {
                 {"SpotifyApiClientId", "abc123"},
                 {"SpotifyApiClientSecret", "def345"}
             };
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, settings, mockCache.Object);
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, config, mockCache.Object);
 
             // Act
             await auth.GetAccessToken();
@@ -47,17 +54,21 @@ namespace SpotifyApi.NetCore.Tests
             mockCache.Setup(c => c.Get("Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken"))
                 .Returns("jkl901");
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Post(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
             
-            var settings = new NameValueCollection
+            var settings = new Dictionary<string, string>
             {
                 {"SpotifyApiClientId", "abc123"},
                 {"SpotifyApiClientSecret", "def345"}
             };
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, settings, mockCache.Object);
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, config, mockCache.Object);
 
             // Act
             await auth.GetAccessToken();
@@ -72,17 +83,21 @@ namespace SpotifyApi.NetCore.Tests
             // Arrange
             var mockCache = new Mock<ICache>();
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Post(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
             
-            var settings = new NameValueCollection
+            var settings = new Dictionary<string, string>
             {
                 {"SpotifyApiClientId", "abc123"},
                 {"SpotifyApiClientSecret", "def345"}
             };
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, settings, mockCache.Object);
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, config, mockCache.Object);
 
             // Act
             string token = await auth.GetAccessToken();
@@ -97,17 +112,21 @@ namespace SpotifyApi.NetCore.Tests
             // Arrange
             var mockCache = new Mock<ICache>();
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Post(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
             
-            var settings = new NameValueCollection
+            var settings = new Dictionary<string, string>
             {
                 {"SpotifyApiClientId", "abc123"},
                 {"SpotifyApiClientSecret", "def345"}
             };
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, settings, mockCache.Object);
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, config, mockCache.Object);
 
             // Act
             string token = await auth.GetAccessToken();
@@ -128,18 +147,22 @@ namespace SpotifyApi.NetCore.Tests
             mockCache.Setup(c => c.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTime>()))
                 .Callback((string k, object v, DateTime e) => cacheExpires = e);
 
-            var mockHttp = new Mock<IHttpClient>();
+            var mockHttp = new Mock<HttpClient>();
             mockHttp.Setup(h => h.Post(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
                 .ReturnsAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}")
                 .Callback(() => tokenExpires = DateTime.Now.AddSeconds(3600));
             
-            var settings = new NameValueCollection
+            var settings = new Dictionary<string, string>
             {
                 {"SpotifyApiClientId", "abc123"},
                 {"SpotifyApiClientSecret", "def345"}
             };
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, settings, mockCache.Object);
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ClientCredentialsAuthorizationApi(mockHttp.Object, config, mockCache.Object);
 
             // Act
             await auth.GetAccessToken();
