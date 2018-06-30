@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Protected;
 using SpotifyApi.NetCore.Http;
+using SpotifyApi.NetCore.Tests.Http;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -16,39 +19,15 @@ namespace SpotifyApi.NetCore.Tests
         {
             // Arrange
             const string username = "abc123";
-            
-            var mockHttp = new Mock<HttpClient>();
-            mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
-                .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
 
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
             var mockAuth = new Mock<IAuthorizationApi>();
-
-            var playlists = new PlaylistsApi(mockHttp.Object, mockAuth.Object);
+            var playlists = new PlaylistsApi(mockHttp.HttpClient, mockAuth.Object);
 
             // Act
             var result1 = await playlists.GetPlaylists(username);
             Trace.WriteLine((object)result1);
-        }
-
-        [TestMethod]
-        public async Task GetPlaylists_Username_HttpGetCalled()
-        {
-            // Arrange
-            const string username = "abc123";
-
-            var mockHttp = new Mock<HttpClient>();
-            mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
-                .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-
-            var mockAuth = new Mock<IAuthorizationApi>();
-
-            var api = new PlaylistsApi(mockHttp.Object, mockAuth.Object);
-
-            // Act
-            await api.GetPlaylists(username);
-
-            // Assert
-            mockHttp.Verify(h => h.Get(PlaylistsApi.BaseUrl + "/users/abc123/playlists", It.IsAny<AuthenticationHeaderValue>()));
         }
 	
         [TestMethod]
@@ -57,13 +36,11 @@ namespace SpotifyApi.NetCore.Tests
             // Arrange
             const string username = "abc123";
 
-            var mockHttp = new Mock<HttpClient>();
-            mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
-                .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
             var mockAuth = new Mock<IAuthorizationApi>();
 
-            var api = new PlaylistsApi(mockHttp.Object, mockAuth.Object);
+            var api = new PlaylistsApi(mockHttp.HttpClient, mockAuth.Object);
 
             // Act
             await api.GetPlaylists(username);
@@ -71,29 +48,7 @@ namespace SpotifyApi.NetCore.Tests
             // Assert
             mockAuth.Verify(a=>a.GetAccessToken());
         }
-	
-        [TestMethod]
-        public async Task GetTracks_UsernameAndPlaylistId_HttpGetCalled()
-        {
-            // Arrange
-            const string username = "abc123";
-            const string playlistId = "jkl012";
-
-            var mockHttp = new Mock<HttpClient>();
-            mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
-                .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-
-            var mockAuth = new Mock<IAuthorizationApi>();
-
-            var api = new PlaylistsApi(mockHttp.Object, mockAuth.Object);
-
-            // Act
-            await api.GetTracks(username, playlistId);
-
-            // Assert
-            mockHttp.Verify(h => h.Get(PlaylistsApi.BaseUrl + "/users/abc123/playlists/jkl012/tracks", It.IsAny<AuthenticationHeaderValue>()));
-        }
-	
+		
         [TestMethod]
         public async Task GetTracks_UsernameAndPlaylistId_GetAccessTokenCalled()
         {
@@ -101,13 +56,11 @@ namespace SpotifyApi.NetCore.Tests
             const string username = "abc123";
             const string playlistId = "jkl012";
 
-            var mockHttp = new Mock<HttpClient>();
-            mockHttp.Setup(h => h.Get(It.IsAny<string>(), It.IsAny<AuthenticationHeaderValue>()))
-                .ReturnsAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
             var mockAuth = new Mock<IAuthorizationApi>();
 
-            var api = new PlaylistsApi(mockHttp.Object, mockAuth.Object);
+            var api = new PlaylistsApi(mockHttp.HttpClient, mockAuth.Object);
 
             // Act
             await api.GetTracks(username, playlistId);
