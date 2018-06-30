@@ -32,8 +32,6 @@ namespace SpotifyApi.NetCore.Tests
                 .Build();
 
             var http = new HttpClient();
-            //TODO: Add spotify env vars 
-            var cache = new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions()));
             var auth = new ClientCredentialsAuthorizationApi(http, config);
             var api = new ArtistsApi(http, auth);
 

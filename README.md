@@ -7,6 +7,32 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 * Raw responses
 * MIT
 
+## Installation
+
+    > dotnet add package SpotifyApi.NetCore --version 1.0.2-alpha
+
+## Usage
+
+```csharp
+// Load config from Environment variables (for example):
+// SpotifyApiClientId=(SpotifyApiClientId)
+// SpotifyApiClientSecret=(SpotifyApiClientSecret)
+var config = new ConfigurationBuilder()
+    .AddEnvironmentVariables()
+    .Build();
+
+// HttpClient and ClientCredentials can be reused. 
+// Client creds are cached and refreshed
+var http = new HttpClient();
+var auth = new ClientCredentialsAuthorizationApi(http, config);
+var api = new ArtistsApi(http, auth);
+
+// Get an artist by Spotify Artist Id
+dynamic response = await api.GetArtist("1tpXaFf2F55E7kVJON4j4G");
+```
+
+See tests for more examples.
+
 ## Publishing
 
 Push the Version number in `SpotifyApi.NetCore.csproj`
@@ -15,16 +41,16 @@ Push the Version number in `SpotifyApi.NetCore.csproj`
 
 Commit and push
 
-    git commit -a -m "Packing v1.0.1-alpha"
+    git commit -a -m "Packing v1.0.2-alpha"
     git push
 
 Pack
 
-    dotnet pack src
+    dotnet pack src/Spotify.NetCore
 
 Publish
 
-    dotnet nuget push .\src\bin\Debug\Feather.SpotifyApi.NetCore.1.0.1-alpha.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
+    dotnet nuget push .\src\Spotify.NetCore\bin\Debug\SpotifyApi.NetCore.1.0.2-alpha.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
 
 ## Links
 
