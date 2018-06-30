@@ -8,9 +8,9 @@
     <Authors>Daniel Larsen</Authors>
     <Company>Feather and Scale</Company>
     <Copyright>Copyright 2018 Daniel Larsen</Copyright>
-    <PackageLicenseUrl>https://github.com/FeatherAndScale/SpotifyApiDotNetCore/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/FeatherAndScale/SpotifyApiDotNetCore</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/FeatherAndScale/SpotifyApiDotNetCore</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/FeatherAndScale/SpotifyApi.NetCore/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FeatherAndScale/SpotifyApi.NetCore</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FeatherAndScale/SpotifyApi.NetCore</RepositoryUrl>
     <PackageTags>spotify;.net core;dotnet core;api;client;wrapper</PackageTags>
   </PropertyGroup>
   <ItemGroup>
