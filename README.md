@@ -9,7 +9,7 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
 ## Installation
 
-    > dotnet add package SpotifyApi.NetCore --version 1.0.2-alpha
+    > dotnet add package SpotifyApi.NetCore --version 1.0.3-alpha
 
 ## Usage
 
