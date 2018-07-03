@@ -26,7 +26,6 @@ namespace SpotifyApi.NetCore.Tests
             const string artistId = "1tpXaFf2F55E7kVJON4j4G";
 
             var config = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
                 .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\.."))
                 .AddJsonFile("appsettings.local.json", false)
                 .Build();

@@ -31,11 +31,14 @@ namespace SpotifyApi.NetCore
         public ClientCredentialsAuthorizationApi(HttpClient httpClient, IConfiguration configuration, ICache cache)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
-            if (configuration == null) throw new ArgumentNullException("settings");
             if (cache == null) throw new ArgumentNullException("cache");
 
+            // if configuration is not provided, read from environment variables
+            _configuration = configuration ?? new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
+            
             _httpClient = httpClient;
-            _configuration = configuration;
             _cache = cache;
         }
 
@@ -46,6 +49,15 @@ namespace SpotifyApi.NetCore
         /// <param name="configuration"></param>
         public ClientCredentialsAuthorizationApi(HttpClient httpClient, IConfiguration configuration):
             this(httpClient, configuration, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
+            {}
+
+        /// <summary>
+        /// Instantiates a new <see cref="ClientCredentialsAuthorizationApi"/> object.
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
+        /// <param name="configuration"></param>
+        public ClientCredentialsAuthorizationApi(HttpClient httpClient):
+            this(httpClient, null, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
             {}
 
 

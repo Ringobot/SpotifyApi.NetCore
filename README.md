@@ -14,30 +14,27 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 ## Usage
 
 ```csharp
-// Load config from Environment variables (for example):
+// Set Environment variables:
 // SpotifyApiClientId=(SpotifyApiClientId)
 // SpotifyApiClientSecret=(SpotifyApiClientSecret)
-var config = new ConfigurationBuilder()
-    .AddEnvironmentVariables()
-    .Build();
 
 // HttpClient and ClientCredentials can be reused. 
 // Client creds are cached and refreshed
 var http = new HttpClient();
-var auth = new ClientCredentialsAuthorizationApi(http, config);
+var auth = new ClientCredentialsAuthorizationApi(http);
 var api = new ArtistsApi(http, auth);
 
 // Get an artist by Spotify Artist Id
 dynamic response = await api.GetArtist("1tpXaFf2F55E7kVJON4j4G");
 ```
 
-See tests for more examples.
+See tests for more usage examples.
 
 ## Publishing
 
 Push the Version number in `SpotifyApi.NetCore.csproj`
 
-    <Version>1.0.1-alpha</Version>
+    <Version>1.0.2-alpha</Version>
 
 Commit and push
 
