@@ -13,12 +13,19 @@ namespace SpotifyApi.NetCore
 
         public async Task<dynamic> GetRecommendation(string[] seedArtists, string[] seedGenres, string[] seedTracks)
         {
-            throw new NotImplementedException();
+            return await GetRecommendation(seedArtists, seedGenres, seedTracks, 0);
         }
 
         public async Task<dynamic> GetRecommendation(string[] seedArtists, string[] seedGenres, string[] seedTracks, int limit)
         {
-            throw new NotImplementedException();
+            string url = $"{BaseUrl}/recommendations?";
+
+            if (seedArtists != null && seedArtists.Length > 0) url += $"seed_artists={string.Join(",", seedArtists)}&";
+            if (seedGenres != null && seedGenres.Length > 0) url += $"seed_genres={string.Join(",", seedGenres)}&";
+            if (seedTracks != null && seedTracks.Length > 0) url += $"seed_tracks={string.Join(",", seedTracks)}&";
+            if (limit > 0 ) url += $"limit={limit}";
+
+            return await Get<dynamic>(url);
         }
     }
 }

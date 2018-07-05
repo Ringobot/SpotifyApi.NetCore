@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SpotifyApi.NetCore.Http;
@@ -15,18 +14,12 @@ namespace SpotifyApi.NetCore
 
         public async Task<dynamic> GetArtist(string artistId)
         {
-            return JsonConvert.DeserializeObject(
-                await _http.Get($"{BaseUrl}/artists/{artistId}",
-                    new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()))
-                );
+            return await Get<dynamic>($"{BaseUrl}/artists/{artistId}");
         }
 
         public async Task<dynamic> GetRelatedArtists(string artistId)
         {
-            return JsonConvert.DeserializeObject(
-                await _http.Get($"{BaseUrl}/artists/{artistId}/related-artists",
-                    new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()))
-                );
+            return await Get<dynamic>($"{BaseUrl}/artists/{artistId}/related-artists");
         }
 
         public async Task<dynamic> SearchArtists(string artist)
@@ -43,12 +36,7 @@ namespace SpotifyApi.NetCore
                 limit = 50;
             }
 
-            // https://api.spotify.com/v1/search?q=radiohead&type=artist
-
-            return JsonConvert.DeserializeObject(
-                await _http.Get($"{BaseUrl}/search?q={Uri.EscapeDataString(artist)}&type=artist&limit={limit}",
-                    new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()))
-                );
+            return await Get<dynamic>($"{BaseUrl}/search?q={Uri.EscapeDataString(artist)}&type=artist&limit={limit}");
         }
     }
 }
