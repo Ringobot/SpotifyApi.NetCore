@@ -9,7 +9,7 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
 ## Installation
 
-    > dotnet add package SpotifyApi.NetCore --version 1.0.3-alpha
+    > dotnet add package SpotifyApi.NetCore --version 1.0.4-alpha
 
 ## Usage
 
@@ -22,10 +22,16 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 // Client creds are cached and refreshed
 var http = new HttpClient();
 var auth = new ClientCredentialsAuthorizationApi(http);
-var api = new ArtistsApi(http, auth);
 
 // Get an artist by Spotify Artist Id
+var api = new ArtistsApi(http, auth);
 dynamic response = await api.GetArtist("1tpXaFf2F55E7kVJON4j4G");
+string artistName = response.name;
+
+// Get recommendations based on seed Artist Ids
+var api = new BrowseApi(http, auth);
+dynamic response = await api.GetRecommendations(new [] {"1tpXaFf2F55E7kVJON4j4G", "4Z8W4fKeB5YxbusRsdQVPb"}, null, null);
+string firstTrackName = response.tracks[0].name;
 ```
 
 See tests for more usage examples.
