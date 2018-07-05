@@ -25,7 +25,7 @@ namespace SpotifyApi.NetCore
             _auth = authorizationApi;
         }
 
-        protected async Task<T> Get<T>(string url){
+        protected internal virtual async Task<T> Get<T>(string url){
             return JsonConvert.DeserializeObject<T>(
                 await _http.Get(url,
                     new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()))
