@@ -9,6 +9,8 @@ using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
+    // https://developer.spotify.com/documentation/web-api/reference/player/
+    // Implemented: 1/13 = 8%
     public class PlayerApi : SpotifyWebApi, IPlayerApi
     {
         public PlayerApi(HttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)

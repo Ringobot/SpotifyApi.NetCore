@@ -2,10 +2,21 @@
 
 Lightweight .NET Core wrapper for the Spotify Web API.
 
+## Features 
+
+* .NET Core 2.1
 * Opinionated
-* Async by default
+* `async` by default
+* BYO `HttpClient`
 * Raw responses
 * MIT
+
+## Project goals
+
+* Intuitive
+* Opinionated but extensible
+* Support multi-user / multi-tenant scenarios
+* 80/20 coverage
 
 ## Installation
 
@@ -13,15 +24,17 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
 ## Usage
 
-```csharp
-// Set Environment variables:
-// SpotifyApiClientId=(SpotifyApiClientId)
-// SpotifyApiClientSecret=(SpotifyApiClientSecret)
+Set Environment variables:
+    
+    SpotifyApiClientId=(SpotifyApiClientId)
+    SpotifyApiClientSecret=(SpotifyApiClientSecret)
 
-// HttpClient and ClientCredentials can be reused. 
-// Client creds are cached and refreshed
+
+```csharp
+// HttpClient and Auth can be reused. 
+// Creds are cached and refreshed
 var http = new HttpClient();
-var auth = new ClientCredentialsAuthorizationApi(http);
+var auth = new ApplicationAuthorizationApi(http);
 
 // Get an artist by Spotify Artist Id
 var api = new ArtistsApi(http, auth);
@@ -36,11 +49,32 @@ string firstTrackName = response.tracks[0].name;
 
 See tests for more usage examples.
 
+## Spotify Web API Coverage
+
+| Spotify API | Endpoints | Implemented | % |
+| ----------- | --------- | ----------- | - |
+| Albums | 3 | 0 | 0% |
+| Artists | 5 | 1 | 20% |
+| Browse | 6 | 0.5 | 8% |
+| Follow | 7 | 0 | 0% |
+| Library | 8 | 0 | 0% |
+| Personalization | 1 | 0 | 0% |
+| Player | 13 | 1 | 8% |
+| Playlists | 12 | 1.5 | 13% |
+| Search | 1 | 0 | 0% |
+| Tracks | 5 | 0 | 0% |
+| Users Profile | 2 | 0 | 0% |
+| **Total** | **63** | **4** | **6%** |
+
+Pull requests and feature requests welcomed!
+
 ## Publishing
 
 Push the Version number in `SpotifyApi.NetCore.csproj`
 
-    <Version>1.0.2-alpha</Version>
+```xml
+<Version>1.0.2-alpha</Version>
+```
 
 Commit and push
 
