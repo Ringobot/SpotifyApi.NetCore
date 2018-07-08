@@ -57,6 +57,10 @@ Publish
 
 ## Links
 
+### HttpClient factory
+
+<https://blogs.msdn.microsoft.com/webdev/2018/02/28/asp-net-core-2-1-preview1-introducing-httpclient-factory/>
+
 ### Configuration in .NET Core
 
 Setting up .NET Core Configuration Providers: <https://blogs.msdn.microsoft.com/premier_developer/2018/04/26/setting-up-net-core-configuration-providers/>

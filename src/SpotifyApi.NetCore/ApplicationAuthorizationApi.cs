@@ -16,19 +16,19 @@ namespace SpotifyApi.NetCore
     /// An API wrapper for the Spotify Authorization API, Client Credentials flow.
     /// </summary>
     /// <remarks>https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow</remarks>
-    public class ClientCredentialsAuthorizationApi : IAuthorizationApi
+    public class ApplicationAuthorizationApi : IAuthorizationApi
     {
         private readonly ICache _cache;
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
 
         /// <summary>
-        /// Instantiates a new <see cref="ClientCredentialsAuthorizationApi"/> object.
+        /// Instantiates a new <see cref="ApplicationAuthorizationApi"/> object.
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
         /// <param name="configuration"></param>
         /// <param name="cache">An instance of <see cref="ICache"/> to cache the Bearer token
-        public ClientCredentialsAuthorizationApi(HttpClient httpClient, IConfiguration configuration, ICache cache)
+        public ApplicationAuthorizationApi(HttpClient httpClient, IConfiguration configuration, ICache cache)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
             if (cache == null) throw new ArgumentNullException("cache");
@@ -43,20 +43,20 @@ namespace SpotifyApi.NetCore
         }
 
         /// <summary>
-        /// Instantiates a new <see cref="ClientCredentialsAuthorizationApi"/> object.
+        /// Instantiates a new <see cref="ApplicationAuthorizationApi"/> object.
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
         /// <param name="configuration"></param>
-        public ClientCredentialsAuthorizationApi(HttpClient httpClient, IConfiguration configuration):
+        public ApplicationAuthorizationApi(HttpClient httpClient, IConfiguration configuration):
             this(httpClient, configuration, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
             {}
 
         /// <summary>
-        /// Instantiates a new <see cref="ClientCredentialsAuthorizationApi"/> object.
+        /// Instantiates a new <see cref="ApplicationAuthorizationApi"/> object.
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
         /// <param name="configuration"></param>
-        public ClientCredentialsAuthorizationApi(HttpClient httpClient):
+        public ApplicationAuthorizationApi(HttpClient httpClient):
             this(httpClient, null, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
             {}
 
@@ -102,6 +102,11 @@ namespace SpotifyApi.NetCore
             }
 
             return token;
+        }
+
+        public Task<string> GetAccessToken(string userHash)
+        {
+            throw new NotSupportedException();
         }
     }
 }

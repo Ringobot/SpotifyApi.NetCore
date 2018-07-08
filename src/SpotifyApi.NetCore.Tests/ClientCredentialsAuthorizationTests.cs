@@ -36,7 +36,7 @@ namespace SpotifyApi.NetCore.Tests
                 .AddInMemoryCollection(settings)
                 .Build();
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
+            var auth = new ApplicationAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
 
             // Act
             await auth.GetAccessToken();
@@ -65,7 +65,7 @@ namespace SpotifyApi.NetCore.Tests
                 .AddInMemoryCollection(settings)
                 .Build();
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
+            var auth = new ApplicationAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
 
             // Act
             await auth.GetAccessToken();
@@ -92,7 +92,7 @@ namespace SpotifyApi.NetCore.Tests
                 .AddInMemoryCollection(settings)
                 .Build();
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
+            var auth = new ApplicationAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
 
             // Act
             string token = await auth.GetAccessToken();
@@ -119,7 +119,7 @@ namespace SpotifyApi.NetCore.Tests
                 .AddInMemoryCollection(settings)
                 .Build();
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
+            var auth = new ApplicationAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
 
             // Act
             string token = await auth.GetAccessToken();
@@ -154,7 +154,7 @@ namespace SpotifyApi.NetCore.Tests
                 .AddInMemoryCollection(settings)
                 .Build();
 
-            var auth = new ClientCredentialsAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
+            var auth = new ApplicationAuthorizationApi(mockHttp.HttpClient, config, mockCache.Object);
 
             // Act
             await auth.GetAccessToken();

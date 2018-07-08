@@ -10,7 +10,7 @@ namespace SpotifyApi.NetCore
     /// <summary>
     /// Base class helper for Spotify Web API service classes.
     /// </summary>
-    public abstract class SpotifyWebApi 
+    public abstract class SpotifyWebApi
     {
         protected internal const string BaseUrl = "https://api.spotify.com/v1";
         protected internal readonly HttpClient _http;
@@ -25,7 +25,11 @@ namespace SpotifyApi.NetCore
             _auth = authorizationApi;
         }
 
-        protected internal virtual async Task<T> Get<T>(string url){
+        /// <summary>
+        /// Helper to invoke a GET request and deserialise the result to JSON
+        /// </summary>
+        protected internal virtual async Task<T> Get<T>(string url)
+        {
             return JsonConvert.DeserializeObject<T>(
                 await _http.Get(url,
                     new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()))

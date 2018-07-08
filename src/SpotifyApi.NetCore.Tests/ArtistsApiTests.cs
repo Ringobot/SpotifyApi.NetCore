@@ -31,7 +31,7 @@ namespace SpotifyApi.NetCore.Tests
                 .Build();
 
             var http = new HttpClient();
-            var auth = new ClientCredentialsAuthorizationApi(http, config);
+            var auth = new ApplicationAuthorizationApi(http, config);
             var api = new ArtistsApi(http, auth);
 
             // act

@@ -5,6 +5,6 @@ namespace SpotifyApi.NetCore
 {
     public interface IPlayerApi
     {
-        Task PlayArtist(string userHash, string spotifyUri);
+        Task Play(string userHash, string spotifyUri);
     }
 }
