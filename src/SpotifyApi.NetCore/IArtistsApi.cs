@@ -11,5 +11,6 @@ namespace SpotifyApi.NetCore
         Task<dynamic> GetRelatedArtists(string artistId);
         Task<dynamic> SearchArtists(string artist);
         Task<dynamic> SearchArtists(string artist, int limit);
+        Task<dynamic> SearchArtists(string artist, (int, int) limitOffset);
     }
 }

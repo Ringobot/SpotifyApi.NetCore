@@ -24,19 +24,30 @@ namespace SpotifyApi.NetCore
 
         public async Task<dynamic> SearchArtists(string artist)
         {
-            return await SearchArtists(artist, 50);
+            return await SearchArtists(artist, (0, 0));
+        }
+        public async Task<dynamic> SearchArtists(string artist, int limit)
+        {
+            return await SearchArtists(artist, (limit, 0));
         }
 
-        public async Task<dynamic> SearchArtists(string artist, int limit)
+        public async Task<dynamic> SearchArtists(string artist, (int limit, int offset) limitOffset)
         {
             var token = await _auth.GetAccessToken();
 
-            if (limit <= 0)
+            string url = $"{BaseUrl}/search?q={Uri.EscapeDataString(artist)}&type=artist";
+
+            if (limitOffset.limit > 0 && limitOffset.limit <= 50)
             {
-                limit = 50;
+                url += $"&limit={limitOffset.limit}";
             }
 
-            return await Get<dynamic>($"{BaseUrl}/search?q={Uri.EscapeDataString(artist)}&type=artist&limit={limit}");
+            if (limitOffset.offset > 0 && limitOffset.offset <= 10000)
+            {
+                url += $"&offset={limitOffset.offset}";
+            }
+
+            return await Get<dynamic>(url);
         }
     }
 }
