@@ -5,6 +5,7 @@ namespace SpotifyApi.NetCore
 {
     public interface IPlayerApi
     {
+        Task PlayContext(string userHash, string spotifyUri);
         Task PlayContext(string userHash, string spotifyUri, string offsetTrackUri = null, string deviceId = null);
         Task PlayContext(string userHash, string spotifyUri, int offsetPosition = 0, string deviceId = null);
         Task PlayTracks(string userHash, string[] spotifyTrackUris, string offsetTrackUri = null, string deviceId = null);

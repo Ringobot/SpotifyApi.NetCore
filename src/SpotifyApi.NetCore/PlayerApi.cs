@@ -28,32 +28,37 @@ namespace SpotifyApi.NetCore
 
         public async Task PlayContext(string userHash, string spotifyUri, string offsetTrackUri = null, string deviceId = null)
         {
-            dynamic data = new JObject(new {context_uri = spotifyUri});
-            if (offsetTrackUri != null) data.offset = new JObject(new {uri = offsetTrackUri});
+            dynamic data = JObject.FromObject(new {context_uri = spotifyUri});
+            if (offsetTrackUri != null) data.offset = JObject.FromObject(new {uri = offsetTrackUri});
 
             await Play(userHash, data, deviceId);
         }
 
         public async Task PlayContext(string userHash, string spotifyUri, int offsetPosition = 0, string deviceId = null)
         {
-            dynamic data = new JObject(new {context_uri = spotifyUri});
-            if (offsetPosition > 0) data.offset = new JObject(new {position = offsetPosition});
+            dynamic data = JObject.FromObject(new {context_uri = spotifyUri});
+            if (offsetPosition > 0) data.offset = JObject.FromObject(new {position = offsetPosition});
             
             await Play(userHash, data, deviceId);
         }
 
+        public async Task PlayContext(string userHash, string spotifyUri)
+        {
+            await PlayContext(userHash, spotifyUri, null, null);
+        }
+
         public async Task PlayTracks(string userHash, string[] spotifyTrackUris, string offsetTrackUri = null, string deviceId = null)
         {
-            dynamic data = new JObject(new {uris = spotifyTrackUris});
-            if (offsetTrackUri != null) data.offset = new JObject(new {uri = offsetTrackUri});
+            dynamic data = JObject.FromObject(new {uris = spotifyTrackUris});
+            if (offsetTrackUri != null) data.offset = JObject.FromObject(new {uri = offsetTrackUri});
             
             await Play(userHash, data, deviceId);
         }
 
         public async Task PlayTracks(string userHash, string[] spotifyTrackUris, int offsetPosition = 0, string deviceId = null)
         {
-            dynamic data = new JObject(new {uris = spotifyTrackUris});
-            if (offsetPosition > 0) data.offset = new JObject(new {position = offsetPosition});
+            dynamic data = JObject.FromObject(new {uris = spotifyTrackUris});
+            if (offsetPosition > 0) data.offset = JObject.FromObject(new {position = offsetPosition});
             
             await Play(userHash, data, deviceId);
         }
