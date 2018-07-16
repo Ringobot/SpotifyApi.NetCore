@@ -16,50 +16,57 @@ namespace SpotifyApi.NetCore
     /// An API wrapper for the Spotify Authorization API, Client Credentials flow.
     /// </summary>
     /// <remarks>https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow</remarks>
-    public class ApplicationAuthorizationApi : IAuthorizationApi
+    public class ApplicationAuthApi : IAuthorizationApi
     {
         private readonly ICache _cache;
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly HttpClient _http;
+        private readonly IConfiguration _config;
 
         /// <summary>
-        /// Instantiates a new <see cref="ApplicationAuthorizationApi"/> object.
+        /// Instantiates a new <see cref="ApplicationAuthApi"/> object.
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
         /// <param name="configuration"></param>
         /// <param name="cache">An instance of <see cref="ICache"/> to cache the Bearer token
-        public ApplicationAuthorizationApi(HttpClient httpClient, IConfiguration configuration, ICache cache)
+        public ApplicationAuthApi(HttpClient httpClient, IConfiguration configuration, ICache cache)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
             if (cache == null) throw new ArgumentNullException("cache");
 
             // if configuration is not provided, read from environment variables
-            _configuration = configuration ?? new ConfigurationBuilder()
+            _config = configuration ?? new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .Build();
             
-            _httpClient = httpClient;
+            _http = httpClient;
             _cache = cache;
         }
 
         /// <summary>
-        /// Instantiates a new <see cref="ApplicationAuthorizationApi"/> object.
+        /// Instantiates a new <see cref="ApplicationAuthApi"/> object.
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
         /// <param name="configuration"></param>
-        public ApplicationAuthorizationApi(HttpClient httpClient, IConfiguration configuration):
+        public ApplicationAuthApi(HttpClient httpClient, IConfiguration configuration):
             this(httpClient, configuration, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
             {}
 
         /// <summary>
-        /// Instantiates a new <see cref="ApplicationAuthorizationApi"/> object.
+        /// Instantiates a new <see cref="ApplicationAuthApi"/> object.
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/>.</param>
         /// <param name="configuration"></param>
-        public ApplicationAuthorizationApi(HttpClient httpClient):
+        public ApplicationAuthApi(HttpClient httpClient):
             this(httpClient, null, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
             {}
 
+        public void ValidateConfig()
+        {
+            if (_config["SpotifyApiClientId"] == null)
+                throw new ArgumentNullException("SpotifyApiClientId", "Expecting configuration value for `SpotifyApiClientId`");
+            if (_config["SpotifyApiClientSecret"] == null)
+                throw new ArgumentNullException("SpotifyApiClientSecret", "Expecting configuration value for `SpotifyApiClientSecret`");
+        }
 
         /// <summary>
         /// Returns a bearer access token to use for a Request to the Spotify API.
@@ -67,33 +74,21 @@ namespace SpotifyApi.NetCore
         /// <returns>A Bearer token as (awaitable) Task of string</returns>
         public async Task<string> GetAccessToken()
         {
+            ValidateConfig();
+
             const string cacheKey = "Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken";
 
-            var token = _cache == null ? null : (string) _cache.Get(cacheKey);
+            string token = _cache == null ? null : (string) _cache.Get(cacheKey);
 
             if (token == null)
             {
-                // post client ID and Secret to get bearer token
-                string clientId = _configuration["SpotifyApiClientId"];
-                string clientSecret = _configuration["SpotifyApiClientSecret"];
-
-                if (string.IsNullOrEmpty(clientId))
-                    throw new InvalidOperationException("AppSetting SpotifyApiClientId is not set.");
-                if (string.IsNullOrEmpty(clientSecret))
-                    throw new InvalidOperationException("AppSetting SpotifyApiClientSecret is not set.");
-
-                // set Basic authentication header
-                var header = new AuthenticationHeaderValue("Basic",
-                    Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", clientId, clientSecret))));
-
                 var now = DateTime.Now;
-                const string url = "https://accounts.spotify.com/api/token";
 
-                var json =
-                    await
-                        _httpClient.Post(url, "grant_type=client_credentials", header);
+                string json = await _http.Post(AuthorizationApiHelper.TokenUrl, 
+                    "grant_type=client_credentials", AuthorizationApiHelper.GetHeader(_config));
 
                 // deserialise the token
+                //TODO: Deserilaize to DTO?
                 dynamic tokenData = JsonConvert.DeserializeObject(json);
                 token = tokenData.access_token;
 

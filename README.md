@@ -4,7 +4,7 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
 ## Features 
 
-* .NET Core 2.1
+* Targets .NET Standard 2.0
 * Opinionated
 * `async` by default
 * BYO `HttpClient`
@@ -29,7 +29,6 @@ Set Environment variables:
     SpotifyApiClientId=(SpotifyApiClientId)
     SpotifyApiClientSecret=(SpotifyApiClientSecret)
 
-
 ```csharp
 // HttpClient and Auth can be reused. 
 // Creds are cached and refreshed
@@ -52,7 +51,7 @@ See tests for more usage examples.
 ## Spotify Web API Coverage
 
 | Spotify API | Endpoints | Implemented | % |
-| ----------- | --------- | ----------- | - |
+| :---------- | --------: | ----------: | -: |
 | Albums | 3 | 0 | 0% |
 | Artists | 5 | 1 | 20% |
 | Browse | 6 | 0.5 | 8% |
