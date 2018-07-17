@@ -9,6 +9,7 @@ using SpotifyApi.NetCore.Cache;
 using SpotifyApi.NetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Memory;
+using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore
 {
@@ -60,21 +61,13 @@ namespace SpotifyApi.NetCore
             this(httpClient, null, new RuntimeMemoryCache(new MemoryCache(new MemoryCacheOptions())))
             {}
 
-        public void ValidateConfig()
-        {
-            if (_config["SpotifyApiClientId"] == null)
-                throw new ArgumentNullException("SpotifyApiClientId", "Expecting configuration value for `SpotifyApiClientId`");
-            if (_config["SpotifyApiClientSecret"] == null)
-                throw new ArgumentNullException("SpotifyApiClientSecret", "Expecting configuration value for `SpotifyApiClientSecret`");
-        }
-
         /// <summary>
         /// Returns a bearer access token to use for a Request to the Spotify API.
         /// </summary>
         /// <returns>A Bearer token as (awaitable) Task of string</returns>
         public async Task<string> GetAccessToken()
         {
-            ValidateConfig();
+            AuthHelper.ValidateConfig(_config, false);
 
             const string cacheKey = "Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken";
 
@@ -84,8 +77,8 @@ namespace SpotifyApi.NetCore
             {
                 var now = DateTime.Now;
 
-                string json = await _http.Post(AuthorizationApiHelper.TokenUrl, 
-                    "grant_type=client_credentials", AuthorizationApiHelper.GetHeader(_config));
+                string json = await _http.Post(AuthHelper.TokenUrl, 
+                    "grant_type=client_credentials", AuthHelper.GetHeader(_config));
 
                 // deserialise the token
                 //TODO: Deserilaize to DTO?

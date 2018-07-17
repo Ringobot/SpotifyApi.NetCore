@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
@@ -32,16 +33,6 @@ namespace SpotifyApi.NetCore
         public UserAuthApi(HttpClient httpClient, IUserAuthData data) : this(httpClient, null, data)
         {}
 
-        public void ValidateConfig()
-        {
-            if (_config["SpotifyApiClientId"] == null)
-                throw new ArgumentNullException("SpotifyApiClientId", "Expecting configuration value for `SpotifyApiClientId`");
-            if (_config["SpotifyApiClientSecret"] == null)
-                throw new ArgumentNullException("SpotifyApiClientSecret", "Expecting configuration value for `SpotifyApiClientSecret`");
-            if (_config["SpotifyAuthRedirectUri"] == null)
-                throw new ArgumentNullException("SpotifyAuthRedirectUri", "Expecting configuration value for `SpotifyAuthRedirectUri`");
-        }
-
         public Task<string> GetAccessToken()
         {
             throw new NotImplementedException();
@@ -49,7 +40,7 @@ namespace SpotifyApi.NetCore
 
         public async Task<string> GetAccessToken(string userHash)
         {
-            ValidateConfig();
+            AuthHelper.ValidateConfig(_config);
 
             // get userAuth record
             var userAuth = await _data.Get(userHash);
@@ -60,9 +51,9 @@ namespace SpotifyApi.NetCore
                 // if expired, refresh the token
                 var now = DateTime.Now;
 
-                var json = await _http.Post(AuthorizationApiHelper.TokenUrl,
+                var json = await _http.Post(AuthHelper.TokenUrl,
                     $"grant_type=refresh_token&refresh_token={userAuth.RefreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
-                    AuthorizationApiHelper.GetHeader(_config));
+                    AuthHelper.GetHeader(_config));
 
                 // deserialise the token
                 //TODO: Deserilaize to DTO?
@@ -78,17 +69,5 @@ namespace SpotifyApi.NetCore
 
             return userAuth.AccessToken;
         }
-    }
-    public interface IUserAuthEntity
-    {
-        DateTime? Expiry { get; set; }
-        string RefreshToken { get; set; }
-        string AccessToken { get; set; }
-    }
-
-    public interface IUserAuthData
-    {
-        Task<IUserAuthEntity> Get(string userHash);
-        Task Update(IUserAuthEntity userAuth);
     }
 }
