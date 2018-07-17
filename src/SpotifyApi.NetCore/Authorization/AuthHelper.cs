@@ -20,11 +20,11 @@ namespace SpotifyApi.NetCore.Authorization
 
         public static void ValidateConfig(IConfiguration config, bool validateRedirectUri = true)
         {
-            if (config["SpotifyApiClientId"] == null)
+            if (string.IsNullOrEmpty(config["SpotifyApiClientId"]))
                 throw new ArgumentNullException("SpotifyApiClientId", "Expecting configuration value for `SpotifyApiClientId`");
-            if (config["SpotifyApiClientSecret"] == null)
+            if (string.IsNullOrEmpty(config["SpotifyApiClientSecret"]))
                 throw new ArgumentNullException("SpotifyApiClientSecret", "Expecting configuration value for `SpotifyApiClientSecret`");
-            if (config["SpotifyAuthRedirectUri"] == null)
+            if (validateRedirectUri && string.IsNullOrEmpty(config["SpotifyAuthRedirectUri"]))
                 throw new ArgumentNullException("SpotifyAuthRedirectUri", "Expecting configuration value for `SpotifyAuthRedirectUri`");
         }
     }

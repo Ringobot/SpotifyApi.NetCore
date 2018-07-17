@@ -12,7 +12,7 @@ using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
-    public class AuthorizationCodeService 
+    public class AuthorizationCodeService : IAuthorizationCodeService
     {
         private readonly IUserAuthData _data;
         private readonly HttpClient _http;
@@ -34,12 +34,12 @@ namespace SpotifyApi.NetCore
             _scopes = scopes == null || scopes.Length == 0 ? "" : string.Join(" ", scopes);
         }
 
-        public async Task<string> RequestAuthorizationUrl(string userHash) 
+        public async Task<string> RequestAuthorizationUrl(string userHash)
         {
             AuthHelper.ValidateConfig(_config);
 
             var userAuth = _data.Create(userHash, Guid.NewGuid().ToString("N"));
-            var result = await _data.InsertOrReplace(userAuth);
+            await _data.InsertOrReplace(userAuth);
 
             // State
             // 60BC0AC2A44EA6146D876AEC3133D230B9A9E41BACC7EA0343B16FED4CB6BE54|f26d60305
@@ -82,18 +82,20 @@ namespace SpotifyApi.NetCore
         {
             // https://ringobot.azurewebsites.net/authorize/spotify?code=AQAYtuv4d6NsFQYBbYv-gmzI0K1_LDUjpBNe59yC1pID0Yl6LTLtcJ3kPtOu0jkRH4TxDCEXAAWbeoQ72DAmzug5LFnKyoP-cOT7NvzC4IMqlavrzgonrjSL_-B1uIA3uo8Lzgds1TWRaqPf304axiUc0ivvxWjQSjlRkj2rcHe2inCcoalRQEvAa4ZMvkVoZ7KFJcXERlGZkS17LkRIJnhuthVK55cfWGkTDgHWDWlamfz4Lb3uvQHElk-OVP6a1YTOn2IfxUGgFtAx7CC0Vqw5fS37L7ONdMmcTqDENpQ1wCGaRfHJ2b6t7JZx88DbrRiaH8KjYFShw4f2wDOI9wyEusOPhjnngCUGZu17kzcIeZcJFZRCO5hiSGcMTxb020m_mt7qK0PFJUOjHDT_gsHGsRz4dqwFjnOz12ThehFE8dvU7J9X9JOv4QeJ8Keg8kogz7keM76z1E8xi3svAUPd06m9-nsSCvZfNNS4G2QVGcOIFTsG3KyiIZkPfclNej7r&state=60BC0AC2A44EA6146D876AEC3133D230B9A9E41BACC7EA0343B16FED4CB6BE55%3A7dff3dc47b10121834e6715ae4deda2545cc8c59
 
+            AuthHelper.ValidateConfig(_config);
             if (string.IsNullOrEmpty(state)) throw new ArgumentNullException("state");
             if (string.IsNullOrEmpty(code)) throw new ArgumentNullException("code");
 
             var (userHash, statePart) = StateHelper.DecodeState(state);
             var userAuth = await _data.Get(userHash);
 
-            if (userAuth == null) 
+            if (userAuth == null)
             {
                 throw new InvalidOperationException($"No user auth record found for user \"{userHash}\"");
             }
 
-            if (state != userAuth.State) {
+            if (state != userAuth.State)
+            {
                 // states don't match
                 StateHelper.ThrowStateException();
             }
@@ -118,6 +120,12 @@ namespace SpotifyApi.NetCore
             await _data.Update(userAuth);
         }
 
+        public async Task RequestToken(IEnumerable<KeyValuePair<String, StringValues>> queryCollection)
+        {
+            throw new NotImplementedException();
+
+        }
+
         private async Task<dynamic> GetUserAuthTokens(string code)
         {
             return await _http.Post(AuthHelper.TokenUrl,
@@ -125,10 +133,5 @@ namespace SpotifyApi.NetCore
                 AuthHelper.GetHeader(_config));
         }
 
-        public async Task RequestToken(IEnumerable<KeyValuePair<String,StringValues>> queryCollection)
-        {
-            throw new NotImplementedException();
-
-        }
     }
 }
