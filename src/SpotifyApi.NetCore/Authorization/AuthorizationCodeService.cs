@@ -38,7 +38,19 @@ namespace SpotifyApi.NetCore
         {
             AuthHelper.ValidateConfig(_config);
 
-            var userAuth = _data.Create(userHash, Guid.NewGuid().ToString("N"));
+            string state = Guid.NewGuid().ToString("N");
+            var userAuth = _data.Create(userHash, state);
+            
+            // test the DTO
+            try
+            {
+                userAuth.AssertUserHashAndState(userHash, state);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"The DTO returned by {_data}.Create({userAuth}) is invalid. Check the implementation of `IUserAuthData`.", ex);
+            }
+            
             await _data.InsertOrReplace(userAuth);
 
             // State
