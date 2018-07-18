@@ -103,7 +103,7 @@ namespace SpotifyApi.NetCore
             if (string.IsNullOrEmpty(state)) throw new ArgumentNullException("state");
             if (string.IsNullOrEmpty(code)) throw new ArgumentNullException("code");
 
-            var (userHashPart, statePart) = StateHelper.DecodeState(state);
+            var (userHashPart, statePart) = StateHelper.DecodeState(queryState);
             //var userAuth = await _data.Get(userHash);
 
             // if (userAuth == null)
@@ -140,7 +140,7 @@ namespace SpotifyApi.NetCore
         protected internal virtual async Task<AuthorizationTokens> GetAuthorizationTokens(string code)
         {
             var result = await _http.Post(AuthHelper.TokenUrl,
-                $"grant_type=authorization_code&code={code}&redirect_uri=${_config["SpotifyAuthRedirectUri"]}",
+                $"grant_type=authorization_code&code={code}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
                 AuthHelper.GetHeader(_config));
             return JsonConvert.DeserializeObject<AuthorizationTokens>(result);
         }
