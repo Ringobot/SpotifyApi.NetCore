@@ -19,12 +19,12 @@ namespace SpotifyApi.NetCore.Tests
             const string userHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
             const string spotifyUri = "spotify:user:palsvensson:playlist:2iL5fr6OmN8f4yoQvvuWSf";
             
-            var mockAauthUser = new Mock<IUserAuthEntity>();
-            mockAauthUser.SetupProperty(u=>u.UserHash, userHash);
+            var mockAuthUser = new Mock<IUserAuthEntity>();
+            mockAuthUser.SetupProperty(u=>u.UserHash, userHash);
 
             var http = new HttpClient();
             var mockData = new Mock<IUserAuthData>();
-            mockData.Setup(d=>d.Get(It.IsAny<string>())).ReturnsAsync(mockAauthUser.Object);
+            mockData.Setup(d=>d.Get(It.IsAny<string>())).ReturnsAsync(mockAuthUser.Object);
 
             var auth = new UserAuthApi(http, TestsHelper.GetLocalConfig(), mockData.Object);
             var api = new PlayerApi(http, auth);

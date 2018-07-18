@@ -7,9 +7,9 @@ namespace SpotifyApi.NetCore
 {
     public interface IAuthorizationCodeService
     {
-        Task<string> RequestAuthorizationUrl(string userHash);
-        Task RequestToken(string queryString);
-        Task RequestToken(string state, string code);
-        Task RequestToken(IEnumerable<KeyValuePair<String, StringValues>> queryCollection);
+        (string url, string state) RequestAuthorizationUrl(string userHash);
+        Task<AuthorizationTokens> RequestTokens(string queryString);
+        Task<AuthorizationTokens> RequestTokens(string userHash, string state, string queryState, string code);
+        Task<AuthorizationTokens> RequestTokens(IEnumerable<KeyValuePair<String, StringValues>> queryCollection);
     }
 }

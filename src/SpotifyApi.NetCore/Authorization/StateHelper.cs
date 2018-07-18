@@ -9,7 +9,7 @@ namespace SpotifyApi.NetCore.Authorization
     {
         private const char StateFormatDelimiter = '|';
 
-        public static string EncodeState(IUserAuthEntity userAuth) => $"{userAuth.UserHash}{StateFormatDelimiter}{userAuth.State}";
+        public static string EncodeState((string userHash, string state) userAuth) => $"{userAuth.userHash}{StateFormatDelimiter}{userAuth.state}";
 
         public static (string userHash, string state) DecodeState(string stateParam) 
         {
