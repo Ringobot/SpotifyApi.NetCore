@@ -12,9 +12,31 @@ using SpotifyApi.NetCore.Authorization;
 namespace SpotifyApi.NetCore.Tests.Authorization
 {
     [TestClass]
-    public class AuthorizationCodeServiceTests
+    public class AccountsServiceTests
     {
         const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
+
+        [TestMethod]
+        public async Task GetAppAccessToken_ComparisonValueMismatch_Retries(){
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public async Task GetAppAccessToken_ComparisonValueMismatchThreeTimes_Exception(){
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public async Task GetAppAccessToken_ComparisonValueMismatchOnce_ReturnsToken(){
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public async Task RequestAccessRefreshToken_InsertOrReplace_InvariantsEnforced(){
+            throw new NotImplementedException();
+        }
+
+        
 
         // [TestMethod]
         // public async Task RequestAuthorizationUrl_UserHash_UrlContainsUserHash()
@@ -200,7 +222,7 @@ namespace SpotifyApi.NetCore.Tests.Authorization
             var (mockData, mockUserAuth) = Mocks();
             mockUserAuth.SetupGet(u=>u.State).Returns(state);
 
-            var service = new AuthorizationCodeService(http, TestsHelper.GetLocalConfig(), mockData.Object, null);
+            var service = new AccountsService(http, TestsHelper.GetLocalConfig(), mockData.Object, null);
 
             var tokens = await service.RequestTokens(userHash, state, queryState, code);
             Trace.WriteLine("RequestTokens_RealCode_ReturnsTokens tokens = ");
@@ -208,7 +230,7 @@ namespace SpotifyApi.NetCore.Tests.Authorization
         }
 
 
-        private (Mock<IUserAuthData> Data, Mock<IUserAuthEntity> UserAuth) Mocks()
+        private (Mock<IAccessRefreshTokenStore> Data, Mock<IUserAuthEntity> UserAuth) Mocks()
         {
             var mockUserAuth = new Mock<IUserAuthEntity>();
             mockUserAuth.SetupAllProperties();
@@ -220,7 +242,7 @@ namespace SpotifyApi.NetCore.Tests.Authorization
                return mockUserAuth.Object;
            });
 
-            var mockData = new Mock<IUserAuthData>();
+            var mockData = new Mock<IAccessRefreshTokenStore>();
             mockData.Setup(d => d.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(setState);
             mockData.Setup(d => d.Get(It.IsAny<string>())).ReturnsAsync(mockUserAuth.Object);
             return (mockData, mockUserAuth);

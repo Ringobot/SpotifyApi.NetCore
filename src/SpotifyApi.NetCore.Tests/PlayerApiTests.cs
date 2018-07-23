@@ -23,7 +23,7 @@ namespace SpotifyApi.NetCore.Tests
             mockAuthUser.SetupProperty(u=>u.UserHash, userHash);
 
             var http = new HttpClient();
-            var mockData = new Mock<IUserAuthData>();
+            var mockData = new Mock<IAccessRefreshTokenStore>();
             mockData.Setup(d=>d.Get(It.IsAny<string>())).ReturnsAsync(mockAuthUser.Object);
 
             var auth = new UserAuthApi(http, TestsHelper.GetLocalConfig(), mockData.Object);

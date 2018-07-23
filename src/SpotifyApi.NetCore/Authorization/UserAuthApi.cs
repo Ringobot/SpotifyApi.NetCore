@@ -13,11 +13,11 @@ namespace SpotifyApi.NetCore
 
     public class UserAuthApi : IAuthorizationApi
     {
-        private readonly IUserAuthData _data;
+        private readonly IAccessRefreshTokenStore _data;
         private readonly HttpClient _http;
         private readonly IConfiguration _config;
 
-        public UserAuthApi(HttpClient httpClient, IConfiguration configuration, IUserAuthData data)
+        public UserAuthApi(HttpClient httpClient, IConfiguration configuration, IAccessRefreshTokenStore data)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
             if (data == null) throw new ArgumentNullException("data");
@@ -30,7 +30,7 @@ namespace SpotifyApi.NetCore
                 .Build();
         }
 
-        public UserAuthApi(HttpClient httpClient, IUserAuthData data) : this(httpClient, null, data)
+        public UserAuthApi(HttpClient httpClient, IAccessRefreshTokenStore data) : this(httpClient, null, data)
         {}
 
         public Task<string> GetAccessToken()

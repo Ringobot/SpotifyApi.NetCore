@@ -12,14 +12,14 @@ namespace SpotifyApi.NetCore.Authorization
         }
 
         /// Sets all token properties, clears state and code properties
-        public static void SetPropertiesFromAuthCode(this IUserAuthEntity userAuth, AuthorizationTokens authCode)
+        public static void SetPropertiesFromAuthCode(this IUserAuthEntity userAuth, AccessRefreshToken authCode)
         {
-            userAuth.AccessToken = authCode.accessToken;
-            userAuth.AuthUrl = authCode.authUrl;
-            userAuth.TokenType = authCode.tokenType;
-            userAuth.Scope = authCode.scope;
-            userAuth.Expiry = authCode.expires;
-            userAuth.RefreshToken = authCode.refreshToken;
+            userAuth.AccessToken = authCode.AccessToken;
+            userAuth.AuthUrl = authCode.AuthUrl;
+            userAuth.TokenType = authCode.TokenType;
+            userAuth.Scope = authCode.Scope;
+            userAuth.Expiry = authCode.Expires;
+            userAuth.RefreshToken = authCode.RefreshToken;
             userAuth.State = null;
             userAuth.Code = null;
         }
