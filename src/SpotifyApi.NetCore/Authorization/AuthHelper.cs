@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace SpotifyApi.NetCore.Authorization
 {
+    //TODO Move back into Accounts Service?
     internal static class AuthHelper
     {
         public const string TokenUrl = "https://accounts.spotify.com/api/token";
