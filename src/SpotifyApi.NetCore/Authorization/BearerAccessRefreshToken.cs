@@ -44,7 +44,7 @@ namespace SpotifyApi.NetCore
     {
         public static DateTime SetExpires(this BearerAccessToken token, DateTime now)
         {
-            token.Expires = now.ToUniversalTime().AddMilliseconds(token.ExpiresIn);
+            token.Expires = now.ToUniversalTime().AddSeconds(token.ExpiresIn);
             return token.Expires.Value;
         }
 

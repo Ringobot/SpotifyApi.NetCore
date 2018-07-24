@@ -11,6 +11,6 @@ namespace SpotifyApi.NetCore
         
         Task<T> Get(string key);
 
-        Task Update(string key, T newToken);
+        Task Update(string key, T token);
     }
 }
