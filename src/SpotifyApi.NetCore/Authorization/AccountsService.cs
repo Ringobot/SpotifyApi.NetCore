@@ -59,6 +59,7 @@ namespace SpotifyApi.NetCore
             newToken.SetExpires(now);
 
             // add to store
+            newToken.EnforceInvariants();
             _appTokenStore[_config["SpotifyApiClientId"]] = newToken;
             return newToken;
         }
@@ -87,6 +88,7 @@ namespace SpotifyApi.NetCore
             newToken.RefreshToken = token.RefreshToken;
 
             // add to store
+            newToken.EnforceInvariants();
             await _userTokenStore.Update(userHash, newToken);
             return newToken;
         }
@@ -100,6 +102,7 @@ namespace SpotifyApi.NetCore
             var token = await GetAuthorizationTokens(code);
             // set absolute expiry
             token.SetExpires(now);
+            token.EnforceInvariants();
             await _userTokenStore.InsertOrReplace(userHash, token);
             return token;
         }

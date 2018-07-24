@@ -19,13 +19,6 @@ namespace SpotifyApi.NetCore
         
         [JsonProperty("scope")]
         public string Scope { get; set; }
-
-        public override int GetHashCode()
-        {
-            // return Scope + RefreshToken +  AccessToken.GetHashCode()?
-            throw new NotImplementedException();
-        }
-
     }
 
     public class BearerAccessToken
@@ -44,25 +37,27 @@ namespace SpotifyApi.NetCore
         [JsonProperty("expires_in")]
         public int ExpiresIn { get; set; }
 
-        // DMO
+        public DateTime? Expires { get; internal set; }
+    }
 
-        public DateTime? Expires { get; private set; }
-
-        public DateTime SetExpires(DateTime now)
+    public static class BearerAccessTokenExtensions
+    {
+        public static DateTime SetExpires(this BearerAccessToken token, DateTime now)
         {
-            Expires = now.ToUniversalTime().AddMilliseconds(ExpiresIn);
-            return Expires.Value;
+            token.Expires = now.ToUniversalTime().AddMilliseconds(token.ExpiresIn);
+            return token.Expires.Value;
         }
 
-        public override int GetHashCode()
+        public static void EnforceInvariants(this BearerAccessToken token)
         {
-            // return AccessToken.GetHashCode()?
-            throw new NotImplementedException();
+            if (token.Expires == null) throw new InvalidOperationException("Expires must not be null. Call SetExpires() to set");
         }
 
-        public void EnforceInvariants()
+        public static void EnforceInvariants(this BearerAccessRefreshToken token)
         {
-            if (Expires == null) throw new InvalidOperationException("Expires must not be null. Call SetExpires() to set");
+            if (token.RefreshToken == null) throw new InvalidOperationException("RefreshToken must not be null.");
+            // enforce the Base invariants (am I doing this right?)
+            ((BearerAccessToken)token).EnforceInvariants();
         }
     }
 }
