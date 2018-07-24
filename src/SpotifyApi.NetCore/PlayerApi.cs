@@ -13,8 +13,11 @@ namespace SpotifyApi.NetCore
     // Implemented: 1/13 = 8%
     public class PlayerApi : SpotifyWebApi, IPlayerApi
     {
-        public PlayerApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
+        private  readonly IUserAccountsService _userAccounts;
+        public PlayerApi(HttpClient httpClient, IUserAccountsService userAccountsService) : base(httpClient, userAccountsService)
         {
+            if (userAccountsService == null) throw new ArgumentNullException("userAccountsService");
+            _userAccounts = userAccountsService;
         }
 
         public async Task Play(string userHash, object data, string deviceId = null)
@@ -70,7 +73,7 @@ namespace SpotifyApi.NetCore
         {
             // TODO: Could cause unusual effects if multiple threads mix client auth and user auth?
             _http.DefaultRequestHeaders.Authorization = 
-                new AuthenticationHeaderValue("Bearer", (await _accounts.GetUserAccessToken(userHash)).AccessToken);
+                new AuthenticationHeaderValue("Bearer", (await _userAccounts.GetUserAccessToken(userHash)).AccessToken);
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var response = await _http.PutAsync(url, content);

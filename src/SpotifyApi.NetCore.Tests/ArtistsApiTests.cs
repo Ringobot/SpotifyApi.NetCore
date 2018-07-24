@@ -26,8 +26,7 @@ namespace SpotifyApi.NetCore.Tests
             const string artistId = "1tpXaFf2F55E7kVJON4j4G";
 
             var http = new HttpClient();
-            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
 
             var api = new ArtistsApi(http, accounts);
 

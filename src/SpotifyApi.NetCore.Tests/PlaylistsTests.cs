@@ -23,7 +23,7 @@ namespace SpotifyApi.NetCore.Tests
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig());
             var playlists = new PlaylistsApi(mockHttp.HttpClient, accounts);
 
             // Act
@@ -40,7 +40,7 @@ namespace SpotifyApi.NetCore.Tests
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig());
 
             var api = new PlaylistsApi(mockHttp.HttpClient, accounts);
 
@@ -62,7 +62,7 @@ namespace SpotifyApi.NetCore.Tests
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig());
 
             var api = new PlaylistsApi(mockHttp.HttpClient, accounts);
 

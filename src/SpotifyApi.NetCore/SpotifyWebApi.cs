@@ -19,7 +19,7 @@ namespace SpotifyApi.NetCore
         public SpotifyWebApi(HttpClient httpClient, IAccountsService accountsService)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
-            if (accountsService == null) throw new ArgumentNullException("authorizationApi");
+            if (accountsService == null) throw new ArgumentNullException("accountsService");
 
             _http = httpClient;
             _accounts = accountsService;

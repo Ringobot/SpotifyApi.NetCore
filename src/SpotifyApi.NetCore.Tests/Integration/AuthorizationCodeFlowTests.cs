@@ -15,7 +15,7 @@ namespace SpotifyApi.NetCore.Tests
     {
         (string UserHash, string State) _userHashstate;
 
-        AccountsService _accounts;
+        UserAccountsService _accounts;
         ITokenStore<BearerAccessRefreshToken> _tokenStore;
 
         [TestInitialize]
@@ -24,7 +24,7 @@ namespace SpotifyApi.NetCore.Tests
             var mockTokenStore = new Mock<ITokenStore<BearerAccessRefreshToken>>();
             //mockTokenStore.Setup(s=>s.Get(It.IsAny<string>())).Returns()
             _tokenStore = mockTokenStore.Object;
-            _accounts = new AccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _tokenStore, null);
+            _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _tokenStore, null);
         }
 
         public void ControllerAuthorize1()

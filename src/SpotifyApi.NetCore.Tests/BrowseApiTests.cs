@@ -26,7 +26,7 @@ namespace SpotifyApi.NetCore.Tests
 
             var http = new Http.MockHttpClient();
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig());
 
             var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
             api.Setup(a=>a.Get<dynamic>(It.IsAny<string>())).ReturnsAsync(new {});
@@ -46,7 +46,7 @@ namespace SpotifyApi.NetCore.Tests
 
             var http = new Http.MockHttpClient();
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig());
 
 
             var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
@@ -67,7 +67,7 @@ namespace SpotifyApi.NetCore.Tests
 
             var http = new Http.MockHttpClient();
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig());
             var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
             api.Setup(a=>a.Get<dynamic>(It.IsAny<string>())).ReturnsAsync(new {});
 
@@ -92,7 +92,7 @@ namespace SpotifyApi.NetCore.Tests
 
             var http = new HttpClient();
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
 
             var api = new BrowseApi(http, accounts);
 

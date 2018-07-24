@@ -21,7 +21,7 @@ namespace SpotifyApi.NetCore.Tests
             
             var http = new HttpClient();
             var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
-            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig(), store, null);
+            var accounts = new UserAccountsService(http, TestsHelper.GetLocalConfig(), store, null);
             var api = new PlayerApi(http, accounts);
 
             // act
