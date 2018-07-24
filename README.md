@@ -90,6 +90,14 @@ Publish
 
 ## Links
 
+### Spotify
+
+Auth guide <https://developer.spotify.com/documentation/general/guides/authorization-guide/>
+
+### .NET Core
+
+Concurrent Dictionary <https://docs.microsoft.com/en-nz/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=netframework-4.7.1#remarks>
+
 ### HttpClient factory
 
 <https://blogs.msdn.microsoft.com/webdev/2018/02/28/asp-net-core-2-1-preview1-introducing-httpclient-factory/>

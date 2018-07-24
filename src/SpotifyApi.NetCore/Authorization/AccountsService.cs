@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -15,13 +16,13 @@ namespace SpotifyApi.NetCore
 {
     public class AccountsService : IAccountsService
     {
-        private readonly ITokenStore<BearerAccessToken> _appTokenStore;
+        private readonly ConcurrentDictionary<string, BearerAccessToken> _appTokenStore = new ConcurrentDictionary<string, BearerAccessToken>();
         private readonly ITokenStore<BearerAccessRefreshToken> _userTokenStore;
         private readonly HttpClient _http;
         private readonly IConfiguration _config;
         private readonly string _scopes;
 
-        public AccountsService(HttpClient httpClient, IConfiguration configuration, ITokenStore<BearerAccessToken> appTokenStore,
+        public AccountsService(HttpClient httpClient, IConfiguration configuration, 
             ITokenStore<BearerAccessRefreshToken> userTokenStore, string[] scopes)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
@@ -29,9 +30,6 @@ namespace SpotifyApi.NetCore
 
             if (_userTokenStore == null) throw new ArgumentNullException("userTokenStore");
             _userTokenStore = userTokenStore;
-
-            //TODO: Default appTokenStore to Memory Cache
-            _appTokenStore = appTokenStore;
 
             // if configuration is not provided, read from environment variables
             _config = configuration ?? new ConfigurationBuilder()
@@ -45,74 +43,52 @@ namespace SpotifyApi.NetCore
 
         public async Task<BearerAccessToken> GetAppAccessToken()
         {
-            // retry loop
-            // TODO: Polly
-            for (int i = 0; i < 3; i++)
-            {
-                var token = _appTokenStore == null ? null : await _appTokenStore.Get(_config["SpotifyApiClientId"]);
-                var now = DateTime.UtcNow;
+            var token = _appTokenStore[_config["SpotifyApiClientId"]];
+            
+            // if token current, return it
+            var now = DateTime.UtcNow;
+            if (token != null && token.Expires != null && token.Expires > now) return token;
+            
+            string json = await _http.Post(AuthHelper.TokenUrl, 
+                "grant_type=client_credentials", 
+                AuthHelper.GetHeader(_config));
 
-                // if no token or it has expired
-                if (token == null || token.Expires <= now)
-                {
-                    //TODO retry on certain failures
-                    string json = await _http.Post(AuthHelper.TokenUrl, "grant_type=client_credentials", AuthHelper.GetHeader(_config));
+            // deserialise the token
+            var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
+            // set absolute expiry
+            newToken.SetExpires(now);
 
-                    // deserialise the token
-                    var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
-                    // set absolute expiry
-                    newToken.SetExpires(now);
-
-                    // add to store
-                    if (_appTokenStore != null)
-                    {
-                        if (await _appTokenStore.TryUpdate(_config["SpotifyApiClientId"], newToken, token)) return newToken;
-                    }
-                }
-            }
-
-            throw new InvalidOperationException("Could not get Application Access Token after three attempts");
-
+            // add to store
+            _appTokenStore[_config["SpotifyApiClientId"]] = newToken;
+            return newToken;
         }
 
         public async Task<BearerAccessToken> GetUserAccessToken(string userHash)
         {
             AuthHelper.ValidateConfig(_config);
 
-            // retry loop
-            // TODO: Polly
-            for (int i = 0; i < 3; i++)
-            {
-                var token = await _userTokenStore.Get(userHash);
-                if (token == null || string.IsNullOrEmpty(token.RefreshToken)) 
-                    throw new UnauthorizedAccessException($"No refresh token found for user \"{userHash}\"");
+            var token = await _userTokenStore.Get(userHash);
+            if (token == null || string.IsNullOrEmpty(token.RefreshToken)) 
+                throw new UnauthorizedAccessException($"No refresh token found for user \"{userHash}\"");
 
-                var now = DateTime.UtcNow;
+            // if token current, return it
+            var now = DateTime.UtcNow;
+            if (token.Expires != null && token.Expires > now) return token;
 
-                // if token has expired
-                if (token.Expires == null || token.Expires <= now)
-                {
-                    //TODO retry on certain failures
-                    string json = await _http.Post(AuthHelper.TokenUrl, 
-                        $"grant_type=refresh_token&refresh_token={token.RefreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
-                        AuthHelper.GetHeader(_config));
+            string json = await _http.Post(AuthHelper.TokenUrl, 
+                $"grant_type=refresh_token&refresh_token={token.RefreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
+                AuthHelper.GetHeader(_config));
 
-                    // deserialise the token
-                    var newToken = JsonConvert.DeserializeObject<BearerAccessRefreshToken>(json);
-                    // set absolute expiry
-                    newToken.SetExpires(now);
-                    // copy refresh token
-                    newToken.RefreshToken = token.RefreshToken;
+            // deserialise the token
+            var newToken = JsonConvert.DeserializeObject<BearerAccessRefreshToken>(json);
+            // set absolute expiry
+            newToken.SetExpires(now);
+            // copy refresh token
+            newToken.RefreshToken = token.RefreshToken;
 
-                    // add to store
-                    if (_userTokenStore != null)
-                    {
-                        if (await _userTokenStore.TryUpdate(userHash, newToken, token)) return newToken;
-                    }
-                }
-            }
-
-            throw new InvalidOperationException("Could not get User Access Token after three attempts");
+            // add to store
+            await _userTokenStore.Update(userHash, newToken);
+            return newToken;
         }
 
         public string AuthorizeUrl(string state) => $"{AuthHelper.AuthorizeUrl}/?client_id={_config["SpotifyApiClientId"]}&response_type=code&redirect_uri={_config["SpotifyAuthRedirectUri"]}&scope={_scopes}&state={state}";

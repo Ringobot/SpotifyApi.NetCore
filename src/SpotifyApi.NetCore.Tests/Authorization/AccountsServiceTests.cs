@@ -16,6 +16,17 @@ namespace SpotifyApi.NetCore.Tests.Authorization
     {
         const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
 
+
+        [TestMethod]
+        public async Task GetUserAccessToken_TokenExpired_ReturnsNewToken(){
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public async Task GetUserAccessToken_TokenNotExpired_ReturnsCurrentToken(){
+            throw new NotImplementedException();
+        }
+
         [TestMethod]
         public async Task GetAppAccessToken_ComparisonValueMismatch_Retries(){
             throw new NotImplementedException();
