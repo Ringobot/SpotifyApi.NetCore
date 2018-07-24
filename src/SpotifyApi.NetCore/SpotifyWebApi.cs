@@ -14,15 +14,15 @@ namespace SpotifyApi.NetCore
     {
         protected internal const string BaseUrl = "https://api.spotify.com/v1";
         protected internal readonly HttpClient _http;
-        protected internal readonly IAuthorizationApi _auth;
+        protected internal readonly IAccountsService _accounts;
 
-        public SpotifyWebApi(HttpClient httpClient, IAuthorizationApi authorizationApi)
+        public SpotifyWebApi(HttpClient httpClient, IAccountsService accountsService)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
-            if (authorizationApi == null) throw new ArgumentNullException("authorizationApi");
+            if (accountsService == null) throw new ArgumentNullException("authorizationApi");
 
             _http = httpClient;
-            _auth = authorizationApi;
+            _accounts = accountsService;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace SpotifyApi.NetCore
         {
             return JsonConvert.DeserializeObject<T>(
                 await _http.Get(url,
-                    new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()))
+                    new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken))
                 );
         }
     }

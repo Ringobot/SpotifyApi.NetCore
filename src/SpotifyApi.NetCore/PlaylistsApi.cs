@@ -13,7 +13,7 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public class PlaylistsApi : SpotifyWebApi, IPlaylistsApi
     {
-        public PlaylistsApi(HttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
+        public PlaylistsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
         {
         }
 
@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore
             if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
 
             string json = await _http.Get(string.Format(urlFormat, Uri.EscapeDataString(username)),
-                new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()));
+                new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken));
             var playlists = JsonConvert.DeserializeObject(json);
             Trace.TraceInformation("Got Playlists");
 
@@ -59,7 +59,7 @@ namespace SpotifyApi.NetCore
                 await
                     _http.Get(
                         string.Format(urlFormat, Uri.EscapeDataString(username), Uri.EscapeDataString(playlistId)),
-                        new AuthenticationHeaderValue("Bearer", await _auth.GetAccessToken()));
+                        new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken));
             var tracks = JsonConvert.DeserializeObject(json);
             Trace.TraceInformation("Got Tracks");
 

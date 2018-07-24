@@ -7,7 +7,7 @@ namespace SpotifyApi.NetCore
 {
     public class BrowseApi : SpotifyWebApi, IBrowseApi
     {
-        public BrowseApi(HttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
+        public BrowseApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
         {
         }
 

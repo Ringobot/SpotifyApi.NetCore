@@ -8,7 +8,7 @@ namespace SpotifyApi.NetCore
 {
     public class ArtistsApi : SpotifyWebApi, IArtistsApi
     {
-        public ArtistsApi(HttpClient httpClient, IAuthorizationApi authorizationApi) : base(httpClient, authorizationApi)
+        public ArtistsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
         {
         }
 
@@ -33,8 +33,6 @@ namespace SpotifyApi.NetCore
 
         public async Task<dynamic> SearchArtists(string artist, (int limit, int offset) limitOffset)
         {
-            var token = await _auth.GetAccessToken();
-
             string url = $"{BaseUrl}/search?q={Uri.EscapeDataString(artist)}&type=artist";
 
             if (limitOffset.limit > 0 && limitOffset.limit <= 50)

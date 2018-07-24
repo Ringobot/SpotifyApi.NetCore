@@ -25,8 +25,10 @@ namespace SpotifyApi.NetCore.Tests
             string[] artists = new[] {"abc123", "def456" };
 
             var http = new Http.MockHttpClient();
-            var mockAuth = new Mock<IAuthorizationApi>();
-            var api = new Mock<BrowseApi>(http.HttpClient, mockAuth.Object){CallBase = true};
+            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
+            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+
+            var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
             api.Setup(a=>a.Get<dynamic>(It.IsAny<string>())).ReturnsAsync(new {});
 
             // act
@@ -43,8 +45,11 @@ namespace SpotifyApi.NetCore.Tests
             string[] genres = new[] {"genreabc123", "genredef456" };
 
             var http = new Http.MockHttpClient();
-            var mockAuth = new Mock<IAuthorizationApi>();
-            var api = new Mock<BrowseApi>(http.HttpClient, mockAuth.Object){CallBase = true};
+            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
+            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+
+
+            var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
             api.Setup(a=>a.Get<dynamic>(It.IsAny<string>())).ReturnsAsync(new {});
 
             // act
@@ -61,8 +66,9 @@ namespace SpotifyApi.NetCore.Tests
             string[] tracks = new[] {"trackabc123", "trackdef456" };
 
             var http = new Http.MockHttpClient();
-            var mockAuth = new Mock<IAuthorizationApi>();
-            var api = new Mock<BrowseApi>(http.HttpClient, mockAuth.Object){CallBase = true};
+            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
+            var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
             api.Setup(a=>a.Get<dynamic>(It.IsAny<string>())).ReturnsAsync(new {});
 
             // act
@@ -85,8 +91,10 @@ namespace SpotifyApi.NetCore.Tests
                 .Build();
 
             var http = new HttpClient();
-            var auth = new ApplicationAuthApi(http, config);
-            var api = new BrowseApi(http, auth);
+            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig(), store, null);
+
+            var api = new BrowseApi(http, accounts);
 
             // act
             dynamic response = await api.GetRecommendations(seedArtists, null, null);

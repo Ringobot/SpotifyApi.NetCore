@@ -219,6 +219,7 @@ namespace SpotifyApi.NetCore.Tests.Authorization
 
         // // http://localhost:3978/authorize/spotify?code=AQCQjxUS0zLXbEybK3sEz8pJKzu7nI5eOQU2oVgZXc1lIBGH_i-MSzIsb2A1BUip37A7xMxuVV596ZE7vRm3awJ6rfWR0hFBmqGp-Euef2WJ5EdndB7ynFLoB45pbU-bMShUC-R9tc-Akm3VyM8omrDFlchfEQPi6JjSJoqrRhd3xiPjxAoMTBLypC0Ouvz2ifxJ9jWRzQo843M-_07wgRZkfksF6TUhHxkVHRCGjtO9JharNJuggQCEH0W8GY5s_qgKtU6hdBwhVTcbntVI9sn_gYvP9nc_Ncv1fdAbWKHwL6OM2djE548C_n3dKmyhAGvCxuES5ZF26Kq50cVWCILfXE3dXS7Y33dW3CmbAYYoSA97t98bzHA1SyH-ZECcwlf0rijNDs6G-BQ5IXjKyUJAYzZ_jBjs&state=E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2%7Ce80aa62d1eec4041946386b1fe5ad055
 
+/* 
         [TestMethod]
         [TestCategory("Integration")]
         public async Task RequestTokens_RealCode_ReturnsTokens()
@@ -258,5 +259,154 @@ namespace SpotifyApi.NetCore.Tests.Authorization
             mockData.Setup(d => d.Get(It.IsAny<string>())).ReturnsAsync(mockUserAuth.Object);
             return (mockData, mockUserAuth);
         }
+        */
+
+        /* 
+        [TestMethod]
+        public async Task GetAccessToken_CacheNotNullAndItemDoesNotExist_CacheAddCalled()
+        {
+            // Arrange
+            var mockCache = new Mock<ICache>();
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
+
+            var settings = new Dictionary<string, string>
+            {
+                {"SpotifyApiClientId", "abc123"},
+                {"SpotifyApiClientSecret", "def345"}
+            };
+
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ApplicationAuthApi(mockHttp.HttpClient, config, mockCache.Object);
+
+            // Act
+            await auth.GetAccessToken();
+
+            // Assert
+            mockCache.Verify(m => m.Add("Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken", "ghi678", It.IsAny<DateTime>()));
+        }
+
+        [TestMethod]
+        public async Task GetAccessToken_CacheNotNullAndItemDoesExist_CacheAddNotCalled()
+        {
+            // Arrange
+            var mockCache = new Mock<ICache>();
+            mockCache.Setup(c => c.Get("Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken"))
+                .Returns("jkl901");
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
+            
+            var settings = new Dictionary<string, string>
+            {
+                {"SpotifyApiClientId", "abc123"},
+                {"SpotifyApiClientSecret", "def345"}
+            };
+
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ApplicationAuthApi(mockHttp.HttpClient, config, mockCache.Object);
+
+            // Act
+            await auth.GetAccessToken();
+
+            // Assert
+            mockCache.Verify(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTime>()), Times.Never());
+        }
+
+        [TestMethod]
+        public async Task GetAccessToken_CacheItemDoesNotExist_PostResponseReturned()
+        {
+            // Arrange
+            var mockCache = new Mock<ICache>();
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
+            
+            var settings = new Dictionary<string, string>
+            {
+                {"SpotifyApiClientId", "abc123"},
+                {"SpotifyApiClientSecret", "def345"}
+            };
+
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ApplicationAuthApi(mockHttp.HttpClient, config, mockCache.Object);
+
+            // Act
+            string token = await auth.GetAccessToken();
+
+            // Assert
+            Assert.AreEqual("ghi678", token);
+        }
+
+        [TestMethod]
+        public async Task GetAccessToken_CacheItemDoesNotExist_PostResponseAdded()
+        {
+            // Arrange
+            var mockCache = new Mock<ICache>();
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}");
+            
+            var settings = new Dictionary<string, string>
+            {
+                {"SpotifyApiClientId", "abc123"},
+                {"SpotifyApiClientSecret", "def345"}
+            };
+
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ApplicationAuthApi(mockHttp.HttpClient, config, mockCache.Object);
+
+            // Act
+            string token = await auth.GetAccessToken();
+
+            // Assert
+            Assert.AreEqual("ghi678", token);
+        }
+
+        [TestMethod]
+        public async Task GetAccessToken_CacheItemDoesNotExist_CacheItemExpiresBeforeOrAtSameTimeAsTokenExpires()
+        {
+            // Arrange
+            var tokenExpires = DateTime.Now;
+            var cacheExpires = DateTime.Now;
+            var mockCache = new Mock<ICache>();
+            //mockCache.Setup(c => c.Get("Radiostr.SpotifyWebApi.ClientCredentialsAuthorizationApi.BearerToken"))
+            //    .Returns("jkl901");
+            mockCache.Setup(c => c.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<DateTime>()))
+                .Callback((string k, object v, DateTime e) => cacheExpires = e);
+
+            var mockHttp = new MockHttpClient();
+            mockHttp.SetupSendAsync("{\"access_token\":\"ghi678\", \"expires_in\":3600}")
+                .Callback(() => tokenExpires = DateTime.Now.AddSeconds(3600));
+            
+            var settings = new Dictionary<string, string>
+            {
+                {"SpotifyApiClientId", "abc123"},
+                {"SpotifyApiClientSecret", "def345"}
+            };
+
+            var config = new ConfigurationBuilder()
+                .AddInMemoryCollection(settings)
+                .Build();
+
+            var auth = new ApplicationAuthApi(mockHttp.HttpClient, config, mockCache.Object);
+
+            // Act
+            await auth.GetAccessToken();
+
+            // Assert
+            Assert.IsTrue(cacheExpires <= tokenExpires);
+        }
+
+        */
     }
 }

@@ -14,9 +14,20 @@ namespace SpotifyApi.NetCore.Tests
     public class AuthorizationCodeFlowTests 
     {
         (string UserHash, string State) _userHashstate;
-        AccountsService _accounts = new AccountsService(new IAccessTokenStore(), new IAccessRefreshTokenStore());
 
-        public Task ControllerAuthorize1()
+        AccountsService _accounts;
+        ITokenStore<BearerAccessRefreshToken> _tokenStore;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            var mockTokenStore = new Mock<ITokenStore<BearerAccessRefreshToken>>();
+            //mockTokenStore.Setup(s=>s.Get(It.IsAny<string>())).Returns()
+            _tokenStore = mockTokenStore.Object;
+            _accounts = new AccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _tokenStore, null);
+        }
+
+        public void ControllerAuthorize1()
         {
             const string userHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
 
@@ -26,12 +37,12 @@ namespace SpotifyApi.NetCore.Tests
 
             // controller encodes userHash and state (this is optional)            
             // controller calls Helper to get Auth URL (userHash, state)
-            string url = AccountsService.AuthorizeUrl(StateHelper.EncodeState(_userHashstate));
+            string url = _accounts.AuthorizeUrl(StateHelper.EncodeState(_userHashstate));
 
             // controller redirects to URL
         }
 
-        public Task ControllerAuthorize2()
+        public async Task ControllerAuthorize2()
         {
             // spotify calls back to localhost /authorize/spotify
             const string codeParam = "";
@@ -39,23 +50,19 @@ namespace SpotifyApi.NetCore.Tests
 
             // decodes state, gets hash, checks state
             var decoded = StateHelper.DecodeState(stateParam);
-            Assert.AreEqual(_userHashState.UserHash, decoded.userHash);
-            Assert.AreEqual(userAuth.State, decoded.state);
+            Assert.AreEqual(_userHashstate.UserHash, decoded.userHash);
+            Assert.AreEqual(_userHashstate.State, decoded.state);
 
             // controller calls Accounts Service to get access and refresh tokens
             // account service updates store
-            _accounts.RequestAccessAndRefreshTokens(codeParam);            
+            await _accounts.RequestAccessRefreshToken(decoded.userHash, codeParam);
         }
 
-        public Task ControllerAuthorize3()
+        public async Task ControllerAuthorize3()
         {
             // AuthService provides access token to APIs, refreshes when necessary, updates userAuth record
             var player = new PlayerApi(new HttpClient(), _accounts);
-            player.PlayContext("", "");
-
-
-            //ignore
-            new ConcurrentDictionary<string, BearerAccessToken>().TryUpdate()
+            await player.PlayContext("", "");
         }
     }
 }

@@ -22,8 +22,9 @@ namespace SpotifyApi.NetCore.Tests
 
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-            var mockAuth = new Mock<IAuthorizationApi>();
-            var playlists = new PlaylistsApi(mockHttp.HttpClient, mockAuth.Object);
+            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
+            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig(), store, null);
+            var playlists = new PlaylistsApi(mockHttp.HttpClient, accounts);
 
             // Act
             var result1 = await playlists.GetPlaylists(username);
@@ -38,15 +39,17 @@ namespace SpotifyApi.NetCore.Tests
 
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-            var mockAuth = new Mock<IAuthorizationApi>();
+            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
+            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig(), store, null);
 
-            var api = new PlaylistsApi(mockHttp.HttpClient, mockAuth.Object);
+            var api = new PlaylistsApi(mockHttp.HttpClient, accounts);
 
             // Act
             await api.GetPlaylists(username);
 
             // Assert
-            mockAuth.Verify(a=>a.GetAccessToken());
+            Assert.Fail();
+            //mockAuth.Verify(a=>a.GetAccessToken());
         }
 		
         [TestMethod]
@@ -58,15 +61,17 @@ namespace SpotifyApi.NetCore.Tests
 
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-            var mockAuth = new Mock<IAuthorizationApi>();
+            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
+            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig(), store, null);
 
-            var api = new PlaylistsApi(mockHttp.HttpClient, mockAuth.Object);
+            var api = new PlaylistsApi(mockHttp.HttpClient, accounts);
 
             // Act
             await api.GetTracks(username, playlistId);
 
             // Assert
-            mockAuth.Verify(a => a.GetAccessToken());
+            Assert.Fail();
+            //mockAuth.Verify(a => a.GetAccessToken());
         }
 	
     }
