@@ -1,5 +1,6 @@
 using System;
 using System.Dynamic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -77,7 +78,14 @@ namespace SpotifyApi.NetCore
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var response = await _http.PutAsync(url, content);
-            response.EnsureSuccessStatusCode();
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await SpotifyApiErrorException.ReadErrorResponse(response);
+                if (error != null && error.IsValid()) throw new SpotifyApiErrorException(response.StatusCode, error);
+                response.EnsureSuccessStatusCode(); // not a Spotify API Error so throw HttpResponseMessageException
+            }
+            
             return response;
         }
     }

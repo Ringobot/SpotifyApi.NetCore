@@ -72,7 +72,7 @@ namespace SpotifyApi.NetCore
 
             // add to store
             newToken.EnforceInvariants();
-            await _bearerTokenStore.Update(userHash, newToken);
+            await _bearerTokenStore.InsertOrReplace(userHash, newToken);
             return newToken;
         }
 
