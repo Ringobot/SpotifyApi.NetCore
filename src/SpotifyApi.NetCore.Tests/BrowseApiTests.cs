@@ -25,7 +25,6 @@ namespace SpotifyApi.NetCore.Tests
             string[] artists = new[] {"abc123", "def456" };
 
             var http = new Http.MockHttpClient();
-            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
             var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig());
 
             var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
@@ -45,7 +44,6 @@ namespace SpotifyApi.NetCore.Tests
             string[] genres = new[] {"genreabc123", "genredef456" };
 
             var http = new Http.MockHttpClient();
-            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
             var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig());
 
 
@@ -66,7 +64,6 @@ namespace SpotifyApi.NetCore.Tests
             string[] tracks = new[] {"trackabc123", "trackdef456" };
 
             var http = new Http.MockHttpClient();
-            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
             var accounts = new AccountsService(http.HttpClient, TestsHelper.GetLocalConfig());
             var api = new Mock<BrowseApi>(http.HttpClient, accounts){CallBase = true};
             api.Setup(a=>a.Get<dynamic>(It.IsAny<string>())).ReturnsAsync(new {});
@@ -91,7 +88,6 @@ namespace SpotifyApi.NetCore.Tests
                 .Build();
 
             var http = new HttpClient();
-            var store = new Mock<ITokenStore<BearerAccessRefreshToken>>().Object;
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
 
             var api = new BrowseApi(http, accounts);

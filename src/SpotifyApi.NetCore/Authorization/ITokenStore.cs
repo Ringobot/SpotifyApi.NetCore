@@ -5,12 +5,19 @@ namespace SpotifyApi.NetCore
 {
     // https://docs.microsoft.com/en-nz/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=netframework-4.7.1#remarks
     
-    public interface ITokenStore<T> where T: BearerAccessToken
+    public interface IBearerTokenStore
     {   
-        Task InsertOrReplace(string key, T token);
+        Task InsertOrReplace(string key, BearerAccessToken token);
         
-        Task<T> Get(string key);
+        Task<BearerAccessToken> Get(string key);
 
-        Task Update(string key, T token);
+        Task Update(string key, BearerAccessToken token);
+    }
+
+    public interface IRefreshTokenStore
+    {   
+        Task InsertOrReplace(string userHash, string token);
+        
+        Task<string> Get(string userHash);
     }
 }

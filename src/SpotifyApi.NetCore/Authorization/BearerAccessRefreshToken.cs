@@ -16,9 +16,6 @@ namespace SpotifyApi.NetCore
         */
         [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
-        
-        [JsonProperty("scope")]
-        public string Scope { get; set; }
     }
 
     public class BearerAccessToken
@@ -36,6 +33,10 @@ namespace SpotifyApi.NetCore
 
         [JsonProperty("expires_in")]
         public int ExpiresIn { get; set; }
+
+        /// Can be null
+        [JsonProperty("scope")]
+        public string Scope { get; set; }
 
         public DateTime? Expires { get; internal set; }
     }

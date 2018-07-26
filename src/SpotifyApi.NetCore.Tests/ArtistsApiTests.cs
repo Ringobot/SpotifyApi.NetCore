@@ -1,17 +1,7 @@
-using System.Diagnostics;
-using System.Net.Http.Headers;
+using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using SpotifyApi.NetCore.Http;
-using SpotifyApi.NetCore;
 using System.Net.Http;
-using System.Collections.Specialized;
-using SpotifyApi.NetCore.Cache;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using System.IO;
 
 namespace SpotifyApi.NetCore.Tests
 {

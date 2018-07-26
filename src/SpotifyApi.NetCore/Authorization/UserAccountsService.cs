@@ -16,48 +16,63 @@ namespace SpotifyApi.NetCore
 {
     public class UserAccountsService : AccountsService, IUserAccountsService
     {
-        private readonly ITokenStore<BearerAccessRefreshToken> _userTokenStore;
+        private readonly IRefreshTokenStore _refreshTokenStore;
         private readonly string _scopes;
 
-        public UserAccountsService(HttpClient httpClient, IConfiguration configuration, 
-            ITokenStore<BearerAccessRefreshToken> userTokenStore, string[] scopes) : base(httpClient, configuration)
+        public UserAccountsService(
+            HttpClient httpClient, 
+            IConfiguration configuration, 
+            IRefreshTokenStore refreshTokenStore, 
+            IBearerTokenStore bearerTokenStore, 
+            string[] scopes
+            ) : base(httpClient, configuration, bearerTokenStore)
         {
             //TODO: when does this get called?
             ValidateConfig();
 
-            if (_userTokenStore == null) throw new ArgumentNullException("userTokenStore");
-            _userTokenStore = userTokenStore;
+            if (refreshTokenStore == null) throw new ArgumentNullException("userTokenStore");
+            _refreshTokenStore = refreshTokenStore;
 
             _scopes = scopes == null || scopes.Length == 0 ? "" : string.Join(" ", scopes);
         }
 
-        public UserAccountsService(ITokenStore<BearerAccessRefreshToken> userTokenStore, string[] scopes) : 
-            base(new HttpClient(), null) { }
+        public UserAccountsService(
+            HttpClient httpClient, 
+            IConfiguration configuration, 
+            IRefreshTokenStore refreshTokenStore, 
+            string[] scopes
+            ) : this(new HttpClient(), configuration, refreshTokenStore, null, scopes)  { }
+
+        public UserAccountsService(
+            IRefreshTokenStore refreshTokenStore, 
+            string[] scopes
+            ) : this(new HttpClient(), null, refreshTokenStore, null, scopes)  { }
 
         public async Task<BearerAccessToken> GetUserAccessToken(string userHash)
         {
-            var token = await _userTokenStore.Get(userHash);
-            if (token == null || string.IsNullOrEmpty(token.RefreshToken)) 
-                throw new UnauthorizedAccessException($"No refresh token found for user \"{userHash}\"");
+            var token = await _bearerTokenStore.Get(userHash);
 
             // if token current, return it
             var now = DateTime.UtcNow;
-            if (token.Expires != null && token.Expires > now) return token;
+            if (token != null && token.Expires != null && token.Expires > now) return token;
+
+            // get the refresh token for this user
+            string refreshToken = await _refreshTokenStore.Get(userHash);
+            if (string.IsNullOrEmpty(refreshToken)) 
+                throw new UnauthorizedAccessException($"No refresh token found for user \"{userHash}\"");
 
             string json = await _http.Post(AuthHelper.TokenUrl, 
-                $"grant_type=refresh_token&refresh_token={token.RefreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
+                $"grant_type=refresh_token&refresh_token={refreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
                 AuthHelper.GetHeader(_config));
 
             // deserialise the token
-            var newToken = JsonConvert.DeserializeObject<BearerAccessRefreshToken>(json);
+            var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
             // set absolute expiry
             newToken.SetExpires(now);
-            // copy refresh token
-            newToken.RefreshToken = token.RefreshToken;
 
             // add to store
             newToken.EnforceInvariants();
-            await _userTokenStore.Update(userHash, newToken);
+            await _bearerTokenStore.Update(userHash, newToken);
             return newToken;
         }
 
@@ -71,7 +86,8 @@ namespace SpotifyApi.NetCore
             // set absolute expiry
             token.SetExpires(now);
             token.EnforceInvariants();
-            await _userTokenStore.InsertOrReplace(userHash, token);
+            await _refreshTokenStore.InsertOrReplace(userHash, token.RefreshToken);
+            await _bearerTokenStore.InsertOrReplace(userHash, token);
             return token;
         }
 

@@ -18,9 +18,9 @@ namespace SpotifyApi.NetCore
     {
         protected readonly HttpClient _http;
         protected readonly IConfiguration _config;
-        protected internal virtual ITokenStore<BearerAccessToken> _appTokenStore { get; set; }
+        protected readonly IBearerTokenStore _bearerTokenStore;
 
-        public AccountsService(HttpClient httpClient, IConfiguration configuration)
+        public AccountsService(HttpClient httpClient, IConfiguration configuration, IBearerTokenStore bearerTokenStore)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
             _http = httpClient;
@@ -31,14 +31,15 @@ namespace SpotifyApi.NetCore
                 .Build();
             ValidateConfig();
 
-            _appTokenStore = new MemoryTokenStore<BearerAccessToken>();
+            if (bearerTokenStore == null) _bearerTokenStore = new MemoryBearerTokenStore();
         }
 
-        public AccountsService() : this(new HttpClient(), null) { }
+        public AccountsService() : this(new HttpClient(), null, null) { }
+        public AccountsService(HttpClient httpClient, IConfiguration configuration) : this(new HttpClient(), configuration, null) { }
 
         public async Task<BearerAccessToken> GetAppAccessToken()
         {
-            var token = await _appTokenStore.Get(_config["SpotifyApiClientId"]);
+            var token = await _bearerTokenStore.Get(_config["SpotifyApiClientId"]);
 
             // if token current, return it
             var now = DateTime.UtcNow;
@@ -55,7 +56,7 @@ namespace SpotifyApi.NetCore
 
             // add to store
             newToken.EnforceInvariants();
-            await _appTokenStore.InsertOrReplace(_config["SpotifyApiClientId"], newToken);
+            await _bearerTokenStore.InsertOrReplace(_config["SpotifyApiClientId"], newToken);
             return newToken;
         }
 
