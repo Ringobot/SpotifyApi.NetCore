@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 
-namespace SpotifyApi.NetCore.Tests.Http
+namespace SpotifyApi.NetCore.Tests.Mocks
 {
     internal class MockHttpClient
     {

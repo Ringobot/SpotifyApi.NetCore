@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests.Authorization
 {
@@ -18,50 +19,56 @@ namespace SpotifyApi.NetCore.Tests.Authorization
 
 
         [TestMethod]
-        public async Task GetUserAccessToken_TokenExpired_ReturnsNewToken(){
+        public async Task GetUserAccessToken_TokenExpired_ReturnsNewToken()
+        {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public async Task GetUserAccessToken_TokenNotExpired_ReturnsCurrentToken(){
+        public async Task GetUserAccessToken_TokenNotExpired_ReturnsCurrentToken()
+        {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public async Task GetAppAccessToken_ComparisonValueMismatch_Retries(){
+        public async Task GetAppAccessToken_ComparisonValueMismatch_Retries()
+        {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public async Task GetAppAccessToken_ComparisonValueMismatchThreeTimes_Exception(){
+        public async Task GetAppAccessToken_ComparisonValueMismatchThreeTimes_Exception()
+        {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public async Task GetAppAccessToken_ComparisonValueMismatchOnce_ReturnsToken(){
+        public async Task GetAppAccessToken_ComparisonValueMismatchOnce_ReturnsToken()
+        {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public async Task RequestAccessRefreshToken_InsertOrReplace_InvariantsEnforced(){
+        public async Task RequestAccessRefreshToken_InsertOrReplace_InvariantsEnforced()
+        {
             throw new NotImplementedException();
         }
 
-        
+        [TestMethod]
+        public void AuthorizeUrl_StateParam_UrlContainsState()
+        {
+            // arrange
+            const string state = "abc123";
+            var http = new MockHttpClient().HttpClient;
+            var tokenStore = new MockRefreshTokenStore(UserHash).Object;
+            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), tokenStore, null);
 
-        // [TestMethod]
-        // public async Task RequestAuthorizationUrl_UserHash_UrlContainsUserHash()
-        // {
-        //     // arrange
-        //     var http = new HttpClient();
-        //     var service = new AuthorizationCodeService(http, TestsHelper.GetLocalConfig(), Mocks().Data.Object, null);
+            // act
+            string url = service.AuthorizeUrl(state);
 
-        //     // act
-        //     string url = await service.RequestAuthorizationUrl(UserHash);
-
-        //     // assert
-        //     Assert.IsTrue(url.Contains(UserHash), "url should contain userHash");
-        // }
+            // assert
+            Assert.IsTrue(url.Contains(state), "url result should contain state param");
+        }
 
         // [TestMethod]
         // public async Task RequestAuthorizationUrl_Scopes_UrlContainsSpaceDelimitedScopes()
@@ -219,47 +226,47 @@ namespace SpotifyApi.NetCore.Tests.Authorization
 
         // // http://localhost:3978/authorize/spotify?code=AQCQjxUS0zLXbEybK3sEz8pJKzu7nI5eOQU2oVgZXc1lIBGH_i-MSzIsb2A1BUip37A7xMxuVV596ZE7vRm3awJ6rfWR0hFBmqGp-Euef2WJ5EdndB7ynFLoB45pbU-bMShUC-R9tc-Akm3VyM8omrDFlchfEQPi6JjSJoqrRhd3xiPjxAoMTBLypC0Ouvz2ifxJ9jWRzQo843M-_07wgRZkfksF6TUhHxkVHRCGjtO9JharNJuggQCEH0W8GY5s_qgKtU6hdBwhVTcbntVI9sn_gYvP9nc_Ncv1fdAbWKHwL6OM2djE548C_n3dKmyhAGvCxuES5ZF26Kq50cVWCILfXE3dXS7Y33dW3CmbAYYoSA97t98bzHA1SyH-ZECcwlf0rijNDs6G-BQ5IXjKyUJAYzZ_jBjs&state=E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2%7Ce80aa62d1eec4041946386b1fe5ad055
 
-/* 
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task RequestTokens_RealCode_ReturnsTokens()
-        {
-            // arrange
-            const string userHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
-            const string state = "e80aa62d1eec4041946386b1fe5ad055";
-            const string queryState = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2|e80aa62d1eec4041946386b1fe5ad055";
-            const string code = "AQCQjxUS0zLXbEybK3sEz8pJKzu7nI5eOQU2oVgZXc1lIBGH_i-MSzIsb2A1BUip37A7xMxuVV596ZE7vRm3awJ6rfWR0hFBmqGp-Euef2WJ5EdndB7ynFLoB45pbU-bMShUC-R9tc-Akm3VyM8omrDFlchfEQPi6JjSJoqrRhd3xiPjxAoMTBLypC0Ouvz2ifxJ9jWRzQo843M-_07wgRZkfksF6TUhHxkVHRCGjtO9JharNJuggQCEH0W8GY5s_qgKtU6hdBwhVTcbntVI9sn_gYvP9nc_Ncv1fdAbWKHwL6OM2djE548C_n3dKmyhAGvCxuES5ZF26Kq50cVWCILfXE3dXS7Y33dW3CmbAYYoSA97t98bzHA1SyH-ZECcwlf0rijNDs6G-BQ5IXjKyUJAYzZ_jBjs";
+        /* 
+                [TestMethod]
+                [TestCategory("Integration")]
+                public async Task RequestTokens_RealCode_ReturnsTokens()
+                {
+                    // arrange
+                    const string userHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
+                    const string state = "e80aa62d1eec4041946386b1fe5ad055";
+                    const string queryState = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2|e80aa62d1eec4041946386b1fe5ad055";
+                    const string code = "AQCQjxUS0zLXbEybK3sEz8pJKzu7nI5eOQU2oVgZXc1lIBGH_i-MSzIsb2A1BUip37A7xMxuVV596ZE7vRm3awJ6rfWR0hFBmqGp-Euef2WJ5EdndB7ynFLoB45pbU-bMShUC-R9tc-Akm3VyM8omrDFlchfEQPi6JjSJoqrRhd3xiPjxAoMTBLypC0Ouvz2ifxJ9jWRzQo843M-_07wgRZkfksF6TUhHxkVHRCGjtO9JharNJuggQCEH0W8GY5s_qgKtU6hdBwhVTcbntVI9sn_gYvP9nc_Ncv1fdAbWKHwL6OM2djE548C_n3dKmyhAGvCxuES5ZF26Kq50cVWCILfXE3dXS7Y33dW3CmbAYYoSA97t98bzHA1SyH-ZECcwlf0rijNDs6G-BQ5IXjKyUJAYzZ_jBjs";
 
-            var http = new HttpClient();
-            var (mockData, mockUserAuth) = Mocks();
-            mockUserAuth.SetupGet(u=>u.State).Returns(state);
+                    var http = new HttpClient();
+                    var (mockData, mockUserAuth) = Mocks();
+                    mockUserAuth.SetupGet(u=>u.State).Returns(state);
 
-            var service = new AccountsService(http, TestsHelper.GetLocalConfig(), mockData.Object, null);
+                    var service = new AccountsService(http, TestsHelper.GetLocalConfig(), mockData.Object, null);
 
-            var tokens = await service.RequestTokens(userHash, state, queryState, code);
-            Trace.WriteLine("RequestTokens_RealCode_ReturnsTokens tokens = ");
-            Trace.WriteLine(tokens);
-        }
+                    var tokens = await service.RequestTokens(userHash, state, queryState, code);
+                    Trace.WriteLine("RequestTokens_RealCode_ReturnsTokens tokens = ");
+                    Trace.WriteLine(tokens);
+                }
 
 
-        private (Mock<IAccessRefreshTokenStore> Data, Mock<IUserAuthEntity> UserAuth) Mocks()
-        {
-            var mockUserAuth = new Mock<IUserAuthEntity>();
-            mockUserAuth.SetupAllProperties();
-            mockUserAuth.SetupGet(u => u.UserHash).Returns(UserHash);
+                private (Mock<IAccessRefreshTokenStore> Data, Mock<IUserAuthEntity> UserAuth) Mocks()
+                {
+                    var mockUserAuth = new Mock<IUserAuthEntity>();
+                    mockUserAuth.SetupAllProperties();
+                    mockUserAuth.SetupGet(u => u.UserHash).Returns(UserHash);
 
-            var setState = new Func<string, string, IUserAuthEntity>((h, s) =>
-           {
-               mockUserAuth.Object.State = s;
-               return mockUserAuth.Object;
-           });
+                    var setState = new Func<string, string, IUserAuthEntity>((h, s) =>
+                   {
+                       mockUserAuth.Object.State = s;
+                       return mockUserAuth.Object;
+                   });
 
-            var mockData = new Mock<IAccessRefreshTokenStore>();
-            mockData.Setup(d => d.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(setState);
-            mockData.Setup(d => d.Get(It.IsAny<string>())).ReturnsAsync(mockUserAuth.Object);
-            return (mockData, mockUserAuth);
-        }
-        */
+                    var mockData = new Mock<IAccessRefreshTokenStore>();
+                    mockData.Setup(d => d.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(setState);
+                    mockData.Setup(d => d.Get(It.IsAny<string>())).ReturnsAsync(mockUserAuth.Object);
+                    return (mockData, mockUserAuth);
+                }
+                */
 
         /* 
         [TestMethod]

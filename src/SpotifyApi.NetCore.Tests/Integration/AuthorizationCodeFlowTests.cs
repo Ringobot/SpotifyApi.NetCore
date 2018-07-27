@@ -30,7 +30,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
             _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _tokenStore, null, null);
         }
 
-        [TestMethod]
+        //[TestMethod]  // only used for manual debugging
         public void ControllerAuthorize1()
         {
             // controller creates state, saves a hash (userHash, state)
@@ -44,7 +44,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
             // controller redirects to URL
         }
 
-        [TestMethod]
+        //[TestMethod]  // only used for manual debugging
         public async Task ControllerAuthorize2()
         {
             // spotify calls back to localhost /authorize/spotify
@@ -61,6 +61,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
             await _accounts.RequestAccessRefreshToken(decoded.userHash, codeParam);
         }
 
+        // only used for manual debugging
         public async Task ControllerAuthorize3()
         {
             // AuthService provides access token to APIs, refreshes when necessary, updates userAuth record
