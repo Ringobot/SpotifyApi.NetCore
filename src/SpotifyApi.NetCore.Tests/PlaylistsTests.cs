@@ -8,6 +8,7 @@ using Moq;
 using Moq.Protected;
 using SpotifyApi.NetCore.Http;
 using SpotifyApi.NetCore.Tests.Http;
+using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -22,7 +23,7 @@ namespace SpotifyApi.NetCore.Tests
 
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig());
+            var accounts = new MockAccountsService().Object;
             var playlists = new PlaylistsApi(mockHttp.HttpClient, accounts);
 
             // Act
@@ -38,16 +39,15 @@ namespace SpotifyApi.NetCore.Tests
 
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig());
+            var mockAccounts = new MockAccountsService();
 
-            var api = new PlaylistsApi(mockHttp.HttpClient, accounts);
+            var api = new PlaylistsApi(mockHttp.HttpClient, mockAccounts.Object);
 
             // Act
             await api.GetPlaylists(username);
 
             // Assert
-            Assert.Fail();
-            //mockAuth.Verify(a=>a.GetAccessToken());
+            mockAccounts.Verify(a=>a.GetAppAccessToken());
         }
 		
         [TestMethod]
@@ -59,23 +59,16 @@ namespace SpotifyApi.NetCore.Tests
 
             var mockHttp = new MockHttpClient();
             mockHttp.SetupSendAsync("{\"Id\":\"def456\",\"Name\":\"ghi789\"}");
-            var accounts = new AccountsService(mockHttp.HttpClient, TestsHelper.GetLocalConfig());
+            var mockAccounts = new MockAccountsService();
 
-            var api = new PlaylistsApi(mockHttp.HttpClient, accounts);
+            var api = new PlaylistsApi(mockHttp.HttpClient, mockAccounts.Object);
 
             // Act
             await api.GetTracks(username, playlistId);
 
             // Assert
-            Assert.Fail();
-            //mockAuth.Verify(a => a.GetAccessToken());
+            mockAccounts.Verify(a => a.GetAppAccessToken());
         }
 	
-    }
-
-    public class TestPlaylistsModel
-    {
-        internal string Id { get; set; }
-        internal string Name { get; set; }
     }
 }

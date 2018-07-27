@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Tests.Integration;
+using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -17,7 +18,7 @@ namespace SpotifyApi.NetCore.Tests
     {
         //MemoryBearerTokenStore _store = new MemoryBearerTokenStore();
 
-        [TestMethod]
+        //[TestMethod] //TODO: Result changes if device online/offline
         [TestCategory("Integration")]
         public async Task PlayContext_SpotifyUri_200Response()
         {
@@ -41,8 +42,6 @@ namespace SpotifyApi.NetCore.Tests
             {
                 Trace.WriteLine(ex.Message);
             }
-            
-            
             // assert
         }
     }

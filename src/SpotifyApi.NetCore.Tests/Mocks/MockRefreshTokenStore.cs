@@ -1,7 +1,7 @@
 using System;
 using Moq;
 
-namespace SpotifyApi.NetCore.Tests.Integration 
+namespace SpotifyApi.NetCore.Tests.Mocks 
 {
     public class MockRefreshTokenStore : Mock<IRefreshTokenStore>
     {
