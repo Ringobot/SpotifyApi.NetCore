@@ -27,7 +27,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
         public void Initialize()
         {
             _tokenStore = new MockRefreshTokenStore(UserHash).Object;
-            _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _tokenStore, null, null);
+            _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _tokenStore);
         }
 
         //[TestMethod]  // only used for manual debugging
@@ -39,7 +39,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
 
             // controller encodes userHash and state (this is optional)            
             // controller calls Helper to get Auth URL (userHash, state)
-            string url = _accounts.AuthorizeUrl(StateHelper.EncodeState(_userHashstate));
+            string url = _accounts.AuthorizeUrl(StateHelper.EncodeState(_userHashstate), null);
 
             // controller redirects to URL
         }

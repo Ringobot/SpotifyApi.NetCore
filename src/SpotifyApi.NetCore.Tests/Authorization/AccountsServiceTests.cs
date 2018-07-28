@@ -61,42 +61,43 @@ namespace SpotifyApi.NetCore.Tests.Authorization
             const string state = "abc123";
             var http = new MockHttpClient().HttpClient;
             var tokenStore = new MockRefreshTokenStore(UserHash).Object;
-            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), tokenStore, null);
+            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), tokenStore);
 
             // act
-            string url = service.AuthorizeUrl(state);
+            string url = service.AuthorizeUrl(state, null);
 
             // assert
             Assert.IsTrue(url.Contains(state), "url result should contain state param");
         }
 
-        // [TestMethod]
-        // public async Task RequestAuthorizationUrl_Scopes_UrlContainsSpaceDelimitedScopes()
-        // {
-        //     // arrange
-        //     string[] scopes = new[]
-        //     {
-        //         "user-modify-playback-state",
-        //         "user-read-playback-state",
-        //         "playlist-read-collaborative",
-        //         "playlist-modify-public",
-        //         "playlist-modify-private",
-        //         "playlist-read-private"
-        //     };
+        [TestMethod]
+        public void RequestAuthorizationUrl_Scopes_UrlContainsSpaceDelimitedScopes()
+        {
+            // arrange
+            const string state = "abc123";
 
-        //     var http = new HttpClient();
-        //     var service = new AuthorizationCodeService(http, TestsHelper.GetLocalConfig(), Mocks().Data.Object, scopes);
+            string[] scopes = new[]
+            {
+                "user-modify-playback-state",
+                "user-read-playback-state",
+                "playlist-read-collaborative",
+                "playlist-modify-public",
+                "playlist-modify-private",
+                "playlist-read-private"
+            };
 
-        //     // act
-        //     string url = await service.RequestAuthorizationUrl(UserHash);
+            var http = new HttpClient();
+            var tokenStore = new MockRefreshTokenStore(UserHash).Object;
+            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), tokenStore);
 
-        //     // assert
-        //     Assert.IsTrue(url.Contains(string.Join(" ", scopes)), "url should contain space delimited user scopes");
-        //     Trace.WriteLine("RequestAuthorizationUrl_Scopes_UrlContainsSpaceDelimitedScopes url =");
-        //     Trace.WriteLine(url);
+            // act
+            string url = service.AuthorizeUrl(state, scopes);
 
-        //     // https://accounts.spotify.com/authorize/?client_id=944843be09874db29728e51a0a4e8376&response_type=code&redirect_uri=http://localhost:3978/authorize/spotify&scope=user-modify-playback-state user-read-playback-state playlist-read-collaborative playlist-modify-public playlist-modify-private playlist-read-private&state=E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2|e80aa62d1eec4041946386b1fe5ad055
-        // }
+            // assert
+            Assert.IsTrue(url.Contains(string.Join(" ", scopes)), "url should contain space delimited user scopes");
+            Trace.WriteLine("RequestAuthorizationUrl_Scopes_UrlContainsSpaceDelimitedScopes url =");
+            Trace.WriteLine(url);
+        }
 
         // [TestMethod]
         // public async Task RequestAuthorizationUrl_ValidDtoCreated_InsertOrReplaceIsCalled()

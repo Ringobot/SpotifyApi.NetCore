@@ -17,14 +17,12 @@ namespace SpotifyApi.NetCore
     public class UserAccountsService : AccountsService, IUserAccountsService
     {
         private readonly IRefreshTokenStore _refreshTokenStore;
-        private readonly string _scopes;
 
         public UserAccountsService(
             HttpClient httpClient, 
             IConfiguration configuration, 
             IRefreshTokenStore refreshTokenStore, 
-            IBearerTokenStore bearerTokenStore, 
-            string[] scopes
+            IBearerTokenStore bearerTokenStore
             ) : base(httpClient, configuration, bearerTokenStore)
         {
             //TODO: when does this get called?
@@ -32,21 +30,17 @@ namespace SpotifyApi.NetCore
 
             if (refreshTokenStore == null) throw new ArgumentNullException("userTokenStore");
             _refreshTokenStore = refreshTokenStore;
-
-            _scopes = scopes == null || scopes.Length == 0 ? "" : string.Join(" ", scopes);
         }
 
         public UserAccountsService(
             HttpClient httpClient, 
             IConfiguration configuration, 
-            IRefreshTokenStore refreshTokenStore, 
-            string[] scopes
-            ) : this(new HttpClient(), configuration, refreshTokenStore, null, scopes)  { }
+            IRefreshTokenStore refreshTokenStore
+            ) : this(new HttpClient(), configuration, refreshTokenStore, null)  { }
 
         public UserAccountsService(
-            IRefreshTokenStore refreshTokenStore, 
-            string[] scopes
-            ) : this(new HttpClient(), null, refreshTokenStore, null, scopes)  { }
+            IRefreshTokenStore refreshTokenStore
+            ) : this(new HttpClient(), null, refreshTokenStore, null)  { }
 
         public async Task<BearerAccessToken> GetUserAccessToken(string userHash)
         {
@@ -76,8 +70,11 @@ namespace SpotifyApi.NetCore
             return newToken;
         }
 
-        public string AuthorizeUrl(string state) => $"{AuthHelper.AuthorizeUrl}/?client_id={_config["SpotifyApiClientId"]}&response_type=code&redirect_uri={_config["SpotifyAuthRedirectUri"]}&scope={_scopes}&state={state}";
-
+        public string AuthorizeUrl(string state, string[] scopes)
+        {
+            string scope = scopes == null || scopes.Length == 0 ? "" : string.Join(" ", scopes);
+            return $"{AuthHelper.AuthorizeUrl}/?client_id={_config["SpotifyApiClientId"]}&response_type=code&redirect_uri={_config["SpotifyAuthRedirectUri"]}&scope={scope}&state={state}";
+        }
         public async Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code)
         {
             var now = DateTime.UtcNow;

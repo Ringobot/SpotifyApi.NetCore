@@ -7,7 +7,7 @@ namespace SpotifyApi.NetCore
 {
     public interface IUserAccountsService : IAccountsService
     {
-        string AuthorizeUrl(string state);
+        string AuthorizeUrl(string state, string[] scopes);
 
         Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code);
         
