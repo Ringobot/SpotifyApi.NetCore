@@ -31,7 +31,7 @@ namespace SpotifyApi.NetCore
                 .Build();
             ValidateConfig();
 
-            if (bearerTokenStore == null) _bearerTokenStore = new MemoryBearerTokenStore();
+            _bearerTokenStore = bearerTokenStore ?? new MemoryBearerTokenStore();
         }
 
         public AccountsService() : this(new HttpClient(), null, null) { }
