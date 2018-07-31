@@ -11,5 +11,8 @@ namespace SpotifyApi.NetCore
         Task PlayTracks(string userHash, string[] spotifyTrackUris, string offsetTrackUri = null, string deviceId = null);
         Task PlayTracks(string userHash, string[] spotifyTrackUris, int offsetPosition = 0, string deviceId = null);
         Task Play(string userHash, object data, string deviceId = null);
+
+        //TODO: Task PlayContext((string userHash, string token) userRefreshToken, string spotifyUri);
+        
     }
 }

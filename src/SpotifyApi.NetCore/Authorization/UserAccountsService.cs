@@ -19,9 +19,9 @@ namespace SpotifyApi.NetCore
         private readonly IRefreshTokenStore _refreshTokenStore;
 
         public UserAccountsService(
-            HttpClient httpClient, 
-            IConfiguration configuration, 
-            IRefreshTokenStore refreshTokenStore, 
+            HttpClient httpClient,
+            IConfiguration configuration,
+            IRefreshTokenStore refreshTokenStore,
             IBearerTokenStore bearerTokenStore
             ) : base(httpClient, configuration, bearerTokenStore)
         {
@@ -33,14 +33,39 @@ namespace SpotifyApi.NetCore
         }
 
         public UserAccountsService(
-            HttpClient httpClient, 
-            IConfiguration configuration, 
+            HttpClient httpClient,
+            IConfiguration configuration,
             IRefreshTokenStore refreshTokenStore
-            ) : this(new HttpClient(), configuration, refreshTokenStore, null)  { }
+            ) : this(new HttpClient(), configuration, refreshTokenStore, null) { }
 
         public UserAccountsService(
             IRefreshTokenStore refreshTokenStore
-            ) : this(new HttpClient(), null, refreshTokenStore, null)  { }
+            ) : this(new HttpClient(), null, refreshTokenStore, null) { }
+
+        // single user constructors
+        public UserAccountsService(
+            HttpClient httpClient,
+            IConfiguration configuration,
+            (string userHash, string token) userRefreshToken
+            ) : base(httpClient, configuration, null)
+        { 
+            ValidateConfig();
+
+            // initialise a token store with a single user's refresh token
+            _refreshTokenStore = new MemoryRefreshTokenStore();
+            _refreshTokenStore.InsertOrReplace(userRefreshToken.userHash, userRefreshToken.token);
+        }
+
+        public UserAccountsService(
+            (string userHash, string token) userRefreshToken
+            ) : base(new HttpClient(), null, null)
+        { 
+            ValidateConfig();
+
+            // initialise a token store with a single user's refresh token
+            _refreshTokenStore = new MemoryRefreshTokenStore();
+            _refreshTokenStore.InsertOrReplace(userRefreshToken.userHash, userRefreshToken.token);
+        }
 
         public async Task<BearerAccessToken> GetUserAccessToken(string userHash)
         {
@@ -52,10 +77,10 @@ namespace SpotifyApi.NetCore
 
             // get the refresh token for this user
             string refreshToken = await _refreshTokenStore.Get(userHash);
-            if (string.IsNullOrEmpty(refreshToken)) 
+            if (string.IsNullOrEmpty(refreshToken))
                 throw new UnauthorizedAccessException($"No refresh token found for user \"{userHash}\"");
 
-            string json = await _http.Post(AuthHelper.TokenUrl, 
+            string json = await _http.Post(AuthHelper.TokenUrl,
                 $"grant_type=refresh_token&refresh_token={refreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
                 AuthHelper.GetHeader(_config));
 
