@@ -37,13 +37,18 @@ namespace SpotifyApi.NetCore
 
         public async Task<BearerAccessToken> GetAppAccessToken()
         {
-            var token = await _bearerTokenStore.Get(_config["SpotifyApiClientId"]);
+            return await GetAccessToken(_config["SpotifyApiClientId"], "grant_type=client_credentials");
+        }
+
+        protected async Task<BearerAccessToken> GetAccessToken(string tokenKey, string body)
+        {
+            var token = await _bearerTokenStore.Get(tokenKey);
 
             // if token current, return it
             var now = DateTime.UtcNow;
             if (token != null && token.Expires != null && token.Expires > now) return token;
 
-            string json = await _http.Post(TokenUrl, "grant_type=client_credentials", GetHeader(_config));
+            string json = await _http.Post(TokenUrl, body, GetHeader(_config));
 
             // deserialise the token
             var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
@@ -52,7 +57,7 @@ namespace SpotifyApi.NetCore
 
             // add to store
             newToken.EnforceInvariants();
-            await _bearerTokenStore.InsertOrReplace(_config["SpotifyApiClientId"], newToken);
+            await _bearerTokenStore.InsertOrReplace(tokenKey, newToken);
             return newToken;
         }
 

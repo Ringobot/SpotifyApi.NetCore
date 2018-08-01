@@ -65,30 +65,13 @@ namespace SpotifyApi.NetCore
 
         public async Task<BearerAccessToken> GetUserAccessToken(string userHash)
         {
-            var token = await _bearerTokenStore.Get(userHash);
-
-            // if token current, return it
-            var now = DateTime.UtcNow;
-            if (token != null && token.Expires != null && token.Expires > now) return token;
-
             // get the refresh token for this user
             string refreshToken = await _refreshTokenStore.Get(userHash);
             if (string.IsNullOrEmpty(refreshToken))
                 throw new UnauthorizedAccessException($"No refresh token found for user \"{userHash}\"");
 
-            string json = await _http.Post(TokenUrl,
-                $"grant_type=refresh_token&refresh_token={refreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
-                GetHeader(_config));
-
-            // deserialise the token
-            var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
-            // set absolute expiry
-            newToken.SetExpires(now);
-
-            // add to store
-            newToken.EnforceInvariants();
-            await _bearerTokenStore.InsertOrReplace(userHash, newToken);
-            return newToken;
+            return await GetAccessToken(userHash, 
+                $"grant_type=refresh_token&refresh_token={refreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}");
         }
 
         public string AuthorizeUrl(string state, string[] scopes)
