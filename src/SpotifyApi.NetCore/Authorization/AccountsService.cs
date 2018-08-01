@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
-using SpotifyApi.NetCore;
 using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Http;
 
@@ -16,6 +12,8 @@ namespace SpotifyApi.NetCore
 {
     public class AccountsService : IAccountsService
     {
+        protected const string TokenUrl = "https://accounts.spotify.com/api/token";
+
         protected readonly HttpClient _http;
         protected readonly IConfiguration _config;
         protected readonly IBearerTokenStore _bearerTokenStore;
@@ -45,9 +43,7 @@ namespace SpotifyApi.NetCore
             var now = DateTime.UtcNow;
             if (token != null && token.Expires != null && token.Expires > now) return token;
 
-            string json = await _http.Post(AuthHelper.TokenUrl,
-                "grant_type=client_credentials",
-                AuthHelper.GetHeader(_config));
+            string json = await _http.Post(TokenUrl, "grant_type=client_credentials", GetHeader(_config));
 
             // deserialise the token
             var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
@@ -58,6 +54,14 @@ namespace SpotifyApi.NetCore
             newToken.EnforceInvariants();
             await _bearerTokenStore.InsertOrReplace(_config["SpotifyApiClientId"], newToken);
             return newToken;
+        }
+
+        protected static AuthenticationHeaderValue GetHeader(IConfiguration configuration)
+        {
+            return new AuthenticationHeaderValue("Basic",
+                Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}",
+                    configuration["SpotifyApiClientId"], configuration["SpotifyApiClientSecret"])))
+            );
         }
 
         private void ValidateConfig()

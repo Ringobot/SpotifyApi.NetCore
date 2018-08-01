@@ -1,5 +1,6 @@
 using System;
 using Moq;
+using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore.Tests.Mocks 
 {
