@@ -35,9 +35,9 @@ namespace SpotifyApi.NetCore.Tests
             
             var bearerTokenStore = new Mock<IBearerTokenStore>();
             bearerTokenStore.Setup(s=>s.Get(It.IsAny<string>())).ReturnsAsync(expiredToken);
-
-            var refreshTokenStore = new MockRefreshTokenStore(UserHash).Object;
-            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), refreshTokenStore, bearerTokenStore.Object);
+            var config = new MockConfiguration().Object;
+            var refreshTokenStore = new MockRefreshTokenStore(UserHash, config).Object;
+            var service = new UserAccountsService(http, config, refreshTokenStore, bearerTokenStore.Object);
 
             // act
             var token = await service.GetUserAccessToken(UserHash);
@@ -61,8 +61,10 @@ namespace SpotifyApi.NetCore.Tests
             var bearerTokenStore = new Mock<IBearerTokenStore>();
             bearerTokenStore.Setup(s=>s.Get(It.IsAny<string>())).ReturnsAsync(currentToken);
 
-            var refreshTokenStore = new MockRefreshTokenStore(UserHash).Object;
-            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), refreshTokenStore, bearerTokenStore.Object);
+            var config = new MockConfiguration().Object;
+
+            var refreshTokenStore = new MockRefreshTokenStore(UserHash, config).Object;
+            var service = new UserAccountsService(http, config, refreshTokenStore, bearerTokenStore.Object);
 
             // act
             var token = await service.GetUserAccessToken(UserHash);

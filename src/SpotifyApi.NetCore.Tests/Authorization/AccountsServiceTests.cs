@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
@@ -18,8 +20,9 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             const string state = "abc123";
             var http = new MockHttpClient().HttpClient;
-            var tokenStore = new MockRefreshTokenStore(UserHash).Object;
-            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), tokenStore);
+            var config = new MockConfiguration().Object;
+            var tokenStore = new MockRefreshTokenStore(UserHash, config).Object;
+            var service = new UserAccountsService(http, config, tokenStore);
 
             // act
             string url = service.AuthorizeUrl(state, null);
@@ -44,9 +47,10 @@ namespace SpotifyApi.NetCore.Tests
                 "playlist-read-private"
             };
 
+            var config = new MockConfiguration().Object;
             var http = new HttpClient();
-            var tokenStore = new MockRefreshTokenStore(UserHash).Object;
-            var service = new UserAccountsService(http, TestsHelper.GetLocalConfig(), tokenStore);
+            var tokenStore = new MockRefreshTokenStore(UserHash, config).Object;
+            var service = new UserAccountsService(http, config, tokenStore);
 
             // act
             string url = service.AuthorizeUrl(state, scopes);

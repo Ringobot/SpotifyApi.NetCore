@@ -1,5 +1,5 @@
 bin
 obj
 .vscode/launch.json
-appsettings.local.json
+appsettings.*.json
 _*.*
