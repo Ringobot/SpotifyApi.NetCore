@@ -1,8 +1,6 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
@@ -12,26 +10,22 @@ namespace SpotifyApi.NetCore
         {
         }
 
-        public async Task<dynamic> GetArtist(string artistId)
-        {
-            return await Get<dynamic>($"{BaseUrl}/artists/{artistId}");
-        }
+        public async Task<Artist> GetArtist(string artistId) => await GetArtist<Artist>(artistId);
 
-        public async Task<dynamic> GetRelatedArtists(string artistId)
-        {
-            return await Get<dynamic>($"{BaseUrl}/artists/{artistId}/related-artists");
-        }
+        public async Task<T> GetArtist<T>(string artistId) => await Get<T>($"{BaseUrl}/artists/{artistId}");
 
-        public async Task<dynamic> SearchArtists(string artist)
-        {
-            return await SearchArtists(artist, (0, 0));
-        }
-        public async Task<dynamic> SearchArtists(string artist, int limit)
+        public async Task<Artist[]> GetRelatedArtists(string artistId) => await GetRelatedArtists<Artist[]>(artistId);
+
+        public async Task<T> GetRelatedArtists<T>(string artistId) => await Get<T>($"{BaseUrl}/artists/{artistId}/related-artists");
+
+        public async Task<Artist[]> SearchArtists(string artist) => await SearchArtists(artist, (0, 0));
+        public async Task<Artist[]> SearchArtists(string artist, int limit)
         {
             return await SearchArtists(artist, (limit, 0));
         }
+        public async Task<Artist[]> SearchArtists(string artist, (int limit, int offset) limitOffset) => await SearchArtists<Artist[]>(artist, limitOffset);
 
-        public async Task<dynamic> SearchArtists(string artist, (int limit, int offset) limitOffset)
+        public async Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset)
         {
             string url = $"{BaseUrl}/search?q={Uri.EscapeDataString(artist)}&type=artist";
 
@@ -45,7 +39,7 @@ namespace SpotifyApi.NetCore
                 url += $"&offset={limitOffset.offset}";
             }
 
-            return await Get<dynamic>(url);
+            return await Get<T>(url);
         }
     }
 }

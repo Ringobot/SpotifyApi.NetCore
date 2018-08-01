@@ -7,10 +7,15 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public interface IArtistsApi
     {
-        Task<dynamic> GetArtist(string artistId);
-        Task<dynamic> GetRelatedArtists(string artistId);
-        Task<dynamic> SearchArtists(string artist);
-        Task<dynamic> SearchArtists(string artist, int limit);
-        Task<dynamic> SearchArtists(string artist, (int limit, int offset) limitOffset);
+        Task<T> GetArtist<T>(string artistId);
+        Task<Artist> GetArtist(string artistId);
+
+        Task<T> GetRelatedArtists<T>(string artistId);
+        Task<Artist[]> GetRelatedArtists(string artistId);
+
+        Task<Artist[]> SearchArtists(string artist);
+        Task<Artist[]> SearchArtists(string artist, int limit);
+        Task<Artist[]> SearchArtists(string artist, (int limit, int offset) limitOffset);
+        Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset);
     }
 }

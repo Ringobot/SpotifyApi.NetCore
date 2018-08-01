@@ -21,10 +21,10 @@ namespace SpotifyApi.NetCore.Tests
             var api = new ArtistsApi(http, accounts);
 
             // act
-            dynamic response = await api.GetArtist(artistId);
+            var response = await api.GetArtist(artistId);
 
             // assert
-            Assert.AreEqual("Black Rebel Motorcycle Club", response.name.ToString());
+            Assert.AreEqual("Black Rebel Motorcycle Club", response.Name);
         }
     }
 }
