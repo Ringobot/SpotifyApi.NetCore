@@ -2,22 +2,19 @@
 
 Lightweight .NET Core wrapper for the Spotify Web API.
 
-[![Build status](https://dalars.visualstudio.com/ringo/_apis/build/status/Build%20SpotifyApi.NetCore)](https://dalars.visualstudio.com/ringo/_build/latest?definitionId=29)
-
 ## Features 
 
 * Targets .NET Standard 2.0
 * Opinionated
 * `async` by default
 * BYO `HttpClient`
-* Raw responses
-* MIT
+* Multi-user auth support
+* MIT license
 
 ## Project goals
 
 * Intuitive
 * Opinionated but extensible
-* Support multi-user / multi-tenant scenarios
 * 80/20 coverage
 
 ## Installation

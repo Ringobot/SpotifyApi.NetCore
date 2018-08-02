@@ -7,7 +7,8 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public interface IBrowseApi
     {
-        Task<dynamic> GetRecommendations(string[] seedArtists, string[] seedGenres, string[] seedTracks);
-        Task<dynamic> GetRecommendations(string[] seedArtists, string[] seedGenres, string[] seedTracks, int limit);
+        Task<RecommendationsResult> GetRecommendations(string[] seedArtists, string[] seedGenres, string[] seedTracks);
+        Task<RecommendationsResult> GetRecommendations(string[] seedArtists, string[] seedGenres, string[] seedTracks, int limit);
+        Task<T> GetRecommendations<T>(string[] seedArtists, string[] seedGenres, string[] seedTracks, int limit);
     }
 }
