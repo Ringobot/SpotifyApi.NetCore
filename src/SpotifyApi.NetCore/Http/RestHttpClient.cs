@@ -42,7 +42,8 @@ namespace SpotifyApi.NetCore.Http
             http.DefaultRequestHeaders.Authorization = authenticationHeader;            
             var response = await http.GetAsync(requestUrl);
             Trace.TraceInformation("Got {0} {1}", requestUrl, response.StatusCode);
-            response.EnsureSuccessStatusCode();
+            
+            CheckForErrors(response);
 
             return await response.Content.ReadAsStringAsync();
         }
@@ -80,9 +81,20 @@ namespace SpotifyApi.NetCore.Http
                     http.PostAsync(requestUrl,
                         new StringContent(formData, Encoding.UTF8, "application/x-www-form-urlencoded"));
             Trace.TraceInformation("Posted {0} {1}", requestUrl, response.StatusCode);
-            response.EnsureSuccessStatusCode();
             
+            CheckForErrors(response);
+
             return await response.Content.ReadAsStringAsync();
+        }
+
+        internal static async void CheckForErrors(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await SpotifyApiErrorException.ReadErrorResponse(response);
+                if (error != null && error.IsValid()) throw new SpotifyApiErrorException(response.StatusCode, error);
+                response.EnsureSuccessStatusCode(); // not a Spotify API Error so throw HttpResponseMessageException
+            }
         }
     }
 }

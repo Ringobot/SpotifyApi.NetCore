@@ -16,7 +16,7 @@ namespace SpotifyApi.NetCore.Tests
     [TestCategory("Integration")]
     public class PlayerApiTests
     {
-        [TestMethod] //TODO: Result changes if device online/offline
+        //[TestMethod] //TODO: Result changes if device online/offline
         [TestCategory("Integration")]
         public async Task PlayContext_SpotifyUri_SpotifyApiErrorException()
         {
@@ -31,14 +31,14 @@ namespace SpotifyApi.NetCore.Tests
             var api = new PlayerApi(http, accounts);
 
             // act
-            try
-            {
+            //try
+            //{
                 await api.PlayContext(userHash, spotifyUri);
-            }
-            catch (SpotifyApiErrorException ex)
-            {
-                Trace.WriteLine(ex.Message);
-            }
+            //}
+            //catch (SpotifyApiErrorException ex)
+            //{
+                //Trace.WriteLine(ex.Message);
+            //}
 
             // assert
         }
