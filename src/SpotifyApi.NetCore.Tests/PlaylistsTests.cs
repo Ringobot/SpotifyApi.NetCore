@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore.Tests
 
             // Act
             var result1 = await playlists.GetPlaylists(username);
-            Trace.WriteLine((object)result1);
+            Trace.WriteLine(result1);
         }
 	
         [TestMethod]
