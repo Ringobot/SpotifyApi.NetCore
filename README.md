@@ -26,7 +26,7 @@ Set Environment variables:
 // HttpClient and AccountsService can be reused. 
 // Tokens are automatically cached and refreshed
 var http = new HttpClient();
-var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+var accounts = new AccountsService(http);
 
 // Get an artist by Spotify Artist Id
 var artists = new ArtistsApi(http, accounts);
