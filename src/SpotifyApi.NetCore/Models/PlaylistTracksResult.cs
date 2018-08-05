@@ -13,7 +13,7 @@ namespace SpotifyApi.NetCore
         public string Href { get; set; }
 
         [JsonProperty("items")]
-        public Item[] Items { get; set; }
+        public TrackItem[] Items { get; set; }
 
         [JsonProperty("limit")]
         public long Limit { get; set; }

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SpotifyApi.NetCore.Authorization
+namespace SpotifyApi.NetCore
 {
     public interface IBearerTokenStore
     {   

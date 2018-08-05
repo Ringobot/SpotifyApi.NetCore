@@ -13,9 +13,9 @@ namespace SpotifyApi.NetCore
         Task<T> GetRelatedArtists<T>(string artistId);
         Task<Artist[]> GetRelatedArtists(string artistId);
 
-        Task<Artist[]> SearchArtists(string artist);
-        Task<Artist[]> SearchArtists(string artist, int limit);
-        Task<Artist[]> SearchArtists(string artist, (int limit, int offset) limitOffset);
+        Task<SearchResult> SearchArtists(string artist);
+        Task<SearchResult> SearchArtists(string artist, int limit);
+        Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset);
         Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset);
     }
 }

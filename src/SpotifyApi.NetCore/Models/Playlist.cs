@@ -43,7 +43,7 @@ namespace SpotifyApi.NetCore
         public string SnapshotId { get; set; }
 
         [JsonProperty("tracks")]
-        public Tracks Tracks { get; set; }
+        public PlaylistTracks Tracks { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -76,13 +76,13 @@ namespace SpotifyApi.NetCore
         public string Name { get; set; }
     }
 
-    public partial class Tracks
+    public partial class PlaylistTracks
     {
         [JsonProperty("href")]
         public string Href { get; set; }
 
         [JsonProperty("items")]
-        public Item[] Items { get; set; }
+        public TrackItem[] Items { get; set; }
 
         [JsonProperty("limit")]
         public long Limit { get; set; }
@@ -98,32 +98,5 @@ namespace SpotifyApi.NetCore
 
         [JsonProperty("total")]
         public long Total { get; set; }
-    }
-
-    public partial class Item
-    {
-        [JsonProperty("added_at")]
-        public DateTimeOffset AddedAt { get; set; }
-
-        [JsonProperty("added_by")]
-        public Owner AddedBy { get; set; }
-
-        [JsonProperty("is_local")]
-        public bool IsLocal { get; set; }
-
-        [JsonProperty("primary_color")]
-        public string PrimaryColor { get; set; }
-
-        [JsonProperty("track")]
-        public Track Track { get; set; }
-
-        [JsonProperty("video_thumbnail")]
-        public VideoThumbnail VideoThumbnail { get; set; }
-    }
-
-    public partial class VideoThumbnail
-    {
-        [JsonProperty("url")]
-        public string Url { get; set; }
     }
 }
