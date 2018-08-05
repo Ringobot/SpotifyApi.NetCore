@@ -38,6 +38,7 @@ namespace SpotifyApi.NetCore.Tests
             //catch (SpotifyApiErrorException ex)
             //{
                 //Trace.WriteLine(ex.Message);
+                
             //}
 
             // assert

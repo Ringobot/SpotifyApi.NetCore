@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 
 namespace SpotifyBlazor
 {
@@ -6,7 +9,9 @@ namespace SpotifyBlazor
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args)
+                .Build()
+                .Run();
         }
 
         public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
