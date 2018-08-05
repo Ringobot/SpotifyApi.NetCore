@@ -77,11 +77,11 @@ Commit and push
 
 Pack
 
-    dotnet pack src/Spotify.NetCore
+    dotnet pack src/SpotifyApi.NetCore
 
 Publish
 
-    dotnet nuget push .\src\Spotify.NetCore\bin\Debug\SpotifyApi.NetCore.1.1.2.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
+    dotnet nuget push .\src\SpotifyApi.NetCore\bin\Debug\SpotifyApi.NetCore.1.1.2.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
 
 ## Links
 
