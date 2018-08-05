@@ -18,12 +18,13 @@ namespace SpotifyApi.NetCore
 
         public async Task<T> GetRelatedArtists<T>(string artistId) => await Get<T>($"{BaseUrl}/artists/{artistId}/related-artists");
 
-        public async Task<Artist[]> SearchArtists(string artist) => await SearchArtists(artist, (0, 0));
-        public async Task<Artist[]> SearchArtists(string artist, int limit)
+        public async Task<SearchResult> SearchArtists(string artist) => await SearchArtists(artist, (0, 0));
+        public async Task<SearchResult> SearchArtists(string artist, int limit)
         {
             return await SearchArtists(artist, (limit, 0));
         }
-        public async Task<Artist[]> SearchArtists(string artist, (int limit, int offset) limitOffset) => await SearchArtists<Artist[]>(artist, limitOffset);
+        public async Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset) 
+            => await SearchArtists<SearchResult>(artist, limitOffset);
 
         public async Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset)
         {
