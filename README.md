@@ -13,7 +13,7 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
 ## Installation
 
-    > dotnet add package SpotifyApi.NetCore --version 1.1.0
+    > dotnet add package SpotifyApi.NetCore
 
 ## Usage
 
@@ -67,12 +67,12 @@ Pull requests and feature requests welcomed!
 Push the Version number in `SpotifyApi.NetCore.csproj`
 
 ```xml
-<Version>1.0.2-alpha</Version>
+<Version>1.1.2</Version>
 ```
 
 Commit and push
 
-    git commit -a -m "Packing v1.0.2-alpha"
+    git commit -a -m "Packing v1.1.2"
     git push
 
 Pack
@@ -81,7 +81,7 @@ Pack
 
 Publish
 
-    dotnet nuget push .\src\Spotify.NetCore\bin\Debug\SpotifyApi.NetCore.1.0.2-alpha.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
+    dotnet nuget push .\src\Spotify.NetCore\bin\Debug\SpotifyApi.NetCore.1.1.2.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
 
 ## Links
 
