@@ -19,21 +19,11 @@ Demo for the SpotifyApi.NetCore library.
     string artistName = "";
 
     async Task GetArtist()
-    {
-        var dict = new Dictionary<string, string>
-                    {
-                        {"SpotifyApiClientId", "944843be09874db29728e51a0a4e8376"},
-                        {"SpotifyApiClientSecret", "6544d1e09b604b4b90038153e216afa5"}
-                    };
-
-        var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(dict)
-            .Build();
-        
+    {        
         Trace.WriteLine($"SpotifyApiClientId: {config["SpotifyApiClientId"]}");
 
         Http.BaseAddress = new Uri("https://api.spotify.com");
-        var authHeader = new AuthenticationHeaderValue("Bearer", "BQCD6dbyFSewNNTrAaHFjP8xVsCV7uXUmmQrTutJZgHwnG19aqHlhVOwH1B-8kB5GLkOEqxl9lIPQeMHqq7wE93NDRCXCvnQoMC6OwKNJ4Ftz6Cb9lp3hb9z46zg01mQm7LZBid_NGyH-Ld09ImJE2TSgNwttA");
+        var authHeader = new AuthenticationHeaderValue("Bearer", "BQCD6dby...SgNwttA");
         Http.DefaultRequestHeaders.Authorization = authHeader;
         var artist = await Http.GetJsonAsync<Artist>("/v1/artists/0TnOYISbd1XYRBk9myaseg");
         

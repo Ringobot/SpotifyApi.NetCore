@@ -21,7 +21,7 @@ namespace SpotifyVue.Controllers
 
         [HttpGet("[action]")]
         [Route("api/spotify/searchartists")]
-        public async Task<Artist[]> SearchArtists([FromQuery(Name="query")] string query)
+        public async Task<SearchResult> SearchArtists([FromQuery(Name="query")] string query)
         {
             var artists = await _artists.SearchArtists(query, 3);
             return artists;
