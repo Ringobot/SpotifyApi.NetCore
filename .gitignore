@@ -2,4 +2,5 @@ bin
 obj
 .vscode/launch.json
 appsettings.*.json
-_*.*
+_*
+node_modules
