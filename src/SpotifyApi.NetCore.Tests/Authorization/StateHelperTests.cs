@@ -21,5 +21,19 @@ namespace SpotifyApi.NetCore.Tests.Authorization
             // EncodeState . DecodeState is a deterministic function
             Assert.AreEqual(StateHelper.DecodeState(encoded), userAuth, "The tuple returned by DecodeState should match exactly the input to EncodeState");
         }
+
+        [TestMethod]
+        public void UserHash_UserName_MatchesExpectedValue()
+        {
+            // arrange
+            const string userName = "DanielLarsenNZ";
+            const string expected = "0429593EB273D4F3116216A2FEF8CF4EF9ADA6D3246C8AFD1234050CE2D10B27"; //daniellarsennz https://passwordsgenerator.net/sha256-hash-generator/
+
+            // act
+            string result = StateHelper.UserHash(userName);
+
+            // assert
+            Assert.AreEqual(expected, result);
+        }
     }
 }
