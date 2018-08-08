@@ -9,7 +9,8 @@ namespace SpotifyApi.NetCore
     public class SpotifyApiErrorException : Exception
     {
         //public SpotifyApiErrorException(string message, Exception innerException) : base(message, innerException) { }
-        //public SpotifyApiErrorException(string message) : base(message) { }
+        public SpotifyApiErrorException(string message) : base(message) { }
+        
         public SpotifyApiErrorException(HttpStatusCode statusCode, SpotifyApiError spotifyApiError) : base(spotifyApiError?.Message)
         {
             HttpStatusCode = statusCode;

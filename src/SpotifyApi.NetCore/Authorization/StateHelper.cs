@@ -25,13 +25,15 @@ namespace SpotifyApi.NetCore.Authorization
         public static string UserHash(string username)
         {
             //https://stackoverflow.com/a/33245817/610731
-            //https://stackoverflow.com/a/11654597/610731
 
             using (var algorithm = SHA256.Create())
             {
-                var bytes = algorithm.ComputeHash(Encoding.ASCII.GetBytes(username.ToLower()));
-                var hash = String.Concat(bytes.Select(b => b.ToString("x2")));
-                return hash.ToUpper();
+                return String.Concat(algorithm.ComputeHash
+                (
+                    Encoding.ASCII.GetBytes(username.ToLower())
+                )
+                .Select(b => b.ToString("x2")))
+                .ToUpper();
             }
         }
     }
