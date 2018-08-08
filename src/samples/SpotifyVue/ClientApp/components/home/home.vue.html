@@ -1,6 +1,9 @@
 <template>
     <div>
         <h1>Hello Spotify API</h1>
+        <p>Samples of usage of <code>SpotifyApi.NetCore</code></p>
+
+        <h2>Search for an Artist</h2>
 
         <form class="form-inline" onsubmit="return false">
             <p>Who's your favourite Artist?</p>
@@ -20,11 +23,23 @@
                 <tr v-for="item in artists">
                     <td>{{ item.name }}</td>
                     <td>
-                        <button :x-artistId="item.id" class="btn btn-danger">Play</button>
+                        <button :x-artistId="item.id" class="btn btn-primary">Play</button>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <h2>Authorization</h2>
+
+        <form class="form-inline" onsubmit="return false">
+            <p>Authorize this app to control your Spotify device</p>
+            <div class="form-group">
+                <label for="username">Spotify Username</label>
+                <input id="username" placeholder="e.g. DanielLarsenNZ" class="form-control" minlength="3">
+                <button id="authButton" class="btn btn-danger">Authorize</button>
+            </div>
+        </form>
+
     </div>
 </template>
 

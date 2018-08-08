@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SpotifyApi.NetCore;
 using SpotifyApi.NetCore.Authorization;
 using System.Net.Http;
+using SpotifyVue.Data;
 
 namespace SpotifyVue
 {
@@ -30,7 +31,8 @@ namespace SpotifyVue
             services.AddSingleton(typeof(IAccountsService), typeof(AccountsService));
             services.AddSingleton(typeof(IArtistsApi), typeof(ArtistsApi));
 
-            services.AddSingleton(typeof(IRefreshTokenStore), typeof(MemoryRefreshTokenStore));
+            services.AddSingleton(typeof(IRefreshTokenStore), typeof(RefreshTokenStore));
+            services.AddSingleton(typeof(UserAuthStorage), typeof(UserAuthStorage));
             services.AddSingleton(typeof(IUserAccountsService), typeof(UserAccountsService));
             services.AddSingleton(typeof(IPlayerApi), typeof(PlayerApi));
         }
