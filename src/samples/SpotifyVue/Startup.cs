@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyApi.NetCore;
-using SpotifyApi.NetCore.Authorization;
 using System.Net.Http;
-using SpotifyVue.Data;
+using SpotifyVue.Services;
 
 namespace SpotifyVue
 {
@@ -27,12 +22,14 @@ namespace SpotifyVue
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSingleton(typeof(HttpClient), new HttpClient());
+            services.AddSingleton<HttpClient>(new HttpClient());
             services.AddSingleton(typeof(IAccountsService), typeof(AccountsService));
             services.AddSingleton(typeof(IArtistsApi), typeof(ArtistsApi));
 
-            services.AddSingleton(typeof(IRefreshTokenStore), typeof(RefreshTokenStore));
-            services.AddSingleton(typeof(UserAuthStorage), typeof(UserAuthStorage));
+            // two service types, one implementation: https://stackoverflow.com/a/41812930/610731
+            services.AddSingleton(typeof(SpotifyAuthService), typeof(SpotifyAuthService));
+            services.AddSingleton(typeof(IRefreshTokenStore), x=>x.GetService(typeof(SpotifyAuthService)));
+            
             services.AddSingleton(typeof(IUserAccountsService), typeof(UserAccountsService));
             services.AddSingleton(typeof(IPlayerApi), typeof(PlayerApi));
         }

@@ -1,26 +1,27 @@
-using System.Threading.Tasks;
-using SpotifyApi.NetCore;
+// using System.Threading.Tasks;
+// using SpotifyApi.NetCore;
+// using SpotifyVue.Services;
 
-namespace SpotifyVue.Data
-{
-    public class RefreshTokenStore : IRefreshTokenStore
-    {
-        private readonly UserAuthStorage _userAuthStorage;
-        public RefreshTokenStore(UserAuthStorage userAuthStorage)
-        {
-            _userAuthStorage = userAuthStorage;
-        }
+// namespace SpotifyVue.Data
+// {
+//     public class RefreshTokenStore : IRefreshTokenStore
+//     {
+//         private readonly SpotifyAuthService _authService;
+//         public RefreshTokenStore(SpotifyAuthService authService)
+//         {
+//             _authService = authStorage;
+//         }
 
-        public Task<string> Get(string userHash)
-        {
-            return Task.FromResult(_userAuthStorage.GetByUserHash(userHash).RefreshToken);
-        }
+//         public Task<string> Get(string userHash)
+//         {
+//             return Task.FromResult(_userAuthStorage.GetByUserHash(userHash).RefreshToken);
+//         }
 
-        //TODO: =>Set?
-        public Task InsertOrReplace(string userHash, string token)
-        {
-            //TODO: Remove this method
-            return Task.CompletedTask;
-        }
-    }
-}
+//         //TODO: =>Set?
+//         public Task InsertOrReplace(string userHash, string token)
+//         {
+//             //TODO: Remove this method
+//             return Task.CompletedTask;
+//         }
+//     }
+// }
