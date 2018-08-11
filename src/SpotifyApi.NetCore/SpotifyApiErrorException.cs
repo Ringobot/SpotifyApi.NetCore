@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SpotifyApi.NetCore
 {
@@ -10,7 +12,7 @@ namespace SpotifyApi.NetCore
     {
         //public SpotifyApiErrorException(string message, Exception innerException) : base(message, innerException) { }
         public SpotifyApiErrorException(string message) : base(message) { }
-        
+
         public SpotifyApiErrorException(HttpStatusCode statusCode, SpotifyApiError spotifyApiError) : base(spotifyApiError?.Message)
         {
             HttpStatusCode = statusCode;
@@ -22,31 +24,43 @@ namespace SpotifyApi.NetCore
 
         public static async Task<SpotifyApiError> ReadErrorResponse(HttpResponseMessage response)
         {
-            return (response.Content == null) ? null
-                : JsonConvert.DeserializeObject<SpotifyApiErrorResponseBody>(await response.Content.ReadAsStringAsync())?.Error;
-        }
-    }
+            // if no content
+            if (response.Content == null) return null;
 
-    public class SpotifyApiErrorResponseBody
-    {
-        [JsonProperty("error")]
-        public SpotifyApiError Error { get; set; }
+            // if not JSON content type
+            if (response.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            // if empty body
+            if (string.IsNullOrWhiteSpace(content)) return null;
+
+            var error = new SpotifyApiError { Json = content };
+
+            // interrogate properties to detect error json type
+            var deserialized = JsonConvert.DeserializeObject(content) as JObject;
+
+            // if no error property
+            if (!deserialized.ContainsKey("error")) return error;
+
+            switch (deserialized["error"].Type)
+            {
+                case JTokenType.Object:
+                    error.Message = deserialized["error"].Value<string>("message");
+                    break;
+                case JTokenType.String:
+                    error.Message = deserialized["error_description"].Value<string>();
+                    break;
+            }
+
+            return error;
+        }
     }
 
     public class SpotifyApiError
     {
-        [JsonProperty("status")]
-        public int Status { get; set; }
-
-        [JsonProperty("message")]
         public string Message { get; set; }
-    }
 
-    public static class SpotifyApiErrorExtensions
-    {
-        public static bool IsValid (this SpotifyApiError error)
-        {
-            return !string.IsNullOrEmpty(error.Message) && error.Status != 0;
-        }
+        public string Json { get; set; }
     }
 }

@@ -92,7 +92,7 @@ namespace SpotifyApi.NetCore.Http
             if (!response.IsSuccessStatusCode)
             {
                 var error = await SpotifyApiErrorException.ReadErrorResponse(response);
-                if (error != null && error.IsValid()) throw new SpotifyApiErrorException(response.StatusCode, error);
+                if (error != null) throw new SpotifyApiErrorException(response.StatusCode, error);
                 response.EnsureSuccessStatusCode(); // not a Spotify API Error so throw HttpResponseMessageException
             }
         }
