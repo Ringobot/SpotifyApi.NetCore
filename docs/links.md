@@ -6,3 +6,6 @@
 
 Learn Blazor <https://learn-blazor.com/architecture/rest-api/>
 
+## JSON
+
+Serializing JSON fragments: <https://www.newtonsoft.com/json/help/html/SerializingJSONFragments.htm>
