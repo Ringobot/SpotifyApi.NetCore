@@ -8,7 +8,7 @@
         <form class="form-inline" onsubmit="return false">
             <p>Who's your favourite Artist?</p>
             <div class="form-group">
-                <input id="query" placeholder="e.g. Radiohead" class="form-control">
+                <input id="query" v-model="query" placeholder="e.g. Radiohead" class="form-control">
                 <button id="searchButton" class="btn btn-success">Search</button>
             </div>
         </form>
@@ -29,9 +29,11 @@
             </tbody>
         </table>
 
-        <h2>Authorization</h2>
+        <h2>User Authorization</h2>
 
-        <form class="form-inline" onsubmit="return false">
+        <p v-if="auth.authorized"><code>{{ auth.spotifyUsername }}</code> is authorized ✅</p>
+
+        <form v-if="!auth.authorized" class="form-inline" onsubmit="return false">
             <p>Authorize this app to control your Spotify device</p>
             <div class="form-group">
                 <label for="username">Spotify Username</label>

@@ -14,16 +14,24 @@ interface SpotifyAuthorization {
 
 @Component
 export default class SpotifyApiComponent extends Vue {
-    artists: Artist[] = [];
-    auth: SpotifyAuthorization = { spotifyUsername: undefined, authorized: false, authorizationUrl: undefined };
+    artists: Artist[] = []
+    auth: SpotifyAuthorization = { spotifyUsername: undefined, authorized: false, authorizationUrl: undefined }
     username: string = ""
+    query: string = ""
+
+    /**
+     * Delegate for post message events from the popup user auth window
+     * @param event The post message event
+     */
+    receiveMessage(event:MessageEvent)
+    {
+        this.auth.authorized = event.data;
+    }
 
     mounted() {
         let searchButton = document.getElementById("searchButton");
-        if (searchButton) searchButton.addEventListener("click", (e: Event) => {
-            let queryInput = <HTMLInputElement>document.getElementById("query");
-            let query: string = (queryInput) ? queryInput.value : ""
-            fetch(`api/spotify/searchartists?query=${encodeURI(query)}`)
+        if (searchButton) searchButton.addEventListener("click", () => {
+            fetch(`api/spotify/searchartists?query=${encodeURI(this.query)}`)
                 .then(response => response.json() as Promise<Artist[]>)
                 .then(data => {
                     this.artists = data;
@@ -46,7 +54,10 @@ export default class SpotifyApiComponent extends Vue {
                 .then(data => {
                     this.auth = data;
                     if (data.authorizationUrl) {
-                        window.open(data.authorizationUrl);
+                        // setup to receive message from the popup
+                        window.addEventListener("message", this.receiveMessage, false);
+                        // open the popup
+                        window.open(data.authorizationUrl, "winRingoAuth", "width=800,height=800")!.focus();
                     }
                 })
                 .catch(reason => console.error("error", reason))

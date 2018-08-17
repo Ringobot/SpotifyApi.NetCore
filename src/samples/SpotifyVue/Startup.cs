@@ -28,8 +28,8 @@ namespace SpotifyVue
 
             // two service types, one implementation: https://stackoverflow.com/a/41812930/610731
             services.AddSingleton(typeof(SpotifyAuthService), typeof(SpotifyAuthService));
-            services.AddSingleton(typeof(IRefreshTokenStore), x=>x.GetService(typeof(SpotifyAuthService)));
-            
+            services.AddSingleton(typeof(IRefreshTokenStore), x => x.GetService(typeof(SpotifyAuthService)));
+
             services.AddSingleton(typeof(IUserAccountsService), typeof(UserAccountsService));
             services.AddSingleton(typeof(IPlayerApi), typeof(PlayerApi));
         }
@@ -51,6 +51,11 @@ namespace SpotifyVue
             }
 
             app.UseStaticFiles();
+
+            app.UseExceptionHandler(new ExceptionHandlerOptions
+            {
+                ExceptionHandler = new JsonExceptionMiddleware().Invoke
+            });
 
             app.UseMvc(routes =>
             {

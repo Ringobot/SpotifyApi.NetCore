@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SpotifyApi.NetCore;
@@ -26,8 +27,9 @@ namespace SpotifyVue.Controllers
         }
 
         // 1. Search artist, list 3 results
-        // 2. Play Artist
-        // 3. Authorise user
+        // 2. Authorise user
+        // 3. Play Artist
+        // 4. Get recommendations
 
         [HttpGet("[action]")]
         [Route("api/spotify/searchartists")]
@@ -66,7 +68,7 @@ namespace SpotifyVue.Controllers
         /// Authorization callback from Spotify
         [HttpGet("[action]")]
         [Route("api/spotify/authorize")]
-        public async Task<SpotifyAuthorization> Authorize([FromQuery(Name="state")] string state, [FromQuery(Name="code")] string code = null, 
+        public async Task<ContentResult> Authorize([FromQuery(Name="state")] string state, [FromQuery(Name="code")] string code = null, 
             [FromQuery(Name="error")] string error = null)
         {
             // do the userHash and state match what was persisted by the POST method (above)?
@@ -80,7 +82,13 @@ namespace SpotifyVue.Controllers
 
             var userAuth = _authService.SetUserAuthRefreshToken(userHash, tokens);
 
-            return MapToSpotifyAuthorization(userAuth);
+            // return an HTML result that posts a message back to the opening window and then closes itself.
+            return new ContentResult 
+            {
+                ContentType = "text/html",
+                StatusCode = (int)HttpStatusCode.OK,
+                Content = $"<html><body><script>window.opener.postMessage(true, \"*\");window.close()</script>Spotify Authorization successful. You can close this window now</body></html>"
+            };
         }
 
         private IEnumerable<Models.ArtistItem> MapToSearchArtistsModel(SearchResult searchResult)
