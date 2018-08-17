@@ -9,7 +9,17 @@
             "type": "shell",
             "group": "build",
             "presentation": {
-                "reveal": "silent"
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build SpotifyVue",
+            "command": "dotnet build ./src/samples/SpotifyVue",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
             },
             "problemMatcher": "$msCompile"
         },
@@ -19,7 +29,7 @@
             "type": "shell",
             "group": "build",
             "presentation": {
-                "reveal": "silent"
+                "reveal": "always"
             },
             "problemMatcher": "$msCompile"
         },
@@ -29,7 +39,7 @@
             "type": "shell",
             "group": "build",
             "presentation": {
-                "reveal": "silent"
+                "reveal": "always"
             },
             "problemMatcher": "$msCompile"
         }
