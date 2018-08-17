@@ -22,6 +22,7 @@ namespace SpotifyVue
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
             services.AddSingleton<HttpClient>(new HttpClient());
             services.AddSingleton(typeof(IAccountsService), typeof(AccountsService));
             services.AddSingleton(typeof(IArtistsApi), typeof(ArtistsApi));

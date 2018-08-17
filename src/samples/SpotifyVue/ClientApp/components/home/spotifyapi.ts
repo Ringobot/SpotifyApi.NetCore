@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
+import * as Models from './models'
 
 interface Artist {
     id: string;
@@ -7,7 +8,7 @@ interface Artist {
 }
 
 interface SpotifyAuthorization {
-    spotifyUsername?: string;
+    userId?: string;
     authorized: boolean;
     authorizationUrl?: string;
 }
@@ -15,9 +16,11 @@ interface SpotifyAuthorization {
 @Component
 export default class SpotifyApiComponent extends Vue {
     artists: Artist[] = []
-    auth: SpotifyAuthorization = { spotifyUsername: undefined, authorized: false, authorizationUrl: undefined }
+    devices: Models.Device[] = []
+    auth: SpotifyAuthorization = { userId: undefined, authorized: false, authorizationUrl: undefined }
     username: string = ""
     query: string = ""
+    error: string = ""
 
     /**
      * Delegate for post message events from the popup user auth window
@@ -29,23 +32,39 @@ export default class SpotifyApiComponent extends Vue {
     }
 
     mounted() {
-        let searchButton = document.getElementById("searchButton");
-        if (searchButton) searchButton.addEventListener("click", () => {
+        // refresh devices
+        document.getElementById("refreshDevicesButton")!.addEventListener("click", () => {
+            fetch('api/spotify/devices')
+                .then(response => response.json() as Promise<Models.Device[]>)
+                .then(data => {
+                    this.devices = data;
+                })
+                .catch(reason => {
+                    console.error("error", reason)
+                    this.error = reason;
+                })
+
+        })
+
+        // search for artist
+        document.getElementById("searchButton")!.addEventListener("click", () => {
             fetch(`api/spotify/searchartists?query=${encodeURI(this.query)}`)
                 .then(response => response.json() as Promise<Artist[]>)
                 .then(data => {
                     this.artists = data;
                 })
+                .catch(reason => {
+                    console.error("error", reason)
+                    this.error = reason;
+                })
+
         })
 
-        let authButton = document.getElementById("authButton");
-        if (authButton) authButton.addEventListener("click", (e: Event) => {
-            //let username = <HTMLInputElement>document.getElementById("username");
-
+        // authorize user
+        document.getElementById("authButton")!.addEventListener("click", (e: Event) => {
             fetch('api/spotify/authorize',
                 {
                     method: "POST",
-                    body: JSON.stringify({ SpotifyUsername: this.username }),
                     headers: {
                         "Content-Type": "application/json; charset=utf-8",
                     }
@@ -60,7 +79,10 @@ export default class SpotifyApiComponent extends Vue {
                         window.open(data.authorizationUrl, "winRingoAuth", "width=800,height=800")!.focus();
                     }
                 })
-                .catch(reason => console.error("error", reason))
+                .catch(reason => {
+                    console.error("error", reason)
+                    this.error = reason;
+                })
         })
     }
 }

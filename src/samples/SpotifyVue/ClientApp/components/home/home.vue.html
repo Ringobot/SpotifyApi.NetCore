@@ -3,6 +3,42 @@
         <h1>Hello Spotify API</h1>
         <p>Samples of usage of <code>SpotifyApi.NetCore</code></p>
 
+        <h2>User Authorization</h2>
+
+        <p>User authorization is required to control a user's device.</p>
+
+        <p v-if="auth.authorized"><code>{{ auth.userId }}</code> is authorized ✅</p>
+
+        <form v-if="!auth.authorized" class="form-inline" onsubmit="return false">
+            <p>Authorize this app to control your Spotify device</p>
+            <div class="form-group">
+                <button id="authButton" class="btn btn-danger">Authorize</button>
+            </div>
+        </form>
+
+        <h2>User's devices</h2>
+        <p>Click refresh to get a list of the user's current devices and status</p>
+        <button id="refreshDevicesButton" :disabled="!auth.authorized" class="btn btn-success">Refresh</button>
+
+        <table v-if="devices.length" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Active</th>
+                    <th>Volume</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in devices">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.is_active }}</td>
+                    <td>{{ item.volume_percent }}</td>
+                </tr>
+            </tbody>
+        </table>
+
         <h2>Search for an Artist</h2>
 
         <form class="form-inline" onsubmit="return false">
@@ -23,25 +59,13 @@
                 <tr v-for="item in artists">
                     <td>{{ item.name }}</td>
                     <td>
-                        <button :x-artistId="item.id" class="btn btn-primary">Play</button>
+                        <button :x-artistId="item.id" class="btn btn-primary" :disabled="!auth.authorized">Play</button>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <h2>User Authorization</h2>
-
-        <p v-if="auth.authorized"><code>{{ auth.spotifyUsername }}</code> is authorized ✅</p>
-
-        <form v-if="!auth.authorized" class="form-inline" onsubmit="return false">
-            <p>Authorize this app to control your Spotify device</p>
-            <div class="form-group">
-                <label for="username">Spotify Username</label>
-                <input id="username" v-model="username" placeholder="e.g. DanielLarsenNZ" class="form-control" minlength="3" :value="auth.SpotifyUsername">
-                <button id="authButton" class="btn btn-danger" :disabled="!username || auth.authorized" >Authorize</button>
-            </div>
-        </form>
-
+        <p v-if="error">Error: {{ error }}</p>
     </div>
 </template>
 
