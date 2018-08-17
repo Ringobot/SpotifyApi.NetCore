@@ -13,6 +13,7 @@ namespace SpotifyApi.NetCore
         Task Play(string userHash, object data, string deviceId = null);
 
         //TODO: Task PlayContext((string userHash, string token) userRefreshToken, string spotifyUri);
-        
+
+        Task<Device[]> GetDevices(string userHash);   
     }
 }
