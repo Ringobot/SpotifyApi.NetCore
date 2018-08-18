@@ -5,6 +5,7 @@ import * as Models from './models'
 interface Artist {
     id: string;
     name: string;
+    url: string;
 }
 
 interface SpotifyAuthorization {
@@ -26,10 +27,27 @@ export default class SpotifyApiComponent extends Vue {
      * Delegate for post message events from the popup user auth window
      * @param event The post message event
      */
-    receiveMessage(event:MessageEvent)
-    {
+    receiveMessage(event: MessageEvent) {
         this.auth.authorized = event.data;
     }
+
+    playArtist(event:any) {
+        fetch(`api/spotify/playArtist?spotifyUri=${event.currentTarget.attributes["x-spotifyuri"].value}`,
+            {
+                method: "PUT"
+            }
+        )
+            //.then(response => response.json() as Promise<Models.Device[]>)
+            //.then(data => {
+            //    this.devices = data;
+            //})
+            .catch(reason => {
+                console.error("error", reason)
+                this.error = reason;
+            })
+
+    }
+
 
     mounted() {
         // refresh devices
@@ -64,10 +82,7 @@ export default class SpotifyApiComponent extends Vue {
         document.getElementById("authButton")!.addEventListener("click", (e: Event) => {
             fetch('api/spotify/authorize',
                 {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                    }
+                    method: "POST"
                 })
                 .then(response => response.json() as Promise<SpotifyAuthorization>)
                 .then(data => {

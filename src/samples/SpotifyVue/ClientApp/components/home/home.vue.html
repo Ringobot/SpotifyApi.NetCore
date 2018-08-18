@@ -17,7 +17,7 @@
         </form>
 
         <h2>User's devices</h2>
-        <p>Click refresh to get a list of the user's current devices and status</p>
+        <p>Click refresh to get a list of the user's current devices and status. Start the Spotify app to see devices listed here</p>
         <button id="refreshDevicesButton" :disabled="!auth.authorized" class="btn btn-success">Refresh</button>
 
         <table v-if="devices.length" class="table">
@@ -59,7 +59,8 @@
                 <tr v-for="item in artists">
                     <td>{{ item.name }}</td>
                     <td>
-                        <button :x-artistId="item.id" class="btn btn-primary" :disabled="!auth.authorized">Play</button>
+                        <button :x-spotifyuri="item.uri" v-on:click="playArtist($event)" class="btn btn-primary" 
+                            :disabled="!auth.authorized || devices.length === 0">Play</button>
                     </td>
                 </tr>
             </tbody>
