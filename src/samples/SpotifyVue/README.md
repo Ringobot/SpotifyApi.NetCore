@@ -12,6 +12,12 @@ World. Of. Pain
 * Turn on Diagnostic Logs with a 1 day retention
 * Download Zipped logs from Kudu to diagnose, e.g. <https://spotifyapidotnetcore.scm.azurewebsites.net/api/logs/docker/zip>
 
+<https://github.com/aspnet/MvcPrecompilation/issues/107>
+
+<https://docs.microsoft.com/en-us/aspnet/core/migration/20_21?view=aspnetcore-2.1>
+
+<https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/visual-studio-publish-profiles?view=aspnetcore-2.0&tabs=aspnetcore2x#include-files>
+
 ## Links
 
 Model binding JSON POSTs in ASP.NET Core: <https://andrewlock.net/model-binding-json-posts-in-asp-net-core/>
