@@ -19,7 +19,7 @@ namespace SpotifyVue
             var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddEnvironmentVariables()
-            .AddJsonFile("appsettings.local.json");
+            .AddJsonFile("appsettings.local.json", true);
 
             Configuration = builder.Build();
 
