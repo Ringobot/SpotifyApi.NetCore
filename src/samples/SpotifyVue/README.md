@@ -9,6 +9,8 @@ World. Of. Pain
 * Startup command = `dotnet SpotifyVue.dll`
 * Deploy using local git
 * `.deployment` file to specify project file as `/src/samples/SpotifyVue`
+* Turn on Diagnostic Logs with a 1 day retention
+* Download Zipped logs from Kudu to diagnose, e.g. <https://spotifyapidotnetcore.scm.azurewebsites.net/api/logs/docker/zip>
 
 ## Links
 
