@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace SpotifyApi.NetCore
+namespace SpotifyApi.NetCore.Authorization
 {
     // https://docs.microsoft.com/en-nz/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=netframework-4.7.1#remarks
     

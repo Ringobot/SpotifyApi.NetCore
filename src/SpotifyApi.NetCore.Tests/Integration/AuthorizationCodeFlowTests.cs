@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests.Integration
@@ -17,17 +16,15 @@ namespace SpotifyApi.NetCore.Tests.Integration
         (string UserHash, string State) _userHashstate;
 
         UserAccountsService _accounts;
-        IRefreshTokenStore _tokenStore;
-
-        //IConfiguration _config = TestsHelper.GetLocalConfig();
+        IRefreshTokenProvider _refreshTokenProvider;
 
         const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
 
         [TestInitialize]
         public void Initialize()
         {
-            _tokenStore = new MockRefreshTokenStore(UserHash).Object;
-            _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _tokenStore);
+            _refreshTokenProvider = new MockRefreshTokenStore(UserHash).Object;
+            _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _refreshTokenProvider);
         }
 
         //[TestMethod]  // only used for manual debugging
@@ -39,7 +36,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
 
             // controller encodes userHash and state (this is optional)            
             // controller calls Helper to get Auth URL (userHash, state)
-            string url = _accounts.AuthorizeUrl(StateHelper.EncodeState(_userHashstate), null);
+            string url = _accounts.AuthorizeUrl(state, null);
 
             // controller redirects to URL
         }
@@ -52,13 +49,12 @@ namespace SpotifyApi.NetCore.Tests.Integration
             const string stateParam = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2|51ae08e709434929a2ab140b5cb6cf1c";
 
             // decodes state, gets hash, checks state
-            var decoded = StateHelper.DecodeState(stateParam);
             //Assert.AreEqual(_userHashstate.UserHash, decoded.userHash);
             //Assert.AreEqual(_userHashstate.State, decoded.state);
 
             // controller calls Accounts Service to get access and refresh tokens
             // account service updates store
-            await _accounts.RequestAccessRefreshToken(decoded.userHash, codeParam);
+            await _accounts.RequestAccessRefreshToken(UserHash, codeParam);
         }
 
         // only used for manual debugging

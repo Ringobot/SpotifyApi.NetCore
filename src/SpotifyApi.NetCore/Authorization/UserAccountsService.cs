@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
@@ -12,61 +11,36 @@ namespace SpotifyApi.NetCore
     {
         private const string AccountsAuthorizeUrl = "https://accounts.spotify.com/authorize";
 
-        private readonly IRefreshTokenStore _refreshTokenStore;
+        private readonly IRefreshTokenProvider _refreshTokenProvider;
 
         public UserAccountsService(
             HttpClient httpClient,
             IConfiguration configuration,
-            IRefreshTokenStore refreshTokenStore,
+            IRefreshTokenProvider refreshTokenProvider,
             IBearerTokenStore bearerTokenStore
             ) : base(httpClient, configuration, bearerTokenStore)
         {
             //TODO: when does this get called?
             ValidateConfig();
 
-            if (refreshTokenStore == null) throw new ArgumentNullException("userTokenStore");
-            _refreshTokenStore = refreshTokenStore;
+            if (refreshTokenProvider == null) throw new ArgumentNullException("userTokenStore");
+            _refreshTokenProvider = refreshTokenProvider;
         }
 
         public UserAccountsService(
             HttpClient httpClient,
             IConfiguration configuration,
-            IRefreshTokenStore refreshTokenStore
-            ) : this(new HttpClient(), configuration, refreshTokenStore, null) { }
+            IRefreshTokenProvider refreshTokenProvider
+            ) : this(new HttpClient(), configuration, refreshTokenProvider, null) { }
 
         public UserAccountsService(
-            IRefreshTokenStore refreshTokenStore
-            ) : this(new HttpClient(), null, refreshTokenStore, null) { }
-
-        // single user constructors
-        public UserAccountsService(
-            HttpClient httpClient,
-            IConfiguration configuration,
-            (string userHash, string token) userRefreshToken
-            ) : base(httpClient, configuration, null)
-        { 
-            ValidateConfig();
-
-            // initialise a token store with a single user's refresh token
-            _refreshTokenStore = new MemoryRefreshTokenStore();
-            _refreshTokenStore.InsertOrReplace(userRefreshToken.userHash, userRefreshToken.token);
-        }
-
-        public UserAccountsService(
-            (string userHash, string token) userRefreshToken
-            ) : base(new HttpClient(), null, null)
-        { 
-            ValidateConfig();
-
-            // initialise a token store with a single user's refresh token
-            _refreshTokenStore = new MemoryRefreshTokenStore();
-            _refreshTokenStore.InsertOrReplace(userRefreshToken.userHash, userRefreshToken.token);
-        }
+            IRefreshTokenProvider refreshTokenProvider
+            ) : this(new HttpClient(), null, refreshTokenProvider, null) { }
 
         public async Task<BearerAccessToken> GetUserAccessToken(string userHash)
         {
             // get the refresh token for this user
-            string refreshToken = await _refreshTokenStore.Get(userHash);
+            string refreshToken = await _refreshTokenProvider.GetRefreshToken(userHash);
             if (string.IsNullOrEmpty(refreshToken))
                 throw new UnauthorizedAccessException($"No refresh token found for user \"{userHash}\"");
 
@@ -87,7 +61,6 @@ namespace SpotifyApi.NetCore
             // set absolute expiry
             token.SetExpires(now);
             token.EnforceInvariants();
-            await _refreshTokenStore.InsertOrReplace(userHash, token.RefreshToken);
             await _bearerTokenStore.InsertOrReplace(userHash, token);
             return token;
         }
