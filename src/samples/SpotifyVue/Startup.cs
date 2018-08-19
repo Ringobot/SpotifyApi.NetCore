@@ -28,8 +28,9 @@ namespace SpotifyVue
             services.AddSingleton(typeof(IArtistsApi), typeof(ArtistsApi));
 
             // two service types, one implementation: https://stackoverflow.com/a/41812930/610731
-            services.AddSingleton(typeof(SpotifyAuthService), typeof(SpotifyAuthService));
-            services.AddSingleton(typeof(IRefreshTokenStore), x => x.GetService(typeof(SpotifyAuthService)));
+            services.AddSingleton(typeof(UserAuthService), typeof(UserAuthService));
+            services.AddSingleton(typeof(IRefreshTokenProvider), x => x.GetService(typeof(UserAuthService)));
+            services.AddSingleton(typeof(AuthStateService), typeof(AuthStateService));
 
             services.AddSingleton(typeof(IUserAccountsService), typeof(UserAccountsService));
             services.AddSingleton(typeof(IPlayerApi), typeof(PlayerApi));

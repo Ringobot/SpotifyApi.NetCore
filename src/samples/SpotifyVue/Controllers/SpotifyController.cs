@@ -19,13 +19,22 @@ namespace SpotifyVue.Controllers
         private readonly IArtistsApi _artists;
         private readonly IPlayerApi _player;
         private readonly IUserAccountsService _userAccounts;
-        private readonly SpotifyAuthService _authService;
+        private readonly UserAuthService _authService;
+        private readonly AuthStateService _stateService;
 
-        public SpotifyController(IArtistsApi artists, IPlayerApi player, IUserAccountsService userAccounts, SpotifyAuthService authService)
+        public SpotifyController
+        (
+            IArtistsApi artists, 
+            IPlayerApi player, 
+            IUserAccountsService userAccounts, 
+            UserAuthService authService,
+            AuthStateService stateService
+        )
         {
             _artists = artists;
             _userAccounts = userAccounts;
             _authService = authService;
+            _stateService = stateService;
             _player = player;
         }
 
@@ -61,7 +70,7 @@ namespace SpotifyVue.Controllers
             if (userAuth != null && userAuth.Authorized) return MapToSpotifyAuthorization(userAuth);
 
             // create a state value and persist it until the callback
-            string state = _authService.CreateAndStoreState(userId);
+            string state = _stateService.NewState(userId);
 
             // generate an Authorization URL for the read and modify playback scopes
             string url = _userAccounts.AuthorizeUrl(state, new[] { "user-read-playback-state", "user-modify-playback-state" });
@@ -88,6 +97,9 @@ namespace SpotifyVue.Controllers
             // Use the code to request a token
             var tokens = await _userAccounts.RequestAccessRefreshToken(userId, code);
             var userAuth = _authService.SetUserAuthRefreshToken(userId, tokens);
+
+            //TODO: check state is valid
+            _stateService.ValidateState(state, userId);
 
             // return an HTML result that posts a message back to the opening window and then closes itself.
             return new ContentResult
