@@ -5,7 +5,6 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 ## Features 
 
 * Targets .NET Standard 2.0
-* Opinionated
 * `async` by default
 * BYO `HttpClient`
 * Multi-user auth support
@@ -15,7 +14,7 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
     > dotnet add package SpotifyApi.NetCore
 
-## Usage
+## Basic usage
 
 Set Environment variables:
     
@@ -41,7 +40,15 @@ string firstTrackName = result.Tracks[0].Name;
 Trace.WriteLine($"First recommendation = {firstTrackName}");
 ```
 
-See tests for more usage examples.
+See tests and samples for more usage examples.
+
+## In this repo
+
+| Path | Remarks |
+| ---- | ------- |
+| `src/SpotifyApi.NetCore` | SpotifyApi.NetCore project |
+| `src/SpotifyApi.NetCore.Tests` | Tests |
+| `src/samples/SpotifyVue` | Sample project using ASP.NET Core + Vue.js |
 
 ## Spotify Web API Coverage
 
@@ -53,64 +60,11 @@ See tests for more usage examples.
 | Follow | 7 | 0 | 0% |
 | Library | 8 | 0 | 0% |
 | Personalization | 1 | 0 | 0% |
-| Player | 13 | 1 | 8% |
+| Player | 13 | 2 | 15% |
 | Playlists | 12 | 1.5 | 13% |
 | Search | 1 | 0 | 0% |
 | Tracks | 5 | 0 | 0% |
 | Users Profile | 2 | 0 | 0% |
-| **Total** | **63** | **4** | **6%** |
+| **Total** | **63** | **5** | **8%** |
 
-Pull requests and feature requests welcomed!
-
-## Publishing
-
-Push the Version number in `SpotifyApi.NetCore.csproj`
-
-```xml
-<Version>1.1.2</Version>
-```
-
-Commit and push
-
-    git commit -a -m "Packing v1.1.2"
-    git push
-
-Pack
-
-    dotnet pack src/SpotifyApi.NetCore
-
-Publish
-
-    dotnet nuget push .\src\SpotifyApi.NetCore\bin\Debug\SpotifyApi.NetCore.1.1.2.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
-
-## Links
-
-### Spotify
-
-Auth guide <https://developer.spotify.com/documentation/general/guides/authorization-guide/>
-
-### .NET Core
-
-Concurrent Dictionary <https://docs.microsoft.com/en-nz/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=netframework-4.7.1#remarks>
-
-### HttpClient factory
-
-<https://blogs.msdn.microsoft.com/webdev/2018/02/28/asp-net-core-2-1-preview1-introducing-httpclient-factory/>
-
-### Configuration in .NET Core
-
-Setting up .NET Core Configuration Providers: <https://blogs.msdn.microsoft.com/premier_developer/2018/04/26/setting-up-net-core-configuration-providers/>
-
-Easy Configuration Binding in ASP.NET Core: <https://weblog.west-wind.com/posts/2017/Dec/12/Easy-Configuration-Binding-in-ASPNET-Core-revisited>
-
-Configuration in ASP.NET Core: <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.1&tabs=basicconfiguration>
-
-### Nuget
-
-Create and publish a Nuget package: <https://docs.microsoft.com/en-nz/nuget/quickstart/create-and-publish-a-package-using-the-dotnet-cli>
-
-Nuget package versioning: <https://docs.microsoft.com/en-nz/nuget/reference/package-versioning>
-
-Nuget metadata properties: <https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties>
-
-<https://www.hanselman.com/blog/AddingResilienceAndTransientFaultHandlingToYourNETCoreHttpClientWithPolly.aspx>
+Feature requests welcomed! (log an issue)
