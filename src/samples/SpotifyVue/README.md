@@ -1,5 +1,15 @@
 # Spotify API + Vue.js
 
+## Deployment
+
+World. Of. Pain
+
+* Linux App Service
+* Select .NET 2.0
+* Startup command = `dotnet SpotifyVue.dll`
+* Deploy using local git
+* `.deployment` file to specify project file as `/src/samples/SpotifyVue`
+
 ## Links
 
 Model binding JSON POSTs in ASP.NET Core: <https://andrewlock.net/model-binding-json-posts-in-asp-net-core/>
