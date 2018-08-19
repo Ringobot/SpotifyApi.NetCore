@@ -8,21 +8,21 @@ using SpotifyVue.Models;
 
 namespace SpotifyVue.Services
 {
-    public class UserAuthService: IRefreshTokenProvider
-    {   
+    public class UserAuthService : IRefreshTokenProvider
+    {
         // IRL this would be Table / Cosmos Db
         private readonly ConcurrentDictionary<string, UserAuth> _userAuths = new ConcurrentDictionary<string, UserAuth>();
 
-        public UserAuth CreateUserAuth (string userId)
+        public UserAuth CreateUserAuth(string userId)
         {
             // Create the User Auth
             var userAuth = GetUserAuth(userId);
             userAuth = userAuth ?? new UserAuth
             {
-                Authorized=false,
+                Authorized = false,
                 UserId = userId
             };
-            
+
             InsertOrUpdateUserAuth(userId, userAuth);
 
             return userAuth;

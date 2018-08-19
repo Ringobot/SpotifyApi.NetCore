@@ -68,7 +68,8 @@ namespace SpotifyVue.Controllers
 
             var userAuth = _authService.GetUserAuth(userId);
             if (userAuth != null && userAuth.Authorized) return MapToSpotifyAuthorization(userAuth);
-
+            if (userAuth == null) userAuth = _authService.CreateUserAuth(userId);
+            
             // create a state value and persist it until the callback
             string state = _stateService.NewState(userId);
 
