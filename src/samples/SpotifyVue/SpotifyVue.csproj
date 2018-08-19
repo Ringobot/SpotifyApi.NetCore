@@ -44,6 +44,7 @@
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
+      <Content Update="Views\**\*" CopyToPublishDirectory="Always" />
     </ItemGroup>
   </Target>
 
