@@ -11,6 +11,12 @@ World. Of. Pain
 * `.deployment` file to specify project file as `/src/samples/SpotifyVue`
 * Turn on Diagnostic Logs with a 1 day retention
 * Download Zipped logs from Kudu to diagnose, e.g. <https://spotifyapidotnetcore.scm.azurewebsites.net/api/logs/docker/zip>
+* Manually uploaded the View files! (Need to include them in project file)
+
+```xml
+    <MvcRazorExcludeViewFilesFromPublish>false</MvcRazorExcludeViewFilesFromPublish>
+    <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+```
 
 <https://github.com/aspnet/MvcPrecompilation/issues/107>
 
