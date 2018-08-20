@@ -33,3 +33,5 @@ Bootstrap reference: <https://getbootstrap.com/docs/4.0/components/buttons/>
 Vue.js cheat-sheet: <https://vuejs-tips.github.io/cheatsheet/>
 
 `fetch` POST: <https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Supplying_request_options>
+
+Installing Docker Ubuntu 18.04 <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04>
