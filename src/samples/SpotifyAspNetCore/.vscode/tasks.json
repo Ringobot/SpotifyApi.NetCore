@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/SpotifyAspNetCore21.csproj"
+                "${workspaceFolder}/SpotifyVue.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

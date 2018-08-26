@@ -1,3 +1,4 @@
+import 'bootstrap-css-only';
 import Vue from 'vue';
 import App from './App.vue';
 

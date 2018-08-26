@@ -1,0 +1,90 @@
+<template>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Hello Spotify API {{ msg }}</h1>
+                <p>Samples of usage of
+                    <code>SpotifyApi.NetCore</code>
+                </p>
+
+                <h2>User Authorization</h2>
+
+                <p>User authorization is required to control a user's device.</p>
+
+                <p v-if="auth.authorized">
+                    <code>{{ auth.userId }}</code> is authorized ✅</p>
+
+                <form v-if="!auth.authorized" class="form-inline" onsubmit="return false">
+                    <p>Authorize this app to control your Spotify device</p>
+                    <div class="form-group">
+                        <button id="authButton" class="btn btn-danger">Authorize</button>
+                    </div>
+                </form>
+
+                <h2>User's devices</h2>
+                <p>Click refresh to get a list of the user's current devices and status. Start the Spotify app to see devices
+                    listed here
+                </p>
+                <button id="refreshDevicesButton" :disabled="!auth.authorized" class="btn btn-success">Refresh</button>
+
+                <table v-if="devices.length" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Active</th>
+                            <th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in devices">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.type }}</td>
+                            <td>{{ item.is_active }}</td>
+                            <td>{{ item.volume_percent }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Search for an Artist</h2>
+
+                <form class="form-inline" onsubmit="return false">
+                    <p>Who's your favourite Artist?</p>
+                    <div class="form-group">
+                        <input id="query" v-model="query" placeholder="e.g. Radiohead" class="form-control">
+                        <button id="searchButton" class="btn btn-success">Search</button>
+                    </div>
+                </form>
+
+                <table v-if="artists.length" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in artists">
+                            <td>{{ item.name }}</td>
+                            <td>
+                                <button :x-spotifyuri="item.uri" v-on:click="playArtist($event)" class="btn btn-primary" :disabled="!auth.authorized || devices.length === 0">Play</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p v-if="error">Error: {{ error }}</p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+    import { Component, Prop, Vue } from 'vue-property-decorator';
+
+    @Component
+    export default class Home extends Vue {
+        @Prop() private msg!: string;
+    }
+</script>
+
+<script src="./spotifyapi.ts"></script>

@@ -24,6 +24,16 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "build SpotifyAspNetCore2",
+            "command": "dotnet build ./src/samples/SpotifyAspNetCore2",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "build tests",
             "command": "dotnet build ./src/SpotifyApi.NetCore.Tests",
             "type": "shell",

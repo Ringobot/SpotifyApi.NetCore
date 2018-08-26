@@ -39,15 +39,3 @@ Installing Docker Ubuntu 18.04 <https://www.digitalocean.com/community/tutorials
 Install Node.js in sdk container: <https://github.com/aspnet/Announcements/issues/298>
 
 <https://andrewlock.net/exploring-the-net-core-2-1-docker-files-dotnet-runtime-vs-aspnetcore-runtime-vs-sdk/#4-microsoft-dotnet-2-1-300-sdk>
-
-## Vue.js
-
-<https://cli.vuejs.org/>
-
-<https://alligator.io/vuejs/using-new-vue-cli-3/>
-
-<https://12factor.net/config>
-
-## Boostrap
-
-<https://getbootstrap.com/docs/3.3/css/>
