@@ -28,6 +28,7 @@ namespace SpotifyAspNetCore2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton<HttpClient>(new HttpClient());
@@ -50,11 +51,24 @@ namespace SpotifyAspNetCore2
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             }
             else
             {
+                //TODO: ValidateAppSettings()
+                //TODO: Handle multiple settings with same name
+                if (string.IsNullOrEmpty(Configuration["SPOTIFYAPI_APP_CLIENT_ORIGIN"])) 
+                    throw new InvalidOperationException("App Setting SPOTIFYAPI_APP_CLIENT_ORIGIN is not set");
+
                 app.UseHsts();
                 app.UseHttpsRedirection();
+                app.UseCors
+                (
+                    builder => builder
+                    .WithOrigins(Configuration["SPOTIFYAPI_APP_CLIENT_ORIGIN"])
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                );
             }
 
             app.UseExceptionHandler(new ExceptionHandlerOptions

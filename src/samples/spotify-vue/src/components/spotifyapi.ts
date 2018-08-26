@@ -80,7 +80,7 @@ export default class SpotifyApiComponent extends Vue {
 
         // authorize user
         document.getElementById("authButton")!.addEventListener("click", (e: Event) => {
-            fetch(`${process.env.VUE_API_BASE_URL}/api/spotify/authorize`,
+            fetch(`${process.env.VUE_APP_API_BASE_URL}/api/spotify/authorize`,
                 {
                     method: "POST"
                 })
