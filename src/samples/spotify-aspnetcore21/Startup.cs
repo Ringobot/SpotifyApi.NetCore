@@ -51,7 +51,14 @@ namespace SpotifyAspNetCore2
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+                app.UseCors
+                (
+                    builder => builder
+                    .WithOrigins("http://localhost:8080")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                );
             }
             else
             {
@@ -68,6 +75,7 @@ namespace SpotifyAspNetCore2
                     .WithOrigins(Configuration["SPOTIFYAPI_APP_CLIENT_ORIGIN"])
                     .AllowAnyHeader()
                     .AllowAnyMethod()
+                    .AllowCredentials()
                 );
             }
 

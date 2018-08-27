@@ -32,9 +32,10 @@ export default class SpotifyApiComponent extends Vue {
     }
 
     playArtist(event:any) {
-        fetch(`${process.env.VUE_API_BASE_URL}/api/spotify/playArtist?spotifyUri=${event.currentTarget.attributes["x-spotifyuri"].value}`,
+        fetch(`${process.env.VUE_APP_API_BASE_URL}/api/spotify/playArtist?spotifyUri=${event.currentTarget.attributes["x-spotifyuri"].value}`,
             {
-                method: "PUT"
+                method: "PUT",
+                credentials: "include"
             }
         )
             //.then(response => response.json() as Promise<Models.Device[]>)
@@ -52,7 +53,7 @@ export default class SpotifyApiComponent extends Vue {
     mounted() {
         // refresh devices
         document.getElementById("refreshDevicesButton")!.addEventListener("click", () => {
-            fetch(`${process.env.VUE_API_BASE_URL}/api/spotify/devices`)
+            fetch(`${process.env.VUE_APP_API_BASE_URL}/api/spotify/devices`, {credentials: "include"})
                 .then(response => response.json() as Promise<Models.Device[]>)
                 .then(data => {
                     this.devices = data;
@@ -66,7 +67,7 @@ export default class SpotifyApiComponent extends Vue {
 
         // search for artist
         document.getElementById("searchButton")!.addEventListener("click", () => {
-            fetch(`${process.env.VUE_API_BASE_URL}/api/spotify/searchartists?query=${encodeURI(this.query)}`)
+            fetch(`${process.env.VUE_APP_API_BASE_URL}/api/spotify/searchartists?query=${encodeURI(this.query)}`, {credentials: "include"})
                 .then(response => response.json() as Promise<Artist[]>)
                 .then(data => {
                     this.artists = data;
@@ -82,7 +83,8 @@ export default class SpotifyApiComponent extends Vue {
         document.getElementById("authButton")!.addEventListener("click", (e: Event) => {
             fetch(`${process.env.VUE_APP_API_BASE_URL}/api/spotify/authorize`,
                 {
-                    method: "POST"
+                    method: "POST",
+                    credentials: "include"
                 })
                 .then(response => response.json() as Promise<SpotifyAuthorization>)
                 .then(data => {

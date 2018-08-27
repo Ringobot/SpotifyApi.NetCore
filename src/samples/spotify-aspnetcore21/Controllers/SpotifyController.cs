@@ -48,6 +48,8 @@ namespace SpotifyVue.Controllers
         [Route("api/spotify/searchartists")]
         public async Task<IEnumerable<Models.ArtistItem>> SearchArtists([FromQuery(Name = "query")] string query)
         {
+            GetUserId();
+
             if (string.IsNullOrWhiteSpace(query)) return new List<Models.ArtistItem>();
 
             //TODO: Move to a Service
@@ -120,7 +122,8 @@ namespace SpotifyVue.Controllers
             if (string.IsNullOrEmpty(id))
             {
                 id = Guid.NewGuid().ToString("N");
-                Response.Cookies.Append(UserIdCookieName, id, new CookieOptions { Expires = DateTime.Now.AddYears(1) });
+                Response.Cookies.Append(UserIdCookieName, id, 
+                    new CookieOptions { Expires = DateTime.Now.AddYears(1), SameSite = SameSiteMode.Lax });
             }
 
             return id;

@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Hello Spotify API {{ msg }}</h1>
+                <h1>Hello Spotify API</h1>
                 <p>Samples of usage of
                     <code>SpotifyApi.NetCore</code>
                 </p>
