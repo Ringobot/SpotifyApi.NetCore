@@ -4,6 +4,12 @@
 
     $ docker build -t spotify-aspnetcore21 .
     $ docker run -d -p 8080:80 --name spotify-aspnetcore21 spotify-aspnetcore21
+    $ docker commit ???? spotify-aspnetcore21
+    $ docker tag spotify-aspnetcore21 daniellarsennz/spotify-aspnetcore21
+    $ docker login
+    $ docker push daniellarsennz/spotify-aspnetcore21
+    $ docker images
+
 
 ## Deployment
 

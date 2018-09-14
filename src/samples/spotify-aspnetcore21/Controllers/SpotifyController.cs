@@ -123,7 +123,7 @@ namespace SpotifyVue.Controllers
             {
                 id = Guid.NewGuid().ToString("N");
                 Response.Cookies.Append(UserIdCookieName, id, 
-                    new CookieOptions { Expires = DateTime.Now.AddYears(1), SameSite = SameSiteMode.Lax });
+                    new CookieOptions { Expires = DateTime.Now.AddYears(1), SameSite = SameSiteMode.None });
             }
 
             return id;
