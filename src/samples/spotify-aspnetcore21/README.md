@@ -1,5 +1,10 @@
 # Spotify API + Vue.js
 
+## Docker build
+
+    $ docker build -t spotify-aspnetcore21 .
+    $ docker run -d -p 8080:80 --name spotify-aspnetcore21 spotify-aspnetcore21
+
 ## Deployment
 
 World. Of. Pain

@@ -15,4 +15,4 @@ WORKDIR /app
 
 COPY --from=build /app/out .
 
-ENTRYPOINT ["dotnet", "SpotifyAspNetCore2.dll"]
+ENTRYPOINT ["dotnet", "SpotifyAspNetCore21.dll"]
