@@ -61,7 +61,11 @@ namespace SpotifyVue.Controllers
         public async Task<IEnumerable<Device>> GetDevices() => await _player.GetDevices(GetUserId());
 
         [HttpPut("/api/spotify/playArtist")]
-        public async Task PlayArtist([FromQuery]string spotifyUri) => await _player.PlayContext(GetUserId(), spotifyUri);
+        public async Task<ActionResult> PlayArtist([FromQuery]string spotifyUri)
+        { 
+            await _player.PlayContext(GetUserId(), spotifyUri);
+            return Ok();
+        }
 
         [HttpPost("[action]")]
         [Route("api/spotify/authorize")]
