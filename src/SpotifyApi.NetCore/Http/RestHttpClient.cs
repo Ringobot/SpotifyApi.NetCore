@@ -82,12 +82,12 @@ namespace SpotifyApi.NetCore.Http
                         new StringContent(formData, Encoding.UTF8, "application/x-www-form-urlencoded"));
             Trace.TraceInformation("Posted {0} {1}", requestUrl, response.StatusCode);
             
-            CheckForErrors(response);
+            await CheckForErrors(response);
 
             return await response.Content.ReadAsStringAsync();
         }
 
-        internal static async void CheckForErrors(HttpResponseMessage response)
+        internal static async Task CheckForErrors(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
             {

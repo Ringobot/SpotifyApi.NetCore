@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -126,6 +127,27 @@ namespace SpotifyApi.NetCore.Tests.Http
 
             // Assert
             Assert.AreEqual(HttpMethod.Post, message.Method);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SpotifyApiErrorException))]
+        public async Task CheckForErrors_SpotifyError_ThrowsSpotifyApiErrorException()
+        {
+            // arrange
+            const string content = @"{
+    ""error"": {
+        ""status"": 404,
+        ""message"": ""No active device found""
+    }
+}";
+
+            var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+            {
+                Content = new StringContent(content, Encoding.Unicode,"application/json")
+            };
+
+            // act
+            await RestHttpClient.CheckForErrors(response);
         }
     }
 }
