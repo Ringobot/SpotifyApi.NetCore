@@ -92,7 +92,7 @@ namespace SpotifyApi.NetCore
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var response = await _http.PutAsync(url, content);
 
-            RestHttpClient.CheckForErrors(response);            
+            await RestHttpClient.CheckForErrors(response);            
             
             return response;
         }

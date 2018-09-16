@@ -43,7 +43,7 @@ namespace SpotifyApi.NetCore.Http
             var response = await http.GetAsync(requestUrl);
             Trace.TraceInformation("Got {0} {1}", requestUrl, response.StatusCode);
             
-            CheckForErrors(response);
+            await CheckForErrors(response);
 
             return await response.Content.ReadAsStringAsync();
         }
