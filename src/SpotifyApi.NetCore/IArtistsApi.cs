@@ -7,6 +7,15 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public interface IArtistsApi
     {
+        #region GetArtist
+
+        /// <summary>
+        /// Get Spotify catalog information for a single artist identified by their unique Spotify ID.
+        /// </summary>
+        /// <param name="artistId">The Spotify ID for the artist.</param>
+        /// <returns>Task of Artist</returns>
+        Task<Artist> GetArtist(string artistId);
+
         /// <summary>
         /// Get Spotify catalog information for a single artist identified by their unique Spotify ID.
         /// </summary>
@@ -15,12 +24,16 @@ namespace SpotifyApi.NetCore
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         Task<T> GetArtist<T>(string artistId);
 
+        #endregion
+
+        #region GetRelatedArtists
         /// <summary>
-        /// Get Spotify catalog information for a single artist identified by their unique Spotify ID.
+        /// Get Spotify catalog information about artists similar to a given artist. Similarity is 
+        /// based on analysis of the Spotify community’s listening history.
         /// </summary>
         /// <param name="artistId">The Spotify ID for the artist.</param>
-        /// <returns>Task of Artist</returns>
-        Task<Artist> GetArtist(string artistId);
+        /// <returns>Task of Artist[]</returns>
+        Task<Artist[]> GetRelatedArtists(string artistId);
 
         /// <summary>
         /// Get Spotify catalog information about artists similar to a given artist. Similarity is 
@@ -31,13 +44,9 @@ namespace SpotifyApi.NetCore
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         Task<T> GetRelatedArtists<T>(string artistId);
 
-        /// <summary>
-        /// Get Spotify catalog information about artists similar to a given artist. Similarity is 
-        /// based on analysis of the Spotify community’s listening history.
-        /// </summary>
-        /// <param name="artistId">The Spotify ID for the artist.</param>
-        /// <returns>Task of Artist[]</returns>
-        Task<Artist[]> GetRelatedArtists(string artistId);
+        #endregion
+
+        #region SearchArtists
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -86,5 +95,26 @@ namespace SpotifyApi.NetCore
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset);
+
+        #endregion
+    
+        #region GetArtists
+
+        /// <summary>
+        /// Get Spotify catalog information for several artists based on their Spotify IDs.
+        /// </summary>
+        /// <param name="artistIds">The Spotify IDs for the artists. Maximum: 50 IDs.</param>
+        /// <returns>Task of Artist[]</returns>
+        Task<Artist[]> GetArtists(string[] artistIds);
+
+        /// <summary>
+        /// Get Spotify catalog information for several artists based on their Spotify IDs.
+        /// </summary>
+        /// <param name="artistIds">The Spotify IDs for the artists. Maximum: 50 IDs.</param>
+        /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
+        /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        Task<T> GetArtists<T>(string[] artistIds);
+
+        #endregion
     }
 }

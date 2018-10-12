@@ -1,6 +1,12 @@
 using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
@@ -9,6 +15,8 @@ namespace SpotifyApi.NetCore
         public ArtistsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
         {
         }
+
+        #region GetArtist
 
         /// <summary>
         /// Get Spotify catalog information for a single artist identified by their unique Spotify ID.
@@ -24,6 +32,10 @@ namespace SpotifyApi.NetCore
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         public async Task<T> GetArtist<T>(string artistId) => await Get<T>($"{BaseUrl}/artists/{artistId}");
+
+        #endregion
+
+        #region GetRelatedArtists
 
         /// <summary>
         /// Get Spotify catalog information about artists similar to a given artist. Similarity is 
@@ -42,6 +54,10 @@ namespace SpotifyApi.NetCore
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         public async Task<T> GetRelatedArtists<T>(string artistId) => await Get<T>($"{BaseUrl}/artists/{artistId}/related-artists");
 
+        #endregion
+
+        #region SearchArtists
+
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
         /// </summary>
@@ -51,7 +67,7 @@ namespace SpotifyApi.NetCore
         /// </param>
         /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
         public async Task<SearchResult> SearchArtists(string artist) => await SearchArtists(artist, (0, 0));
-        
+
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
         /// </summary>
@@ -65,7 +81,7 @@ namespace SpotifyApi.NetCore
         {
             return await SearchArtists(artist, (limit, 0));
         }
-        
+
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
         /// </summary>
@@ -77,7 +93,7 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">The index of the first result to return. Default: 0 (the first result). 
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
         /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
-        public async Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset) 
+        public async Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset)
             => await SearchArtists<SearchResult>(artist, limitOffset);
 
         /// <summary>
@@ -108,5 +124,51 @@ namespace SpotifyApi.NetCore
 
             return await Get<T>(url);
         }
+
+        #endregion
+
+        #region GetArtists
+
+        /// <summary>
+        /// Get Spotify catalog information for several artists based on their Spotify IDs.
+        /// </summary>
+        /// <param name="artistIds">The Spotify IDs for the artists. Maximum: 50 IDs.</param>
+        /// <returns>Task of Artist[]</returns>
+        public async Task<Artist[]> GetArtists(string[] artistIds) => await GetArtists<Artist[]>(artistIds);
+
+        /// <summary>
+        /// Get Spotify catalog information for several artists based on their Spotify IDs.
+        /// </summary>
+        /// <param name="artistIds">The Spotify IDs for the artists. Maximum: 50 IDs.</param>
+        /// <typeparam name="T">Optionally provide your own type to deserialise the `artists` property
+        /// of Spotify's response to. Should be an array like `Artist[]`.</typeparam>
+        /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        public async Task<T> GetArtists<T>(string[] artistIds)
+        {
+            if (artistIds == null || artistIds.Length == 0 || string.IsNullOrEmpty(artistIds[0]))
+            {
+                throw new ArgumentNullException("artistIds");
+            }
+
+            // Encode each spotify id before comma delimiting. Encoding is not required and should 
+            // not alter a valid id. Encoding is to guard from injection attacks
+            string artists = string.Join(",", artistIds.Select(WebUtility.UrlEncode));
+
+            var deserialized = JsonConvert.DeserializeObject
+            (
+                await _http.Get
+                (
+                    $"{BaseUrl}/artists?ids={artists}",
+                    new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken)
+                )
+            ) as JObject;
+            return deserialized["artists"].ToObject<T>();
+
+
+            //return await Get<T>($"{BaseUrl}/artists?ids={artists}");
+        }
+
+        #endregion
+
     }
 }
