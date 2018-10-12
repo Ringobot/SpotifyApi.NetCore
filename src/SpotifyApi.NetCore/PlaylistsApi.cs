@@ -41,7 +41,7 @@ namespace SpotifyApi.NetCore
         public async Task<Playlist> GetPlaylist(string username, string playlistId) 
             => await GetPlaylist<Playlist>(username, playlistId);
 
-        public async Task<T> GetPlaylist<T>(string username, string playlistId)
+        public Task<T> GetPlaylist<T>(string username, string playlistId)
         {
             throw new NotImplementedException();
         }

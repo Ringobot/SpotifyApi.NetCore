@@ -13,8 +13,6 @@ namespace SpotifyApi.NetCore.Tests.Integration
     [TestClass]
     public class AuthorizationCodeFlowTests 
     {
-        (string UserHash, string State) _userHashstate;
-
         UserAccountsService _accounts;
         IRefreshTokenProvider _refreshTokenProvider;
 
@@ -32,8 +30,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
         {
             // controller creates state, saves a hash (userHash, state)
             string state = Guid.NewGuid().ToString("N");
-            _userHashstate = (UserHash, state);
-
+     
             // controller encodes userHash and state (this is optional)            
             // controller calls Helper to get Auth URL (userHash, state)
             string url = _accounts.AuthorizeUrl(state, null);
@@ -46,7 +43,6 @@ namespace SpotifyApi.NetCore.Tests.Integration
         {
             // spotify calls back to localhost /authorize/spotify
             const string codeParam = "AQAiwTkH_Awh4L4LH7sb9B5sK2OpfhxSoRlpjIUgciObsb3qip6OeLVSYOXmbbidVHXPZyWJOMYnUDOdKG2iWJqK9xkrZ-MSW0WF32jw40IZ9JgPF74ZIzPa0Og5eB1cKL80pJq9jVXjOi3aPDe-JNz0q9a3M_5pioD6ErRyZW-9mm-mf1uS_GeRHTIxgmdZo5Aio5tSMoZrf-_ajg";
-            const string stateParam = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2|51ae08e709434929a2ab140b5cb6cf1c";
 
             // decodes state, gets hash, checks state
             //Assert.AreEqual(_userHashstate.UserHash, decoded.userHash);

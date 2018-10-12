@@ -150,23 +150,20 @@ namespace SpotifyApi.NetCore
                 throw new ArgumentNullException("artistIds");
             }
 
-            // Encode each spotify id before comma delimiting. Encoding is not required and should 
-            // not alter a valid id. Encoding is to guard from injection attacks
-            string artists = string.Join(",", artistIds.Select(WebUtility.UrlEncode));
-
             var deserialized = JsonConvert.DeserializeObject
             (
                 await _http.Get
                 (
-                    $"{BaseUrl}/artists?ids={artists}",
+                    $"{BaseUrl}/artists?ids={EncodeArtistIds(artistIds)}",
                     new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken)
                 )
             ) as JObject;
             return deserialized["artists"].ToObject<T>();
-
-
-            //return await Get<T>($"{BaseUrl}/artists?ids={artists}");
         }
+
+        // Encode each spotify id before comma delimiting. Encoding is not required and should 
+        // not alter a valid id. Encoding is to guard from injection attacks
+        protected internal static string EncodeArtistIds(string[] artistIds) => string.Join(",", artistIds.Select(WebUtility.UrlEncode));
 
         #endregion
 

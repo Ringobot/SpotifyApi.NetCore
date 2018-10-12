@@ -51,41 +51,31 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestMethod]
-        public async Task GetArtists_2ValidIds_UrlEncodeDoesNotChangeCommaDelimitedIds()
+        public void EncodeArtistIds_2ValidIds_UrlEncodeDoesNotChangeCommaDelimitedIds()
         {
             // arrange
             string[] artists = new[] { "1tpXaFf2F55E7kVJON4j4G", "0oSGxfWSnnOXhD2fKuz2Gy" };
 
-            var mockHttp = new MockHttpClient();
-            var accounts = new MockAccountsService().Object;
-            var mockArtists = new Mock<ArtistsApi>(mockHttp.HttpClient, accounts) { CallBase = true };
-            mockArtists.Setup(a => a.Get<Artist[]>(It.IsAny<string>())).ReturnsAsync(new Artist[] { });
-
             // act
-            await mockArtists.Object.GetArtists(artists);
+            string ids = ArtistsApi.EncodeArtistIds(artists);
 
             // assert
-            string expected = $"{SpotifyWebApi.BaseUrl}/artists?ids={string.Join(",", artists)}";
-            mockArtists.Verify(a => a.Get<Artist[]>(expected), Times.Once(), "Comma should not be encoded");
+            string expected = string.Join(",", artists);
+            Assert.AreEqual(expected, ids, "comma should not be encoded");
         }
 
         [TestMethod]
-        public async Task GetArtists_InjectingJavaScript_ScriptTagIsEncoded()
+        public void EncodeArtistIds_InjectingJavaScript_ScriptTagIsEncoded()
         {
             // arrange
             string[] artists = new[] { "<script>alert('pwnd')</script>", "0oSGxfWSnnOXhD2fKuz2Gy" };
 
-            var mockHttp = new MockHttpClient();
-            var accounts = new MockAccountsService().Object;
-            var mockArtists = new Mock<ArtistsApi>(mockHttp.HttpClient, accounts) { CallBase = true };
-            mockArtists.Setup(a => a.Get<Artist[]>(It.IsAny<string>())).ReturnsAsync(new Artist[] { });
-
             // act
-            await mockArtists.Object.GetArtists(artists);
+            string ids = ArtistsApi.EncodeArtistIds(artists);
 
             // assert
-            string expected = $"{SpotifyWebApi.BaseUrl}/artists?ids={string.Join(",", artists.Select(WebUtility.UrlEncode))}";
-            mockArtists.Verify(a => a.Get<Artist[]>(expected), Times.Once(), "script tags should be encoded");
+            string expected = string.Join(",", artists.Select(WebUtility.UrlEncode));
+            Assert.AreEqual(expected, ids, "script tags should be encoded");
         }
 
         [TestMethod]
