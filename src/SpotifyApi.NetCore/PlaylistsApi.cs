@@ -23,16 +23,8 @@ namespace SpotifyApi.NetCore
         /// <returns>The JSON result deserialized to object (as dynamic).</returns>
         public async Task<T> GetPlaylists<T>(string username)
         {
-            const string urlFormat = BaseUrl + "/users/{0}/playlists";
-
             if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
-
-            string json = await _http.Get(string.Format(urlFormat, Uri.EscapeDataString(username)),
-                new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken));
-            var playlists = JsonConvert.DeserializeObject<T>(json);
-            Trace.TraceInformation("Got Playlists");
-
-            return playlists;
+            return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists");
         }
 
         public async Task<PlaylistsResult> GetPlaylists(string username) 
@@ -66,21 +58,10 @@ namespace SpotifyApi.NetCore
 
         public async Task<T> GetTracks<T>(string username, string playlistId)
         {
-            // /users/{user_id}/playlists/{playlist_id}/tracks
-            const string urlFormat = BaseUrl + "/users/{0}/playlists/{1}/tracks";
-
             if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
             if (string.IsNullOrEmpty(playlistId)) throw new ArgumentNullException("playlistId");
 
-            string json =
-                await
-                    _http.Get(
-                        string.Format(urlFormat, Uri.EscapeDataString(username), Uri.EscapeDataString(playlistId)),
-                        new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken));
-            var tracks = JsonConvert.DeserializeObject<T>(json);
-            Trace.TraceInformation("Got Tracks");
-
-            return tracks;
+            return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists/{Uri.EscapeDataString(playlistId)}/tracks");
         }
     }
 }
