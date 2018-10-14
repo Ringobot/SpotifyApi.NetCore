@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore
 {
@@ -114,6 +115,29 @@ namespace SpotifyApi.NetCore
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         Task<T> GetArtists<T>(string[] artistIds);
+
+        #endregion
+    
+        #region GetArtistsTopTracks
+
+        /// <summary>
+        /// Get Spotify catalog information about an artist’s top tracks by country.
+        /// </summary>
+        /// <param name="artistId">The Spotify ID for the artist.</param>
+        /// <param name="market">Required. An ISO 3166-1 alpha-2 country code (<see cref="SpotifyCountryCodes"/>)
+        /// or the string `from_token`.</param>
+        /// <returns>Task of Track[]</returns>
+        Task<Track[]> GetArtistsTopTracks(string artistId, string market);
+
+        /// <summary>
+        /// Get Spotify catalog information about an artist’s top tracks by country.
+        /// </summary>
+        /// <param name="artistId">The Spotify ID for the artist.</param>
+        /// <param name="market">Required. An ISO 3166-1 alpha-2 country code (<see cref="SpotifyCountryCodes"/>)
+        /// or the string `from_token`.</param>
+        /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
+        /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        Task<T> GetArtistsTopTracks<T>(string artistId, string market);
 
         #endregion
     }

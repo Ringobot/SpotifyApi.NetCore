@@ -31,7 +31,7 @@ namespace SpotifyApi.NetCore
         /// <param name="artistId">The Spotify ID for the artist.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        public async Task<T> GetArtist<T>(string artistId) => await Get<T>($"{BaseUrl}/artists/{artistId}");
+        public async Task<T> GetArtist<T>(string artistId) => await GetModel<T>($"{BaseUrl}/artists/{artistId}");
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace SpotifyApi.NetCore
         /// <param name="artistId">The Spotify ID for the artist.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        public async Task<T> GetRelatedArtists<T>(string artistId) => await Get<T>($"{BaseUrl}/artists/{artistId}/related-artists");
+        public async Task<T> GetRelatedArtists<T>(string artistId) => await GetModel<T>($"{BaseUrl}/artists/{artistId}/related-artists");
 
         #endregion
 
@@ -122,7 +122,7 @@ namespace SpotifyApi.NetCore
                 url += $"&offset={limitOffset.offset}";
             }
 
-            return await Get<T>(url);
+            return await GetModel<T>(url);
         }
 
         #endregion
@@ -150,22 +150,39 @@ namespace SpotifyApi.NetCore
                 throw new ArgumentNullException("artistIds");
             }
 
-            var deserialized = JsonConvert.DeserializeObject
-            (
-                await _http.Get
-                (
-                    $"{BaseUrl}/artists?ids={EncodeArtistIds(artistIds)}",
-                    new AuthenticationHeaderValue("Bearer", (await _accounts.GetAppAccessToken()).AccessToken)
-                )
-            ) as JObject;
-            return deserialized["artists"].ToObject<T>();
+            return await GetModelFromProperty<T>($"{BaseUrl}/artists?ids={string.Join(",", artistIds)}", "artists");
         }
-
-        // Encode each spotify id before comma delimiting. Encoding is not required and should 
-        // not alter a valid id. Encoding is to guard from injection attacks
-        protected internal static string EncodeArtistIds(string[] artistIds) => string.Join(",", artistIds.Select(WebUtility.UrlEncode));
 
         #endregion
 
+        #region GetArtistsTopTracks
+
+        /// <summary>
+        /// Get Spotify catalog information about an artist’s top tracks by country.
+        /// </summary>
+        /// <param name="artistId">The Spotify ID for the artist.</param>
+        /// <param name="market">Required. An ISO 3166-1 alpha-2 country code (<see cref="SpotifyCountryCodes"/>)
+        /// or the string `from_token`.</param>
+        /// <returns>Task of Track[]</returns>
+        public async Task<Track[]> GetArtistsTopTracks(string artistId, string market) => await GetArtistsTopTracks<Track[]>(artistId, market);
+
+        /// <summary>
+        /// Get Spotify catalog information about an artist’s top tracks by country.
+        /// </summary>
+        /// <param name="artistId">The Spotify ID for the artist.</param>
+        /// <param name="market">Required. An ISO 3166-1 alpha-2 country code (<see cref="SpotifyCountryCodes"/>)
+        /// or the string `from_token`.</param>
+        /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
+        /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        public async Task<T> GetArtistsTopTracks<T>(string artistId, string market)
+        {
+            if (string.IsNullOrWhiteSpace(artistId)) throw new ArgumentNullException("artistId");
+            if (string.IsNullOrWhiteSpace(market)) throw new ArgumentNullException("market");
+
+            return await GetModelFromProperty<T>($"{BaseUrl}/artists/{artistId}/top-tracks?country={market}", "tracks");
+        }
+
+        #endregion
+        
     }
 }

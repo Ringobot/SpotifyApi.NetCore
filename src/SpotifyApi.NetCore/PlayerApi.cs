@@ -67,18 +67,9 @@ namespace SpotifyApi.NetCore
             await Play(userHash, data, deviceId);
         }
 
-        public async Task<Device[]> GetDevices(string userHash)
-        {
-            var deserialized = JsonConvert.DeserializeObject
-            (
-                await _http.Get
-                (
-                    $"{BaseUrl}/me/player/devices",
-                    new AuthenticationHeaderValue("Bearer", (await _userAccounts.GetUserAccessToken(userHash)).AccessToken)
-                )
-            ) as JObject;
-            return deserialized["devices"].ToObject<Device[]>();
-        }
+        public async Task<Device[]> GetDevices(string userHash) => 
+            await GetModelFromProperty<Device[]>($"{BaseUrl}/me/player/devices", "devices", 
+            (await _userAccounts.GetUserAccessToken(userHash)).AccessToken);
 
         /// <summary>
         /// Helper to PUT an object as JSON body

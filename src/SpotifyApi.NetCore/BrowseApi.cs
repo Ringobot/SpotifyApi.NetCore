@@ -26,7 +26,7 @@ namespace SpotifyApi.NetCore
             if (seedTracks != null && seedTracks.Length > 0) url += $"seed_tracks={string.Join(",", seedTracks)}&";
             if (limit > 0 ) url += $"limit={limit}";
 
-            return await Get<T>(url);
+            return await GetModel<T>(url);
         }
     }
 }

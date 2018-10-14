@@ -23,13 +23,13 @@ namespace SpotifyApi.NetCore.Tests
             var accounts = new MockAccountsService().Object;
 
             var api = new Mock<BrowseApi>(http.HttpClient, accounts) { CallBase = true };
-            api.Setup(a => a.Get<RecommendationsResult>(It.IsAny<string>())).ReturnsAsync(new RecommendationsResult());
+            api.Setup(a => a.GetModel<RecommendationsResult>(It.IsAny<string>(), null)).ReturnsAsync(new RecommendationsResult());
 
             // act
             await api.Object.GetRecommendations(artists, null, null);
 
             // assert
-            api.Verify(a => a.Get<RecommendationsResult>("https://api.spotify.com/v1/recommendations?seed_artists=abc123,def456&"));
+            api.Verify(a => a.GetModel<RecommendationsResult>("https://api.spotify.com/v1/recommendations?seed_artists=abc123,def456&", null));
         }
 
         [TestMethod]
@@ -42,13 +42,13 @@ namespace SpotifyApi.NetCore.Tests
             var accounts = new MockAccountsService().Object;
 
             var api = new Mock<BrowseApi>(http.HttpClient, accounts) { CallBase = true };
-            api.Setup(a => a.Get<RecommendationsResult>(It.IsAny<string>())).ReturnsAsync(new RecommendationsResult());
+            api.Setup(a => a.GetModel<RecommendationsResult>(It.IsAny<string>(), null)).ReturnsAsync(new RecommendationsResult());
 
             // act
             await api.Object.GetRecommendations(null, genres, null);
 
             // assert
-            api.Verify(a => a.Get<RecommendationsResult>("https://api.spotify.com/v1/recommendations?seed_genres=genreabc123,genredef456&"));
+            api.Verify(a => a.GetModel<RecommendationsResult>("https://api.spotify.com/v1/recommendations?seed_genres=genreabc123,genredef456&", null));
         }
 
         [TestMethod]
@@ -60,13 +60,13 @@ namespace SpotifyApi.NetCore.Tests
             var http = new MockHttpClient();
             var accounts = new MockAccountsService().Object;
             var api = new Mock<BrowseApi>(http.HttpClient, accounts) { CallBase = true };
-            api.Setup(a => a.Get<RecommendationsResult>(It.IsAny<string>())).ReturnsAsync(new RecommendationsResult());
+            api.Setup(a => a.GetModel<RecommendationsResult>(It.IsAny<string>(), null)).ReturnsAsync(new RecommendationsResult());
 
             // act
             await api.Object.GetRecommendations(null, null, tracks);
 
             // assert
-            api.Verify(a => a.Get<RecommendationsResult>("https://api.spotify.com/v1/recommendations?seed_tracks=trackabc123,trackdef456&"));
+            api.Verify(a => a.GetModel<RecommendationsResult>("https://api.spotify.com/v1/recommendations?seed_tracks=trackabc123,trackdef456&", null));
         }
 
         [TestCategory("Integration")]

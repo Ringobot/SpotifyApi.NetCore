@@ -7,6 +7,7 @@ using SpotifyApi.NetCore.Tests.Mocks;
 using Moq;
 using System.Linq;
 using System.Net;
+using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -51,34 +52,6 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestMethod]
-        public void EncodeArtistIds_2ValidIds_UrlEncodeDoesNotChangeCommaDelimitedIds()
-        {
-            // arrange
-            string[] artists = new[] { "1tpXaFf2F55E7kVJON4j4G", "0oSGxfWSnnOXhD2fKuz2Gy" };
-
-            // act
-            string ids = ArtistsApi.EncodeArtistIds(artists);
-
-            // assert
-            string expected = string.Join(",", artists);
-            Assert.AreEqual(expected, ids, "comma should not be encoded");
-        }
-
-        [TestMethod]
-        public void EncodeArtistIds_InjectingJavaScript_ScriptTagIsEncoded()
-        {
-            // arrange
-            string[] artists = new[] { "<script>alert('pwnd')</script>", "0oSGxfWSnnOXhD2fKuz2Gy" };
-
-            // act
-            string ids = ArtistsApi.EncodeArtistIds(artists);
-
-            // assert
-            string expected = string.Join(",", artists.Select(WebUtility.UrlEncode));
-            Assert.AreEqual(expected, ids, "script tags should be encoded");
-        }
-
-        [TestMethod]
         [TestCategory("Integration")]
         public async Task GetArtists_2ValidArtists_ArtistIdsMatch()
         {
@@ -95,6 +68,42 @@ namespace SpotifyApi.NetCore.Tests
             // assert
             Assert.AreEqual(artistIds[0], result[0].Id);
             Assert.AreEqual(artistIds[1], result[1].Id);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetArtistsTopTracks_NZCountryCode_ArtistIdMatches()
+        {
+            // arrange
+            const string artistId = "1tpXaFf2F55E7kVJON4j4G";
+            const string market = SpotifyCountryCodes.New_Zealand;
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+            var artists = new ArtistsApi(http, accounts);
+
+            // act
+            var result = await artists.GetArtistsTopTracks(artistId, market);
+
+            // assert
+            Assert.AreEqual(artistId, result[0].Artists[0].Id);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(SpotifyApiErrorException))]
+        [TestCategory("Integration")]
+        public async Task GetArtistsTopTracks_FromAppToken_SpotifyErrorException()
+        {
+            // arrange
+            const string artistId = "1tpXaFf2F55E7kVJON4j4G";
+            const string market = SpotifyCountryCodes._From_Token;
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+            var artists = new ArtistsApi(http, accounts);
+
+            // act
+            var result = await artists.GetArtistsTopTracks(artistId, market);
         }
 
     }
