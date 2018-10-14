@@ -1,13 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net.Http;
-using SpotifyApi.NetCore;
-using SpotifyApi.NetCore.Tests.Mocks;
-using Moq;
-using System.Linq;
-using System.Net;
-using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore.Tests
 {

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore
 {
