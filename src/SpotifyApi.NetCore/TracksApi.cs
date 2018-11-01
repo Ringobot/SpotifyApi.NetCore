@@ -1,12 +1,21 @@
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
-    /// <summary>
-    /// Defines a wrapper for the Spotify Web Tracks API.
-    /// </summary>
-    public interface ITracksApi
+    public class TracksApi : SpotifyWebApi, ITracksApi
     {
+        public TracksApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
+        {
+        }
+
         #region GetTrack
 
         /// <summary>
@@ -16,7 +25,7 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 <see cref="SpotifyCountryCode"/> or the
         /// string `from_token`. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>Task of Track</returns>
-        Task<Track> GetTrack(string trackId, string market = null);
+        public Task<Track> GetTrack(string trackId, string market = null) => GetTrack<Track>(trackId, market);
 
         /// <summary>
         /// Get Spotify catalog information for a single track identified by its unique Spotify ID.
@@ -26,7 +35,12 @@ namespace SpotifyApi.NetCore
         /// string `from_token`. Provide this parameter if you want to apply Track Relinking.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        Task<T> GetTrack<T>(string trackId, string market = null);
+        public async Task<T> GetTrack<T>(string trackId, string market = null)
+        {
+            string url = $"{BaseUrl}/tracks/{trackId}";
+            if (market != null) url += $"?market={market}";
+            return await GetModel<T>(url);
+        }
 
         #endregion
 
@@ -39,7 +53,7 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 <see cref="SpotifyCountryCode"/> or the
         /// string `from_token`. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>Task of Track[]</returns>
-        Task<Track[]> GetTracks(string[] trackIds, string market = null);
+        public async Task<Track[]> GetTracks(string[] trackIds, string market = null) => await GetTracks<Track[]>(trackIds, market);
 
         /// <summary>
         /// Get Spotify catalog information for multiple tracks based on their Spotify IDs.
@@ -49,32 +63,44 @@ namespace SpotifyApi.NetCore
         /// string `from_token`. Provide this parameter if you want to apply Track Relinking.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        Task<T> GetTracks<T>(string[] trackIds, string market = null);
+        public async Task<T> GetTracks<T>(string[] trackIds, string market = null)
+        {
+            if (trackIds == null || trackIds.Length ==0) throw new ArgumentNullException("trackIds");
+            string url = $"{BaseUrl}/tracks/?{string.Join(",", trackIds)}";
+            if (market != null) url += $"&market={market}";
+            return await GetModel<T>(url);
+        }
 
         #endregion
 
-        #region GetTrackAudioAnalysis
+        public Task<TrackAudioAnalysis> GetTrackAudioAnalysis(string trackId)
+        {
+            throw new NotImplementedException();
+        }
 
-        Task<TrackAudioAnalysis> GetTrackAudioAnalysis(string trackId);
+        public Task<T> GetTrackAudioAnalysis<T>(string trackId)
+        {
+            throw new NotImplementedException();
+        }
 
-        Task<T> GetTrackAudioAnalysis<T>(string trackId);
+        public Task<TrackAudioFeatures> GetTrackAudioFeatures(string trackId)
+        {
+            throw new NotImplementedException();
+        }
 
-        #endregion
+        public Task<T> GetTrackAudioFeatures<T>(string trackId)
+        {
+            throw new NotImplementedException();
+        }
 
-        #region GetTrackAudioFeatures
+        public Task<TrackAudioFeatures> GetTracksAudioFeatures(string[] trackId)
+        {
+            throw new NotImplementedException();
+        }
 
-        Task<TrackAudioFeatures> GetTrackAudioFeatures(string trackId);
-
-        Task<T> GetTrackAudioFeatures<T>(string trackId);
-
-        #endregion
-
-        #region GetTracksAudioFeatures
-
-        Task<TrackAudioFeatures> GetTracksAudioFeatures(string[] trackId);
-
-        Task<T> GetTracksAudioFeatures<T>(string[] trackId);
-
-        #endregion
+        public Task<T> GetTracksAudioFeatures<T>(string[] trackId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
