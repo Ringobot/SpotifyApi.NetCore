@@ -52,8 +52,8 @@ See tests and samples for more usage examples.
 
 ## Spotify Web API Coverage
 
-| Spotify API | Endpoints | Implemented | % |
-| :---------- | --------: | ----------: | -: |
+| Spotify API | Endpoints | Implemented | % | |
+| :---------- | --------: | ----------: | -: | - |
 | Albums | 3 | 0 | 0% |
 | Artists | 5 | 4 | 80% |
 | Browse | 6 | 0.5 | 8% |
@@ -63,8 +63,8 @@ See tests and samples for more usage examples.
 | Player | 13 | 2 | 15% |
 | Playlists | 12 | 1.5 | 13% |
 | Search | 1 | 0 | 0% |
-| Tracks | 5 | 0 | 0% |
+| Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 0 | 0% |
-| **Total** | **63** | **8** | **13%** |
+| **Total** | **63** | **13** | **21%** |
 
 Feature requests welcomed! (log an issue)
