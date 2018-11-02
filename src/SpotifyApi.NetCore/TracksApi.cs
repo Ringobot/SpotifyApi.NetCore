@@ -66,9 +66,9 @@ namespace SpotifyApi.NetCore
         public async Task<T> GetTracks<T>(string[] trackIds, string market = null)
         {
             if (trackIds == null || trackIds.Length ==0) throw new ArgumentNullException("trackIds");
-            string url = $"{BaseUrl}/tracks/?{string.Join(",", trackIds)}";
+            string url = $"{BaseUrl}/tracks/?ids={string.Join(",", trackIds)}";
             if (market != null) url += $"&market={market}";
-            return await GetModel<T>(url);
+            return await GetModelFromProperty<T>(url,"tracks");
         }
 
         #endregion

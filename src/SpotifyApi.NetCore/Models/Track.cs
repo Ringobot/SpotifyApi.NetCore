@@ -12,6 +12,9 @@ namespace SpotifyApi.NetCore
         [JsonProperty("artists")]
         public ArtistSummary[] Artists { get; set; }
 
+        [JsonProperty("available_markets")]
+        public string[] AvailableMarkets { get; set; }
+
         [JsonProperty("disc_number")]
         public int DiscNumber { get; set; }
 
@@ -90,6 +93,9 @@ namespace SpotifyApi.NetCore
 
         [JsonProperty("artists")]
         public ArtistSummary[] Artists { get; set; }
+
+        [JsonProperty("available_markets")]
+        public string[] AvailableMarkets { get; set; }
 
         [JsonProperty("external_urls")]
         public ExternalUrls ExternalUrls { get; set; }
