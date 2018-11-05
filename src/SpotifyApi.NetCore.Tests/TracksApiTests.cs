@@ -123,5 +123,64 @@ namespace SpotifyApi.NetCore.Tests
             // assert
             Assert.IsNull(response[0].AvailableMarkets);
         }
+
+        [TestCategory("Integration")]
+        //[TestMethod] // not a reliable test - intermittent gateway timeout on Spotify end
+        public async Task GetTrackAudioAnalysis_TrackId_BarsIsNotNullOrZero()
+        {
+            // arrange
+            const string trackId = "5lA3pwMkBdd24StM90QrNR";
+
+            var http = new HttpClient();
+            http.Timeout = TimeSpan.FromSeconds(30);
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new TracksApi(http, accounts);
+
+            // act
+            var response = await api.GetTrackAudioAnalysis(trackId);
+
+            // assert
+            Assert.IsTrue(response.Bars != null && response.Bars.Length > 0);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetTrackAudioFeatures_TrackId_TempoNotZero()
+        {
+            // arrange
+            const string trackId = "5lA3pwMkBdd24StM90QrNR";
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new TracksApi(http, accounts);
+
+            // act
+            var response = await api.GetTrackAudioFeatures(trackId);
+
+            // assert
+            Assert.IsTrue(response.Tempo != 0);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetTracksAudioFeatures_TrackIds_ThreeFeatures()
+        {
+            // arrange
+            string[] trackIds = new[] { "5lA3pwMkBdd24StM90QrNR", "20I6sIOMTCkB6w7ryavxtO", "7xGfFoTpQ2E7fRF5lN10tr" };
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new TracksApi(http, accounts);
+
+            // act
+            var response = await api.GetTracksAudioFeatures(trackIds);
+
+            // assert
+            Assert.IsTrue(response != null && response.Length == 3 );
+        }
+
     }
 }

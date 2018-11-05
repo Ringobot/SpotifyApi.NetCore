@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore
             if (response.Content == null) return null;
 
             // if not JSON content type
-            if (response.Content.Headers.ContentType.MediaType != "application/json") return null;
+            if (response.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await response.Content.ReadAsStringAsync();
 

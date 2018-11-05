@@ -11,12 +11,6 @@ namespace SpotifyApi.NetCore
 
     public partial class TrackAudioFeatures
     {
-        [JsonProperty("audio_features")]
-        public TrackAudioFeature[] AudioFeatures { get; set; }
-    }
-
-    public partial class TrackAudioFeature
-    {
         [JsonProperty("danceability")]
         public double Danceability { get; set; }
 
