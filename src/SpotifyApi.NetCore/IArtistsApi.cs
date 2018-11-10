@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
@@ -94,6 +95,7 @@ namespace SpotifyApi.NetCore
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        [Obsolete("Is replaced by ISearchApi.Search<T>(). Will be deprecated in next major version")]
         Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset);
 
         #endregion
