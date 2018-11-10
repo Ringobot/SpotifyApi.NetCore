@@ -126,8 +126,7 @@ namespace SpotifyApi.NetCore
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
         /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
-        /// is specified, only artists, albums, and tracks with content that is playable in that market 
-        /// is returned. Note: Playlist results are not affected by the market parameter.</param>
+        /// is specified, only tracks with content that is playable in that market is returned. </param>
         /// <returns>Task of <see cref="SearchResult" /></returns>
         Task<SearchResult> SearchTracks(string query, string market);
 
@@ -137,12 +136,9 @@ namespace SpotifyApi.NetCore
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
         /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
-        /// is specified, only artists, albums, and tracks with content that is playable in that market 
-        /// is returned. Note: Playlist results are not affected by the market parameter.</param>
+        /// is specified, only tracks with content that is playable in that market is returned. </param>
         /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
-        /// Maximum: 50. Note: The limit is applied within each type, not on the total response. For
-        /// example, if the limit value is 3 and the type is `artist,album`, the response contains 3
-        /// artists and 3 albums.</param>
+        /// Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
