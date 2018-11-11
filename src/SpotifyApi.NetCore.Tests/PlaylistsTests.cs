@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -69,6 +70,24 @@ namespace SpotifyApi.NetCore.Tests
             // Assert
             mockAccounts.Verify(a => a.GetAppAccessToken());
         }
-	
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task SearchPlaylists_PlaylistName_AnyItems()
+        {
+            // arrange
+            const string query = "dance";
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new PlaylistsApi(http, accounts);
+
+            // act
+            var response = await api.SearchPlaylists(query);
+
+            // assert
+            Assert.IsTrue(response.Items.Any());
+        }
     }
 }
