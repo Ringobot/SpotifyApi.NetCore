@@ -20,7 +20,7 @@ steps:
 - script: |
     dotnet build src/SpotifyApi.NetCore --configuration $(buildConfiguration)
     dotnet test src/SpotifyApi.NetCore.Tests --configuration $(buildConfiguration) --logger trx --filter "TestCategory!=Integration"
-    dotnet publish src/SpotifyApi.NetCore --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
+    dotnet publish src/SpotifyApi.NetCore --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
 
 - task: PublishTestResults@2
   inputs:
@@ -29,4 +29,4 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs: 
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    pathtoPublish: $(Build.ArtifactStagingDirectory)
