@@ -42,6 +42,9 @@ namespace SpotifyApi.NetCore
 
         [JsonProperty("total")]
         public int Total { get; set; }
+
+        [Obsolete("This shim for ArtistsApi.SearchArtists will be removed in next major release")]
+        public ArtistsSearchResult Artists { get { return this; } }
     }
 
     public partial class AlbumsSearchResult

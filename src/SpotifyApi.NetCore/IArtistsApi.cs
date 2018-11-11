@@ -56,8 +56,8 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines
         /// for more info.
         /// </param>
-        /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
-        Task<SearchResult> SearchArtists(string artist);
+        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
+        Task<ArtistsSearchResult> SearchArtists(string artist);
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -67,8 +67,8 @@ namespace SpotifyApi.NetCore
         /// for more info.
         /// </param>
         /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
-        /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
-        Task<SearchResult> SearchArtists(string artist, int limit);
+        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
+        Task<ArtistsSearchResult> SearchArtists(string artist, int limit);
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -80,8 +80,8 @@ namespace SpotifyApi.NetCore
         /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
         /// <param name="offset">The index of the first result to return. Default: 0 (the first result). 
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
-        /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
-        Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset);
+        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
+        Task<ArtistsSearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset);
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.

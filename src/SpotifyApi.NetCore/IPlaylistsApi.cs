@@ -31,8 +31,8 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
-        /// <returns>Task of <see cref="SearchResult" /></returns>
-        Task<SearchResult> SearchPlaylists(string query);
+        /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
+        Task<PlaylistsSearchResult> SearchPlaylists(string query);
 
         /// <summary>
         /// Get Spotify Catalog information about tracks that match a keyword string.
@@ -44,8 +44,8 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
-        /// <returns>Task of <see cref="SearchResult" /></returns>
-        Task<SearchResult> SearchPlaylists(string query, (int limit, int offset) limitOffset);
+        /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
+        Task<PlaylistsSearchResult> SearchPlaylists(string query, (int limit, int offset) limitOffset);
 
         #endregion
     }

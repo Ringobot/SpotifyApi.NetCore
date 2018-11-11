@@ -146,8 +146,8 @@ namespace SpotifyApi.NetCore
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
         /// <returns>Task of <see cref="SearchResult" /></returns>
-        public async Task<SearchResult> SearchTracks(string query)
-            => await SearchApi.Search<SearchResult>(query, new string[] { SpotifySearchTypes.Track }, null, (0, 0));
+        public async Task<TracksSearchResult> SearchTracks(string query)
+            => (await SearchApi.Search(query, SpotifySearchTypes.Track, null, (0, 0))).Tracks;
 
         /// <summary>
         /// Get Spotify Catalog information about tracks that match a keyword string.
@@ -157,8 +157,8 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
         /// is specified, only tracks with content that is playable in that market is returned. </param>
         /// <returns>Task of <see cref="SearchResult" /></returns>
-        public async Task<SearchResult> SearchTracks(string query, string market)
-            => await SearchApi.Search<SearchResult>(query, new string[] { SpotifySearchTypes.Track }, market, (0, 0));
+        public async Task<TracksSearchResult> SearchTracks(string query, string market)
+            => (await SearchApi.Search(query, SpotifySearchTypes.Track, market, (0, 0))).Tracks;
 
         /// <summary>
         /// Get Spotify Catalog information about tracks that match a keyword string.
@@ -173,8 +173,8 @@ namespace SpotifyApi.NetCore
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
         /// <returns>Task of <see cref="SearchResult" /></returns>
-        public async Task<SearchResult> SearchTracks(string query, string market, (int limit, int offset) limitOffset)
-            => await SearchApi.Search<SearchResult>(query, new string[] { SpotifySearchTypes.Track }, market, limitOffset);
+        public async Task<TracksSearchResult> SearchTracks(string query, string market, (int limit, int offset) limitOffset)
+            => (await SearchApi.Search(query, SpotifySearchTypes.Track, market, limitOffset)).Tracks;
 
         #endregion
     }
