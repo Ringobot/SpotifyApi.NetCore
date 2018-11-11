@@ -52,6 +52,10 @@ See tests and samples for more usage examples.
 | `src/SpotifyApi.NetCore.Tests` | Tests |
 | `src/samples/SpotifyVue` | Sample project using ASP.NET Core + Vue.js. [Try the  demo](https://spotifyaspnetcore.z5.web.core.windows.net/). |
 
+## Build status
+
+[![Build Status](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_apis/build/status/SpotifyApi.NetCore-Build)](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_build/latest?definitionId=9)
+
 ## Spotify Web API Coverage
 
 | Spotify API | Endpoints | Implemented | % | |
