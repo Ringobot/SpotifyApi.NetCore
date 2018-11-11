@@ -1,6 +1,5 @@
 # Build ASP.NET Core project using Azure Pipelines
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
-name: SpotifyApi.NetCore-Build
 
 trigger:
   branches:
@@ -21,7 +20,7 @@ steps:
 - script: |
     dotnet build src/SpotifyApi.NetCore --configuration $(buildConfiguration)
     dotnet test src/SpotifyApi.NetCore.Tests --configuration $(buildConfiguration) --logger trx --filter "TestCategory!=Integration"
-    dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
+    dotnet publish src/SpotifyApi.NetCore --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
 
 - task: PublishTestResults@2
   inputs:
