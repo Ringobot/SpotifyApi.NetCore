@@ -30,7 +30,7 @@ namespace SpotifyApi.NetCore
         public string Name { get; set; }
 
         [JsonProperty("release_date")]
-        public DateTimeOffset ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
 
         [JsonProperty("release_date_precision")]
         public string ReleaseDatePrecision { get; set; }

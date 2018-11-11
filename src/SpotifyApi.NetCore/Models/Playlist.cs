@@ -41,7 +41,7 @@ namespace SpotifyApi.NetCore
         public object PrimaryColor { get; set; }
 
         [JsonProperty("public")]
-        public bool Public { get; set; }
+        public bool? Public { get; set; }
 
         [JsonProperty("snapshot_id")]
         public string SnapshotId { get; set; }
@@ -87,7 +87,7 @@ namespace SpotifyApi.NetCore
         public object PrimaryColor { get; set; }
 
         [JsonProperty("public")]
-        public bool Public { get; set; }
+        public bool? Public { get; set; }
 
         [JsonProperty("snapshot_id")]
         public string SnapshotId { get; set; }

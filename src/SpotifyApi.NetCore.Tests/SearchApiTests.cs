@@ -13,6 +13,7 @@ namespace SpotifyApi.NetCore.Tests
         {
             // arrange
             const string query = "prince";
+            string[] types = new[] { SpotifySearchTypes.Artist };
 
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
@@ -20,7 +21,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, new []{SpotifySearchTypes.Artist}, null, (0,0));
+            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
 
             // assert
             Assert.AreEqual("Prince", response.Artists.Items[0].Name);
@@ -28,10 +29,11 @@ namespace SpotifyApi.NetCore.Tests
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task Search_RevolverAlbumType_FirstAlbumResultIsRevolver()
+        public async Task Search_RevolverAlbumType_AlbumItemsGreaterThanZero()
         {
             // arrange
             const string query = "revolver";
+            string[] types = new[] { SpotifySearchTypes.Album };
 
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
@@ -39,12 +41,136 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, new []{SpotifySearchTypes.Album}, null, (0,0));
+            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
 
             // assert
-            Assert.AreEqual("Revolver", response.Artists.Items[0].Name);
+            Assert.IsTrue(response.Albums.Items.Length > 0);
         }
 
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task Search_LucyQueryTrackType_TracksItemsGreaterThanZero()
+        {
+            // arrange
+            const string query = "lucy";
+            string[] types = new[] { SpotifySearchTypes.Track };
 
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new SearchApi(http, accounts);
+
+            // act
+            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+
+            // assert
+            Assert.IsTrue(response.Tracks.Items.Length > 0);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task Search_DanceQueryPlaylistType_PlaylistsItemsGreaterThanZero()
+        {
+            // arrange
+            const string query = "dance";
+            string[] types = new[] { SpotifySearchTypes.Playlist };
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new SearchApi(http, accounts);
+
+            // act
+            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+
+            // assert
+            Assert.IsTrue(response.Playlists.Items.Length > 0);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task Search_RevivalQueryAlbumArtistTrackTypes_AlbumsArtistsTracksItemsGreaterThanZero()
+        {
+            // arrange
+            const string query = "revival";
+            string[] types = new[] { SpotifySearchTypes.Album, SpotifySearchTypes.Artist, SpotifySearchTypes.Track };
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new SearchApi(http, accounts);
+
+            // act
+            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+
+            // assert
+            Assert.IsTrue(response.Albums.Items.Length > 0
+                && response.Artists.Items.Length > 0
+                && response.Tracks.Items.Length > 0);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task Search_Limit5_TracksItemsLengthEquals5()
+        {
+            // arrange
+            const string query = "dance";
+            string[] types = new[] { SpotifySearchTypes.Track };
+            var limitOffset = (5, 0);
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new SearchApi(http, accounts);
+
+            // act
+            var response = await api.Search<SearchResult>(query, types, null, limitOffset);
+
+            // assert
+            Assert.AreEqual(limitOffset.Item1, response.Tracks.Items.Length);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task Search_Limit5Offset5_TracksOffsetEquals5()
+        {
+            // arrange
+            const string query = "dance";
+            string[] types = new[] { SpotifySearchTypes.Track };
+            var limitOffset = (5, 9);
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new SearchApi(http, accounts);
+
+            // act
+            var response = await api.Search<SearchResult>(query, types, null, limitOffset);
+
+            // assert
+            Assert.AreEqual(limitOffset.Item2, response.Tracks.Offset);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task Search_TrackIsrc_CorrectTrackReturned()
+        {
+            // arrange
+            const string isrc = "USUM71703861";
+            const string query = "isrc:" + isrc;
+            string[] types = new[] { SpotifySearchTypes.Track };
+            var limitOffset = (1, 0);
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new SearchApi(http, accounts);
+
+            // act
+            var response = await api.Search<SearchResult>(query, types, null, limitOffset);
+
+            // assert
+            Assert.AreEqual(isrc, response.Tracks.Items[0].ExternalIds.Isrc);
+        }
     }
 }

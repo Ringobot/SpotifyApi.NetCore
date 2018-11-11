@@ -37,13 +37,13 @@ namespace SpotifyApi.NetCore
     /// </remarks>
     public partial class Image
     {
-        [JsonProperty("height")]
+        [JsonProperty("height", NullValueHandling = NullValueHandling.Ignore)]
         public int Height { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }
 
-        [JsonProperty("width")]
+        [JsonProperty("width", NullValueHandling = NullValueHandling.Ignore)]
         public int Width { get; set; }
     }
 
