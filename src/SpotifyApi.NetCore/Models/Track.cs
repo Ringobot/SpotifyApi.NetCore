@@ -10,7 +10,7 @@ namespace SpotifyApi.NetCore
         public Album Album { get; set; }
 
         [JsonProperty("artists")]
-        public ArtistSummary[] Artists { get; set; }
+        public Artist[] Artists { get; set; }
 
         [JsonProperty("available_markets")]
         public string[] AvailableMarkets { get; set; }
@@ -39,6 +39,9 @@ namespace SpotifyApi.NetCore
         [JsonProperty("is_playable")]
         public bool IsPlayable { get; set; }
 
+        [JsonProperty("is_local")]
+        public bool IsLocal { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -58,86 +61,10 @@ namespace SpotifyApi.NetCore
         public string Uri { get; set; }
     }
 
-    public partial class TrackItem
-    {
-        [JsonProperty("added_at")]
-        public DateTimeOffset AddedAt { get; set; }
-
-        [JsonProperty("added_by")]
-        public Owner AddedBy { get; set; }
-
-        [JsonProperty("is_local")]
-        public bool IsLocal { get; set; }
-
-        [JsonProperty("primary_color")]
-        public string PrimaryColor { get; set; }
-
-        [JsonProperty("track")]
-        public Track Track { get; set; }
-
-        [JsonProperty("video_thumbnail")]
-        public VideoThumbnail VideoThumbnail { get; set; }
-    }
-
     public partial class VideoThumbnail
     {
         [JsonProperty("url")]
         public string Url { get; set; }
-    }
-
-
-    public partial class Album
-    {
-        [JsonProperty("album_type")]
-        public string AlbumType { get; set; }
-
-        [JsonProperty("artists")]
-        public ArtistSummary[] Artists { get; set; }
-
-        [JsonProperty("available_markets")]
-        public string[] AvailableMarkets { get; set; }
-
-        [JsonProperty("external_urls")]
-        public ExternalUrls ExternalUrls { get; set; }
-
-        [JsonProperty("href")]
-        public string Href { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("images")]
-        public Image[] Images { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        [JsonProperty("uri")]
-        public string Uri { get; set; }
-    }
-
-    public partial class ArtistSummary
-    {
-        [JsonProperty("external_urls")]
-        public ExternalUrls ExternalUrls { get; set; }
-
-        [JsonProperty("href")]
-        public string Href { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        [JsonProperty("uri")]
-        public string Uri { get; set; }
     }
 
     public partial class ExternalIds

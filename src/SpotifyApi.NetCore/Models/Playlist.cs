@@ -4,6 +4,10 @@ using Newtonsoft.Json;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>Playlist object (full)</summary>
+    /// <remarks>
+    /// https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-object-full 
+    /// </remarks>
     public partial class Playlist
     {
         [JsonProperty("collaborative")]
@@ -31,13 +35,59 @@ namespace SpotifyApi.NetCore
         public string Name { get; set; }
 
         [JsonProperty("owner")]
-        public Owner Owner { get; set; }
+        public User Owner { get; set; }
 
         [JsonProperty("primary_color")]
         public object PrimaryColor { get; set; }
 
         [JsonProperty("public")]
-        public bool Public { get; set; }
+        public bool? Public { get; set; }
+
+        [JsonProperty("snapshot_id")]
+        public string SnapshotId { get; set; }
+
+        [JsonProperty("tracks")]
+        public PlaylistTrack[] Tracks { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("uri")]
+        public string Uri { get; set; }
+    }
+
+    /// <summary>Playlist object (simplified)</summary>
+    /// <remarks>
+    /// https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-object-simplified 
+    /// </remarks>
+    public partial class PlaylistSimplified
+    {
+        [JsonProperty("collaborative")]
+        public bool Collaborative { get; set; }
+
+        [JsonProperty("external_urls")]
+        public ExternalUrls ExternalUrls { get; set; }
+
+        [JsonProperty("href")]
+        public string Href { get; set; }
+
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("images")]
+        public Image[] Images { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("owner")]
+        public User Owner { get; set; }
+
+        [JsonProperty("primary_color")]
+        public object PrimaryColor { get; set; }
+
+        [JsonProperty("public")]
+        public bool? Public { get; set; }
 
         [JsonProperty("snapshot_id")]
         public string SnapshotId { get; set; }
@@ -52,51 +102,47 @@ namespace SpotifyApi.NetCore
         public string Uri { get; set; }
     }
 
-    public partial class Owner
-    {
-        [JsonProperty("display_name", NullValueHandling = NullValueHandling.Ignore)]
-        public string DisplayName { get; set; }
-
-        [JsonProperty("external_urls")]
-        public ExternalUrls ExternalUrls { get; set; }
-
-        [JsonProperty("href")]
-        public string Href { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        [JsonProperty("uri")]
-        public string Uri { get; set; }
-
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    }
-
+    /// <summary>
+    /// A collection containing a link ( href ) to the Web API endpoint where full details of the playlist’s 
+    /// tracks can be retrieved, along with the total number of tracks in the playlist.
+    /// </summary>
+    /// <remarks>
+    /// https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-object-simplified
+    /// </remarks>
     public partial class PlaylistTracks
     {
         [JsonProperty("href")]
         public string Href { get; set; }
 
-        [JsonProperty("items")]
-        public TrackItem[] Items { get; set; }
-
-        [JsonProperty("limit")]
-        public long Limit { get; set; }
-
-        [JsonProperty("next")]
-        public object Next { get; set; }
-
-        [JsonProperty("offset")]
-        public long Offset { get; set; }
-
-        [JsonProperty("previous")]
-        public object Previous { get; set; }
-
         [JsonProperty("total")]
-        public long Total { get; set; }
+        public int Total { get; set; }
     }
+
+    /// <summary>
+    /// Playlist track object
+    /// </summary>
+    /// <remarks>
+    /// https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-track-object
+    /// </remarks>
+    public partial class PlaylistTrack
+    {
+        [JsonProperty("added_at")]
+        public DateTimeOffset AddedAt { get; set; }
+
+        [JsonProperty("added_by")]
+        public User AddedBy { get; set; }
+
+        [JsonProperty("is_local")]
+        public bool IsLocal { get; set; }
+
+        [JsonProperty("primary_color")]
+        public string PrimaryColor { get; set; }
+
+        [JsonProperty("track")]
+        public Track Track { get; set; }
+
+        [JsonProperty("video_thumbnail")]
+        public VideoThumbnail VideoThumbnail { get; set; }
+    }
+
 }
