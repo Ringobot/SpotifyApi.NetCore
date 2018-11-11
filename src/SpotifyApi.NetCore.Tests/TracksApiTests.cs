@@ -202,5 +202,25 @@ namespace SpotifyApi.NetCore.Tests
             Assert.AreEqual(isrc, response.Items[0].ExternalIds.Isrc);
         }
 
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task SearchTracks_NonExistentIsrc_ItemsZero()
+        {
+            // arrange
+            const string isrc = "NOPE12345678";
+            const string query = "isrc:" + isrc;
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new TracksApi(http, accounts);
+
+            // act
+            var response = await api.SearchTracks(query);
+
+            // assert
+            Assert.AreEqual(0, response.Items.Length);
+        }
+
     }
 }
