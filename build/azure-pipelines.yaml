@@ -10,7 +10,7 @@ variables:
 steps:
 - script: |
     dotnet build src/SpotifyApi.NetCore --configuration $(buildConfiguration)
-    dotnet test src/SpotifyApi.NetCore.Tests --configuration $(buildConfiguration) --logger trx
+    dotnet test src/SpotifyApi.NetCore.Tests --configuration $(buildConfiguration) --logger trx --filter "TestCategory!=Integration"
     dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
 
 - task: PublishTestResults@2
