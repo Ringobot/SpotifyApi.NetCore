@@ -11,7 +11,7 @@ namespace SpotifyApi.NetCore
         /// Get a list of a user's playlists.
         /// </summary>
         /// <returns>The JSON result deserialized to object (as dynamic).</returns>
-        Task<PlaylistsResult> GetPlaylists(string username);
+        Task<PlaylistsSearchResult> GetPlaylists(string username);
         Task<T> GetPlaylists<T>(string username);
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace SpotifyApi.NetCore
         Task<Playlist> GetPlaylist(string username, string playlistId);
         Task<T> GetPlaylist<T>(string username, string playlistId);
 
-        Task<PlaylistTracksResult> GetTracks(string username, string playlistId);
+        Task<TracksSearchResult> GetTracks(string username, string playlistId);
         Task<T> GetTracks<T>(string username, string playlistId);
 
         #region SearchPlaylists

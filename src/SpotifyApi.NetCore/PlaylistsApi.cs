@@ -30,8 +30,8 @@ namespace SpotifyApi.NetCore
             return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists");
         }
 
-        public async Task<PlaylistsResult> GetPlaylists(string username)
-            => await GetPlaylists<PlaylistsResult>(username);
+        public async Task<PlaylistsSearchResult> GetPlaylists(string username)
+            => await GetPlaylists<PlaylistsSearchResult>(username);
 
         public async Task<Playlist> GetPlaylist(string username, string playlistId)
             => await GetPlaylist<Playlist>(username, playlistId);
@@ -48,8 +48,8 @@ namespace SpotifyApi.NetCore
         /// <param name="username">The user's Spotify user ID.</param>
         /// <param name="playlistId">The Spotify ID for the playlist.</param>
         /// <returns></returns>
-        public async Task<PlaylistTracksResult> GetTracks(string username, string playlistId)
-            => await GetTracks<PlaylistTracksResult>(username, playlistId);
+        public async Task<TracksSearchResult> GetTracks(string username, string playlistId)
+            => await GetTracks<TracksSearchResult>(username, playlistId);
 
         /// <summary>
         /// Get full details of the tracks of a playlist owned by a Spotify user.
