@@ -1,5 +1,15 @@
 # Build ASP.NET Core project using Azure Pipelines
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
+name: SpotifyApi.NetCore-Build
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - src/SpotifyApi.NetCore/*
+    - src/SpotifyApi.NetCore.Tests/*
 
 pool:
   vmImage: 'vs2017-win2016'
