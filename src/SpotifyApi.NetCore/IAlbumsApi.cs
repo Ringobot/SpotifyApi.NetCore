@@ -139,6 +139,5 @@ namespace SpotifyApi.NetCore
 
         #endregion
 
-
     }
 }
