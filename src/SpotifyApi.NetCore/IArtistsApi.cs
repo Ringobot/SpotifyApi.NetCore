@@ -57,7 +57,7 @@ namespace SpotifyApi.NetCore
         /// for more info.
         /// </param>
         /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
-        Task<ArtistsSearchResult> SearchArtists(string artist);
+        Task<SearchResult> SearchArtists(string artist);
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -68,7 +68,7 @@ namespace SpotifyApi.NetCore
         /// </param>
         /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
         /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
-        Task<ArtistsSearchResult> SearchArtists(string artist, int limit);
+        Task<SearchResult> SearchArtists(string artist, int limit);
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -81,7 +81,7 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">The index of the first result to return. Default: 0 (the first result). 
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
         /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
-        Task<ArtistsSearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset);
+        Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset);
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.

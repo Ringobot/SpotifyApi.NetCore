@@ -26,7 +26,7 @@ namespace SpotifyApi.NetCore
         public string Href { get; set; }
 
         [JsonProperty("items")]
-        public Artist[] Items { get; set; }
+        public ArtistItem[] Items { get; set; }
 
         [JsonProperty("limit")]
         public int Limit { get; set; }
@@ -42,9 +42,6 @@ namespace SpotifyApi.NetCore
 
         [JsonProperty("total")]
         public int Total { get; set; }
-
-        [Obsolete("This shim for ArtistsApi.SearchArtists will be removed in next major release")]
-        public ArtistsSearchResult Artists { get { return this; } }
     }
 
     public partial class AlbumsSearchResult
