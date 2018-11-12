@@ -1,5 +1,6 @@
 ## Basic usage
 
-- Replace SpotifyClientId and SpotifyClientSecret inside appsettings.local.json
-- 'dotnet test'
+- Add "appsettings.local.json" to this directory.
+- Add "SpotifyClientId" and "SpotifyClientSecret" inside appsettings.local.json
+- run 'dotnet test'
 
