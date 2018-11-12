@@ -72,6 +72,25 @@ namespace SpotifyApi.NetCore.Tests
 
         [TestCategory("Integration")]
         [TestMethod]
+        public async Task SearchPlaylists_PlaylistName_AnyItems()
+        {
+            // arrange
+            const string query = "dance";
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new PlaylistsApi(http, accounts);
+
+            // act
+            var response = await api.SearchPlaylists(query);
+
+            // assert
+            Assert.IsTrue(response.Items.Any());
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
         public async Task GetTracks_ReturnsValidPlaylistTracks()
         {
             // Arrange
