@@ -48,8 +48,8 @@ namespace SpotifyApi.NetCore
         /// <param name="username">The user's Spotify user ID.</param>
         /// <param name="playlistId">The Spotify ID for the playlist.</param>
         /// <returns></returns>
-        public async Task<TracksSearchResult> GetTracks(string username, string playlistId)
-            => await GetTracks<TracksSearchResult>(username, playlistId);
+        public async Task<PlaylistTracksSearchResult> GetTracks(string username, string playlistId)
+            => await GetTracks<PlaylistTracksSearchResult>(username, playlistId);
 
         /// <summary>
         /// Get full details of the tracks of a playlist owned by a Spotify user.

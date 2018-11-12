@@ -21,7 +21,7 @@ namespace SpotifyApi.NetCore
         Task<Playlist> GetPlaylist(string username, string playlistId);
         Task<T> GetPlaylist<T>(string username, string playlistId);
 
-        Task<TracksSearchResult> GetTracks(string username, string playlistId);
+        Task<PlaylistTracksSearchResult> GetTracks(string username, string playlistId);
         Task<T> GetTracks<T>(string username, string playlistId);
 
         #region SearchPlaylists
