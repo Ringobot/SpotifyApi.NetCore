@@ -4,15 +4,3 @@ obj
 appsettings.*.json
 _*
 node_modules
-src/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/storage.ide-wal
-src/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/storage.ide-shm
-src/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/storage.ide
-src/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/db.lock
-src/.vs/SpotifyApi.NetCore/v15/.suo
-src/.vs/SpotifyApi.NetCore/DesignTimeBuild/.dtbcache
-src/.vs/config/applicationhost.config
-src/SpotifyApi.NetCore/.vs/SpotifyApi.NetCore/DesignTimeBuild/.dtbcache
-src/SpotifyApi.NetCore/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/db.lock
-src/SpotifyApi.NetCore/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/storage.ide
-src/SpotifyApi.NetCore/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/storage.ide-shm
-src/SpotifyApi.NetCore/.vs/SpotifyApi.NetCore/v15/Server/sqlite3/storage.ide-wal
