@@ -1,0 +1,32 @@
+# Build ASP.NET Core project using Azure Pipelines
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - src/SpotifyApi.NetCore/*
+    - src/SpotifyApi.NetCore.Tests/*
+
+pool:
+  vmImage: 'vs2017-win2016'
+  
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- script: |
+    dotnet build src/SpotifyApi.NetCore --configuration $(buildConfiguration)
+    dotnet test src/SpotifyApi.NetCore.Tests --configuration $(buildConfiguration) --logger trx --filter "TestCategory!=Integration"
+    dotnet publish src/SpotifyApi.NetCore --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+
+- task: PublishBuildArtifacts@1
+  inputs: 
+    pathtoPublish: $(Build.ArtifactStagingDirectory)

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
@@ -55,7 +56,7 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines
         /// for more info.
         /// </param>
-        /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
+        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
         Task<SearchResult> SearchArtists(string artist);
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace SpotifyApi.NetCore
         /// for more info.
         /// </param>
         /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
-        /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
+        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
         Task<SearchResult> SearchArtists(string artist, int limit);
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace SpotifyApi.NetCore
         /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
         /// <param name="offset">The index of the first result to return. Default: 0 (the first result). 
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
-        /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
+        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
         Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset);
 
         /// <summary>
@@ -94,6 +95,7 @@ namespace SpotifyApi.NetCore
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        [Obsolete("Is replaced by ISearchApi.Search<T>(). Will be deprecated in next major version")]
         Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset);
 
         #endregion

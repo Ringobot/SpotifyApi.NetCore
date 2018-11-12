@@ -2,12 +2,22 @@
 
 namespace SpotifyApi.NetCore
 {
+    using System;
     using Newtonsoft.Json;
 
     public partial class SearchResult
     {
         [JsonProperty("artists")]
         public ArtistsSearchResult Artists { get; set; }
+
+        [JsonProperty("albums")]
+        public AlbumsSearchResult Albums { get; set; }
+
+        [JsonProperty("tracks")]
+        public TracksSearchResult Tracks { get; set; }
+
+        [JsonProperty("playlists")]
+        public PlaylistsSearchResult Playlists { get; set; }
     }
 
     public partial class ArtistsSearchResult
@@ -34,37 +44,75 @@ namespace SpotifyApi.NetCore
         public int Total { get; set; }
     }
 
-    public partial class ArtistItem
+    public partial class AlbumsSearchResult
     {
-        [JsonProperty("external_urls")]
-        public ExternalUrls ExternalUrls { get; set; }
-
-        [JsonProperty("followers")]
-        public Followers Followers { get; set; }
-
-        [JsonProperty("genres")]
-        public string[] Genres { get; set; }
-
         [JsonProperty("href")]
-        public string Href { get; set; }
+        public Uri Href { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("items")]
+        public Album[] Items { get; set; }
 
-        [JsonProperty("images")]
-        public Image[] Images { get; set; }
+        [JsonProperty("limit")]
+        public long Limit { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("next")]
+        public Uri Next { get; set; }
 
-        [JsonProperty("popularity")]
-        public int Popularity { get; set; }
+        [JsonProperty("offset")]
+        public long Offset { get; set; }
 
-        [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonProperty("previous")]
+        public object Previous { get; set; }
 
-        [JsonProperty("uri")]
-        public string Uri { get; set; }
+        [JsonProperty("total")]
+        public long Total { get; set; }
     }
 
+    public partial class TracksSearchResult
+    {
+        [JsonProperty("href")]
+        public Uri Href { get; set; }
+
+        [JsonProperty("items")]
+        public Track[] Items { get; set; }
+
+        [JsonProperty("limit")]
+        public long Limit { get; set; }
+
+        [JsonProperty("next")]
+        public Uri Next { get; set; }
+
+        [JsonProperty("offset")]
+        public long Offset { get; set; }
+
+        [JsonProperty("previous")]
+        public object Previous { get; set; }
+
+        [JsonProperty("total")]
+        public long Total { get; set; }
+    }
+
+    public partial class PlaylistsSearchResult
+    {
+        [JsonProperty("href")]
+        public Uri Href { get; set; }
+
+        [JsonProperty("items")]
+        public PlaylistSimplified[] Items { get; set; }
+
+        [JsonProperty("limit")]
+        public long Limit { get; set; }
+
+        [JsonProperty("next")]
+        public Uri Next { get; set; }
+
+        [JsonProperty("offset")]
+        public long Offset { get; set; }
+
+        [JsonProperty("previous")]
+        public object Previous { get; set; }
+
+        [JsonProperty("total")]
+        public long Total { get; set; }
+    }
 }

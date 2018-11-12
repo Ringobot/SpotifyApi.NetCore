@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore.Tests
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task GetArtist_ArtistName_FirstArtistNameMatches()
+        public async Task SearchArtists_ArtistName_FirstArtistNameMatches()
         {
             // arrange
             const string artistName = "Radiohead";

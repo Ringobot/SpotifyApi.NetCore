@@ -52,6 +52,10 @@ See tests and samples for more usage examples.
 | `src/SpotifyApi.NetCore.Tests` | Tests |
 | `src/samples/SpotifyVue` | Sample project using ASP.NET Core + Vue.js. [Try the  demo](https://spotifyaspnetcore.z5.web.core.windows.net/). |
 
+## Build status
+
+[![Build Status](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_apis/build/status/SpotifyApi.NetCore-Build)](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_build/latest?definitionId=9)
+
 ## Spotify Web API Coverage
 
 | Spotify API | Endpoints | Implemented | % | |
@@ -64,9 +68,9 @@ See tests and samples for more usage examples.
 | Personalization | 1 | 0 | 0% |
 | Player | 13 | 2 | 15% |
 | Playlists | 12 | 1.5 | 13% |
-| Search | 1 | 0 | 0% |
+| Search | 1 | 1 | 100% | ✅ |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 0 | 0% |
-| **Total** | **63** | **13** | **21%** |
+| **Total** | **63** | **14** | **22%** |
 
 Feature requests welcomed! (log an issue)

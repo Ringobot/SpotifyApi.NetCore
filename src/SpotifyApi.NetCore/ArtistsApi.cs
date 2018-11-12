@@ -12,8 +12,11 @@ namespace SpotifyApi.NetCore
 {
     public class ArtistsApi : SpotifyWebApi, IArtistsApi
     {
+        protected internal virtual ISearchApi SearchApi { get; set; }
+
         public ArtistsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
         {
+            SearchApi = new SearchApi(httpClient, accountsService);
         }
 
         #region GetArtist
@@ -66,7 +69,8 @@ namespace SpotifyApi.NetCore
         /// for more info.
         /// </param>
         /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
-        public async Task<SearchResult> SearchArtists(string artist) => await SearchArtists(artist, (0, 0));
+        public async Task<SearchResult> SearchArtists(string artist)
+            => await SearchApi.Search(artist, SpotifySearchTypes.Artist , null, (0, 0));
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -78,9 +82,7 @@ namespace SpotifyApi.NetCore
         /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
         /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
         public async Task<SearchResult> SearchArtists(string artist, int limit)
-        {
-            return await SearchArtists(artist, (limit, 0));
-        }
+            => await SearchApi.Search(artist, new string[] { SpotifySearchTypes.Artist }, null, (limit, 0));
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -94,7 +96,7 @@ namespace SpotifyApi.NetCore
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
         /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
         public async Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset)
-            => await SearchArtists<SearchResult>(artist, limitOffset);
+            => await SearchApi.Search(artist, new string[] { SpotifySearchTypes.Artist }, null, limitOffset);
 
         /// <summary>
         /// Get Spotify Catalog information about artists that match a keyword string.
@@ -108,22 +110,9 @@ namespace SpotifyApi.NetCore
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        [Obsolete("Is replaced by SearchApi.Search<T>(). Will be deprecated in next major version")]
         public async Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset)
-        {
-            string url = $"{BaseUrl}/search?q={Uri.EscapeDataString(artist)}&type=artist";
-
-            if (limitOffset.limit > 0 && limitOffset.limit <= 50)
-            {
-                url += $"&limit={limitOffset.limit}";
-            }
-
-            if (limitOffset.offset > 0 && limitOffset.offset <= 10000)
-            {
-                url += $"&offset={limitOffset.offset}";
-            }
-
-            return await GetModel<T>(url);
-        }
+            => await SearchApi.Search<T>(artist, new string[] { SpotifySearchTypes.Artist }, null, limitOffset);
 
         #endregion
 
@@ -183,6 +172,6 @@ namespace SpotifyApi.NetCore
         }
 
         #endregion
-        
+
     }
 }
