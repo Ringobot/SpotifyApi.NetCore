@@ -2,6 +2,10 @@
 
 Lightweight .NET Core wrapper for the Spotify Web API.
 
+### Build status
+
+[![Build Status](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_apis/build/status/SpotifyApi.NetCore-Build)](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_build/latest?definitionId=9)
+
 ## Features 
 
 * Targets .NET Standard 2.0
@@ -52,10 +56,6 @@ See tests and samples for more usage examples.
 | `src/SpotifyApi.NetCore.Tests` | Tests |
 | `src/samples/SpotifyVue` | Sample project using ASP.NET Core + Vue.js. [Try the  demo](https://spotifyaspnetcore.z5.web.core.windows.net/). |
 
-## Build status
-
-[![Build Status](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_apis/build/status/SpotifyApi.NetCore-Build)](https://dev.azure.com/daniellarsennz/SpotifyApi.NetCore/_build/latest?definitionId=9)
-
 ## Spotify Web API Coverage
 
 | Spotify API | Endpoints | Implemented | % | |
@@ -74,3 +74,9 @@ See tests and samples for more usage examples.
 | **Total** | **63** | **14** | **22%** |
 
 Feature requests welcomed! (log an issue)
+
+## Contributors
+
+Thanks to @aevansme for his contributions!
+
+Contributions welcomed. Read [CONTRIB.md](./CONTRIB.md)

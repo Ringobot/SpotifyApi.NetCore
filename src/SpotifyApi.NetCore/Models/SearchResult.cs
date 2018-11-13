@@ -115,4 +115,29 @@ namespace SpotifyApi.NetCore
         [JsonProperty("total")]
         public long Total { get; set; }
     }
+
+    [Obsolete("This endpoint that uses this model has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
+    public partial class PlaylistTracksSearchResult
+    {
+        [JsonProperty("href")]
+        public Uri Href { get; set; }
+
+        [JsonProperty("items")]
+        public PlaylistTrack[] Items { get; set; }
+
+        [JsonProperty("limit")]
+        public long Limit { get; set; }
+
+        [JsonProperty("next")]
+        public Uri Next { get; set; }
+
+        [JsonProperty("offset")]
+        public long Offset { get; set; }
+
+        [JsonProperty("previous")]
+        public object Previous { get; set; }
+
+        [JsonProperty("total")]
+        public long Total { get; set; }
+    }
 }
