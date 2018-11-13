@@ -20,6 +20,8 @@ namespace SpotifyApi.NetCore
             SearchApi = new SearchApi(httpClient, accountsService);
         }
 
+        #region GetPlaylists
+
         /// <summary>
         /// Get a list of a user's playlists.
         /// </summary>
@@ -33,13 +35,23 @@ namespace SpotifyApi.NetCore
         public async Task<PlaylistsSearchResult> GetPlaylists(string username)
             => await GetPlaylists<PlaylistsSearchResult>(username);
 
+        #endregion
+
+        #region GetPlaylist
+
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         public async Task<Playlist> GetPlaylist(string username, string playlistId)
             => await GetPlaylist<Playlist>(username, playlistId);
 
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         public Task<T> GetPlaylist<T>(string username, string playlistId)
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region GetTracks
 
         /// <summary>
         /// Get full details of the tracks of a playlist owned by a Spotify user.
@@ -48,6 +60,7 @@ namespace SpotifyApi.NetCore
         /// <param name="username">The user's Spotify user ID.</param>
         /// <param name="playlistId">The Spotify ID for the playlist.</param>
         /// <returns></returns>
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         public async Task<PlaylistTracksSearchResult> GetTracks(string username, string playlistId)
             => await GetTracks<PlaylistTracksSearchResult>(username, playlistId);
 
@@ -59,6 +72,7 @@ namespace SpotifyApi.NetCore
         /// <param name="playlistId">The Spotify ID for the playlist.</param>
         /// <returns></returns>
 
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         public async Task<T> GetTracks<T>(string username, string playlistId)
         {
             if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
@@ -66,6 +80,8 @@ namespace SpotifyApi.NetCore
 
             return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists/{Uri.EscapeDataString(playlistId)}/tracks");
         }
+
+        #endregion
 
         #region SearchPlaylists
 

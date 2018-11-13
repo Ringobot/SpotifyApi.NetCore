@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
@@ -7,6 +8,8 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public interface IPlaylistsApi
     {
+        #region GetPlaylists
+
         /// <summary>
         /// Get a list of a user's playlists.
         /// </summary>
@@ -14,15 +17,31 @@ namespace SpotifyApi.NetCore
         Task<PlaylistsSearchResult> GetPlaylists(string username);
         Task<T> GetPlaylists<T>(string username);
 
+        #endregion
+
+        #region GetPlaylist
+
         /// <summary>
         /// Get a list of a user's playlists.
         /// </summary>
         /// <returns>The JSON result deserialized to dynamic.</returns>
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         Task<Playlist> GetPlaylist(string username, string playlistId);
+        
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         Task<T> GetPlaylist<T>(string username, string playlistId);
 
+        #endregion
+
+        #region GetTracks
+
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         Task<PlaylistTracksSearchResult> GetTracks(string username, string playlistId);
+        
+        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
         Task<T> GetTracks<T>(string username, string playlistId);
+
+        #endregion
 
         #region SearchPlaylists
 
