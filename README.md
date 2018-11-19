@@ -54,7 +54,7 @@ See tests and samples for more usage examples.
 | ---- | ------- |
 | `src/SpotifyApi.NetCore` | SpotifyApi.NetCore project |
 | `src/SpotifyApi.NetCore.Tests` | Tests |
-| `src/samples/SpotifyVue` | Sample project using ASP.NET Core + Vue.js. [Try the  demo](https://spotifyaspnetcore.z5.web.core.windows.net/). |
+| `samples/SpotifyVue` | Sample project using ASP.NET Core + Vue.js. [Try the  demo](https://spotifyaspnetcore.z5.web.core.windows.net/). |
 
 ## Spotify Web API Coverage
 
