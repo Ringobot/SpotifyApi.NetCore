@@ -37,7 +37,7 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks>The access token must have the user-modify-playback-state scope authorized in order to control playback.</remarks>
-        Task PlayTracks(string spotifyTrackId, string deviceId = null, int positionMs = 0);
+        Task PlayTracks(string spotifyTrackId, string deviceId = null, long positionMs = 0);
 
         /// <summary>
         /// BETA. Play Tracks on the user’s active device.
@@ -50,7 +50,7 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks>The access token must have the user-modify-playback-state scope authorized in order to control playback.</remarks>
-        Task PlayTracks(string[] spotifyTrackIds, string deviceId = null, int positionMs = 0);
+        Task PlayTracks(string[] spotifyTrackIds, string deviceId = null, long positionMs = 0);
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks>The access token must have the user-modify-playback-state scope authorized in order to control playback.</remarks>
-        Task PlayAlbum(string albumId, string offsetTrackId = null, string deviceId = null, int positionMs = 0);
+        Task PlayAlbum(string albumId, string offsetTrackId = null, string deviceId = null, long positionMs = 0);
 
         /// <summary>
         /// BETA. Play an Album on the user’s active device.
@@ -82,7 +82,7 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks>The access token must have the user-modify-playback-state scope authorized in order to control playback.</remarks>
-        Task PlayAlbum(string albumId, int offsetPosition = 0, string deviceId = null, int positionMs = 0);
+        Task PlayAlbum(string albumId, int offsetPosition = 0, string deviceId = null, long positionMs = 0);
 
         #endregion
 
@@ -100,7 +100,7 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks>The access token must have the user-modify-playback-state scope authorized in order to control playback.</remarks>
-        Task PlayPlaylist(string playlistId, string offsetTrackId = null, string deviceId = null, int positionMs = 0);
+        Task PlayPlaylist(string playlistId, string offsetTrackId = null, string deviceId = null, long positionMs = 0);
 
         /// <summary>
         /// BETA. Play a Playlist on the user’s active device.
@@ -114,7 +114,7 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks>The access token must have the user-modify-playback-state scope authorized in order to control playback.</remarks>
-        Task PlayPlaylist(string playlistId, int offsetPosition = 0, string deviceId = null, int positionMs = 0);
+        Task PlayPlaylist(string playlistId, int offsetPosition = 0, string deviceId = null, long positionMs = 0);
 
         #endregion
 
@@ -143,12 +143,24 @@ namespace SpotifyApi.NetCore
         /// BETA. Get information about a user’s available devices.
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </summary>
-        /// <returns>Array of <see cref="Device"/></returns>
+        /// <returns>Task of Array of <see cref="Device"/></returns>
         /// <remarks>
         /// The access token must have the `user-read-playback-state` scope authorized in order
         /// to read information.
         /// </remarks>
         Task<Device[]> GetDevices();
+
+        /// <summary>
+        /// BETA. Get information about a user’s available devices.
+        /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
+        /// </summary>
+        /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
+        /// <returns>Task of <see cref="Device"/></returns>
+        /// <remarks>
+        /// The access token must have the `user-read-playback-state` scope authorized in order
+        /// to read information.
+        /// </remarks>
+        Task<T> GetDevices<T>();
 
         #endregion
 
