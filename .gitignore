@@ -4,3 +4,4 @@ obj
 appsettings.*.json
 _*
 node_modules
+.vs

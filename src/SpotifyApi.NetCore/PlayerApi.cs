@@ -21,6 +21,8 @@ namespace SpotifyApi.NetCore
             _userAccounts = userAccountsService;
         }
 
+        #region PlayContext
+
         public async Task Play(string userHash, object data, string deviceId = null)
         {
             // url
@@ -51,6 +53,10 @@ namespace SpotifyApi.NetCore
             await PlayContext(userHash, spotifyUri, null, null);
         }
 
+        #endregion
+
+        #region PlayTracks
+
         public async Task PlayTracks(string userHash, string[] spotifyTrackUris, string offsetTrackUri = null, string deviceId = null)
         {
             dynamic data = JObject.FromObject(new {uris = spotifyTrackUris});
@@ -66,6 +72,10 @@ namespace SpotifyApi.NetCore
             
             await Play(userHash, data, deviceId);
         }
+
+        #endregion
+
+        #region GetDevices
 
         public async Task<Device[]> GetDevices(string userHash) => 
             await GetModelFromProperty<Device[]>($"{BaseUrl}/me/player/devices", "devices", 
@@ -87,5 +97,33 @@ namespace SpotifyApi.NetCore
             
             return response;
         }
+
+        #endregion
+        
+        #region GetCurrentPlaybackInfo
+
+        /// <summary>
+        /// BETA. Get information about the user’s current playback state, including track, track progress, and active device.
+        /// </summary>
+        /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
+        /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <returns>Task of <see cref="CurrentPlaybackContext"/></returns>
+        /// <remarks>The access token must have the `user-read-playback-state` scope authorized in order
+        /// to read information.</remarks>
+        Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(string market = null);
+
+        /// <summary>
+        /// BETA. Get information about the user’s current playback state, including track, track progress, and active device.
+        /// </summary>
+        /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
+        /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
+        /// <returns>Task of T</returns>
+        /// <remarks>The access token must have the `user-read-playback-state` scope authorized in order
+        /// to read information.</remarks>
+        Task<T> GetCurrentPlaybackInfo<T>(string market = null);
+
+        #endregion
+
     }
 }
