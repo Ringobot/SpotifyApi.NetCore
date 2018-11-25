@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net.Http;
+using System.Linq;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -9,7 +10,7 @@ namespace SpotifyApi.NetCore.Tests
     {
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task Search_PrinceArtistType_FirstArtistResultIsPrince()
+        public async Task Search_PrinceArtistType_PrinceFoundInArtistResults()
         {
             // arrange
             const string query = "prince";
@@ -24,7 +25,7 @@ namespace SpotifyApi.NetCore.Tests
             var response = await api.Search<SearchResult>(query, types, null, (0, 0));
 
             // assert
-            Assert.AreEqual("Prince", response.Artists.Items[0].Name);
+            Assert.IsTrue(response.Artists.Items.Any(i=>i.Name == "Prince"));
         }
 
         [TestCategory("Integration")]

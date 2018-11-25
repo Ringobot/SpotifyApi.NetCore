@@ -52,7 +52,7 @@ namespace SpotifyApi.NetCore.Tests
             // act
             var mockPlayerApi = new Mock<IPlayerApi>();
 
-            await mockPlayerApi.Object.PlayAlbum("albumid", bearerToken: tokens.GetToken("userId"));
+            await mockPlayerApi.Object.PlayAlbum("albumid", accessToken: tokens.GetToken("userId"));
             await mockPlayerApi.Object.PlayAlbum("albumid", deviceId: "deviceId");
             await mockPlayerApi.Object.PlayAlbumOffset("albumid", 1);
             await mockPlayerApi.Object.PlayAlbumOffset("albumid", 1, positionMs: 10000);
