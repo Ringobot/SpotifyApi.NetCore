@@ -42,5 +42,31 @@ namespace SpotifyApi.NetCore.Tests
 
             // assert
         }
+
+        //[TestMethod]
+        public async Task Play_UserToken_HowDoesThisWork()
+        {
+            // arrange
+            var tokens = new BearerTokenStore();
+
+            // act
+            var mockPlayerApi = new Mock<IPlayerApi>();
+
+            await mockPlayerApi.Object.PlayAlbum("albumid", bearerToken: tokens.GetToken("userId"));
+            await mockPlayerApi.Object.PlayAlbum("albumid", deviceId: "deviceId");
+            await mockPlayerApi.Object.PlayAlbumOffset("albumid", 1);
+            await mockPlayerApi.Object.PlayAlbumOffset("albumid", 1, positionMs: 10000);
+            await mockPlayerApi.Object.PlayAlbumOffset("albumid", "trackId");
+            await mockPlayerApi.Object.PlayAlbumOffset("albumid", "trackId", positionMs: 10000);
+        }
+
+    }
+
+    class BearerTokenStore
+    {
+        public string GetToken(string user)
+        {
+            return "foo";
+        }
     }
 }
