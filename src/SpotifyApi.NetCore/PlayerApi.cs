@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// BETA. Play a Track on the user’s active device.
         /// </summary>
-        /// <param name="spotifyTrackUri">Spotify track Ids to play</param>
+        /// <param name="trackId">Spotify track Ids to play</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
         /// The access token must have been issued on behalf of a user. The access token must have the 
         /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
@@ -39,13 +39,13 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(string spotifyTrackUri, string accessToken = null, string deviceId = null, 
-            long positionMs = 0) => await PlayTracks(new[] { spotifyTrackUri }, accessToken, deviceId, positionMs);
+        public async Task PlayTracks(string trackId, string accessToken = null, string deviceId = null, 
+            long positionMs = 0) => await PlayTracks(new[] { trackId }, accessToken, deviceId, positionMs);
 
         /// <summary>
         /// BETA. Play Tracks on the user’s active device.
         /// </summary>
-        /// <param name="spotifyTrackUris">Array of the Spotify track Ids to play</param>
+        /// <param name="trackIds">Array of the Spotify track Ids to play</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
         /// The access token must have been issued on behalf of a user. The access token must have the 
         /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
@@ -56,27 +56,27 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(string[] spotifyTrackUris, string accessToken = null, string deviceId = null, 
+        public async Task PlayTracks(string[] trackIds, string accessToken = null, string deviceId = null, 
             long positionMs = 0) 
         {
-            if (spotifyTrackUris == null || spotifyTrackUris.Length == 0) throw new ArgumentNullException(nameof(spotifyTrackUris));
-            dynamic data = JObject.FromObject(new { uris = spotifyTrackUris.Select(SpotifyTrackUri).ToArray() });
+            if (trackIds == null || trackIds.Length == 0) throw new ArgumentNullException(nameof(trackIds));
+            dynamic data = JObject.FromObject(new { uris = trackIds.Select(SpotifyTrackUri).ToArray() });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
         [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task PlayTracks(string userHash, string[] spotifyTrackUris, string offsetTrackUri = null, 
+        public async Task PlayTracks(string userHash, string[] trackIds, string offsetTrackUri = null, 
             string deviceId = null)
         {
-            dynamic data = JObject.FromObject(new { uris = spotifyTrackUris });
+            dynamic data = JObject.FromObject(new { uris = trackIds });
             if (offsetTrackUri != null) data.offset = JObject.FromObject(new { uri = offsetTrackUri });
             await Play(userHash, data, deviceId);
         }
 
         [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task PlayTracks(string userHash, string[] spotifyTrackUris, int offsetPosition = 0, string deviceId = null)
+        public async Task PlayTracks(string userHash, string[] trackIds, int offsetPosition = 0, string deviceId = null)
         {
-            dynamic data = JObject.FromObject(new { uris = spotifyTrackUris });
+            dynamic data = JObject.FromObject(new { uris = trackIds });
             if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition });
             await Play(userHash, data, deviceId);
         }
@@ -107,7 +107,6 @@ namespace SpotifyApi.NetCore
             dynamic data = JObject.FromObject(new { context_uri = SpotifyAlbumUri(albumId) });
             await Play(data, accessToken, deviceId, positionMs);
         }
-
 
         /// <summary>
         /// BETA. Play an Album from a Track offset on the user’s active device.

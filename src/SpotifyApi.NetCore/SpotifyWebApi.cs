@@ -1,10 +1,10 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SpotifyApi.NetCore.Http;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
@@ -44,9 +44,9 @@ namespace SpotifyApi.NetCore
         protected internal async Task<string> GetAccessToken(string accessToken = null)
         {
             // accessToken or _accessToken or from _tokenProvider or from _accounts
-            return accessToken 
-                ?? _accessToken 
-                ?? (_tokenProvider != null 
+            return accessToken
+                ?? _accessToken
+                ?? (_tokenProvider != null
                     ? (await _tokenProvider.GetAccessToken())
                     : (await _accounts.GetAppAccessToken()).AccessToken);
         }
@@ -75,17 +75,16 @@ namespace SpotifyApi.NetCore
         /// <param name="rootPropertyName">The name of the root property of the JSON response to deserialise, e.g. "artists"</param>
         /// <typeparam name="T">The type to deserialise to</typeparam>
         /// <returns></returns>
-        protected internal virtual async Task<T> GetModelFromProperty<T>(string url, string rootPropertyName, 
+        protected internal virtual async Task<T> GetModelFromProperty<T>(string url, string rootPropertyName,
             string accessToken = null)
         {
-            var deserialized = JsonConvert.DeserializeObject
+            string json = await _http.Get
             (
-                await _http.Get
-                (
-                    url,
-                    new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
-                )
-            ) as JObject;
+                url,
+                new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
+            );
+            var deserialized = JsonConvert.DeserializeObject(json) as JObject;
+            if (deserialized == null) throw new InvalidOperationException($"Failed to deserialize response as JSON. Response = {json.Substring(0, Math.Min(json.Length, 256))}");
             return deserialized[rootPropertyName].ToObject<T>();
         }
 
