@@ -12,9 +12,33 @@ using SpotifyApi.NetCore.Tests.Mocks;
 namespace SpotifyApi.NetCore.Tests
 {
     [TestClass]
-    [TestCategory("Integration")]
     public class PlayerApiTests
     {
+        [TestMethod]
+        public async Task PlayTracks_AccessToken_PutInvokedWithAccessToken()
+        {
+            // arrange
+            const string token = "abc123";
+            const string trackUri = "spotify:track:7ouMYWpwJ422jRcDASZB7P";
+
+            var http = new MockHttpClient();
+            http.SetupSendAsync();
+            var service = new Mock<PlayerApi>(http.HttpClient, token){CallBase = true};
+
+            // act
+            await service.Object.PlayTracks(trackUri, token);
+
+
+            // assert
+            service.Verify(s => s.Put(It.IsAny<string>(), It.IsAny<object>(), token));
+        }
+
+        //TODO: test access token on all PlayerApi methods
+
+        //TODO: test GetDevices
+
+        //TODO: test GetPlaybackInfo
+
         //[TestMethod] //TODO: Result changes if device online/offline
         [TestCategory("Integration")]
         public async Task PlayContext_SpotifyUri_SpotifyApiErrorException()

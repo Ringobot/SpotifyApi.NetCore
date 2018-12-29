@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// BETA. Play a Track on the user’s active device.
         /// </summary>
-        /// <param name="spotifyTrackId">Spotify track Ids to play</param>
+        /// <param name="spotifyTrackUri">Spotify track Ids to play</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
         /// The access token must have been issued on behalf of a user. The access token must have the 
         /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
@@ -39,13 +39,13 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(string spotifyTrackId, string accessToken = null, string deviceId = null, 
-            long positionMs = 0) => await PlayTracks(new[] { spotifyTrackId }, accessToken, deviceId, positionMs);
+        public async Task PlayTracks(string spotifyTrackUri, string accessToken = null, string deviceId = null, 
+            long positionMs = 0) => await PlayTracks(new[] { spotifyTrackUri }, accessToken, deviceId, positionMs);
 
         /// <summary>
         /// BETA. Play Tracks on the user’s active device.
         /// </summary>
-        /// <param name="spotifyTrackIds">Array of the Spotify track Ids to play</param>
+        /// <param name="spotifyTrackUris">Array of the Spotify track Ids to play</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
         /// The access token must have been issued on behalf of a user. The access token must have the 
         /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
@@ -56,11 +56,11 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(string[] spotifyTrackIds, string accessToken = null, string deviceId = null, 
+        public async Task PlayTracks(string[] spotifyTrackUris, string accessToken = null, string deviceId = null, 
             long positionMs = 0) 
         {
-            if (spotifyTrackIds == null || spotifyTrackIds.Length == 0) throw new ArgumentNullException(nameof(spotifyTrackIds));
-            dynamic data = JObject.FromObject(new { uris = spotifyTrackIds.Select(SpotifyTrackUri).ToArray() });
+            if (spotifyTrackUris == null || spotifyTrackUris.Length == 0) throw new ArgumentNullException(nameof(spotifyTrackUris));
+            dynamic data = JObject.FromObject(new { uris = spotifyTrackUris.Select(SpotifyTrackUri).ToArray() });
             await Play(data, accessToken, deviceId, positionMs);
         }
 

@@ -41,7 +41,7 @@ namespace SpotifyApi.NetCore
             _accessToken = accessToken;
         }
 
-        protected async Task<string> GetAccessToken(string accessToken = null)
+        protected internal async Task<string> GetAccessToken(string accessToken = null)
         {
             // accessToken or _accessToken or from _tokenProvider or from _accounts
             return accessToken 

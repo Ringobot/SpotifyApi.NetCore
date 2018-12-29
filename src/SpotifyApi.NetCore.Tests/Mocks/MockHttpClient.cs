@@ -31,5 +31,14 @@ namespace SpotifyApi.NetCore.Tests.Mocks
                         Content = new StringContent(responseContent)
                     }));
         }
+        internal Moq.Language.Flow.IReturnsResult<HttpMessageHandler> SetupSendAsync()
+        {
+            return _mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns(Task<HttpResponseMessage>.Factory.StartNew(() =>
+                    new HttpResponseMessage(HttpStatusCode.OK)));
+        }
+
     }
 }
