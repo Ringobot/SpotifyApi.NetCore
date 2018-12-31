@@ -15,40 +15,40 @@ namespace SpotifyApi.NetCore
     {
         protected internal const string BaseUrl = "https://api.spotify.com/v1";
         protected internal readonly HttpClient _http;
-        [Obsolete("Use _tokenProvider")]
-        protected internal readonly IAccountsService _accounts;
         protected readonly IAccessTokenProvider _tokenProvider;
         protected readonly string _accessToken;
 
-        [Obsolete("Use `SpotifyWebApi(HttpClient, IAccessTokenProvider)` instead. Will be removed in vNext")]
-        public SpotifyWebApi(HttpClient httpClient, IAccountsService accountsService)
-        {
-            _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _accounts = accountsService ?? throw new ArgumentNullException(nameof(accountsService));
-        }
+        #region Constructors
 
-        public SpotifyWebApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider)
+        public SpotifyWebApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : this(httpClient)
         {
-            _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _tokenProvider = accessTokenProvider ?? throw new ArgumentNullException(nameof(accessTokenProvider));
         }
 
-        public SpotifyWebApi(HttpClient httpClient, string accessToken)
+        public SpotifyWebApi(HttpClient httpClient, string accessToken): this(httpClient)
         {
             if (string.IsNullOrEmpty(accessToken)) throw new ArgumentNullException(nameof(accessToken));
-
-            _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _accessToken = accessToken;
         }
+
+        public SpotifyWebApi(HttpClient httpClient)
+        {
+            _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        }
+
+        #endregion
 
         protected internal async Task<string> GetAccessToken(string accessToken = null)
         {
             // accessToken or _accessToken or from _tokenProvider or from _accounts
-            return accessToken
+            string token = accessToken
                 ?? _accessToken
                 ?? (_tokenProvider != null
                     ? (await _tokenProvider.GetAccessToken())
                     : (await _accounts.GetAppAccessToken()).AccessToken);
+
+            if (string.IsNullOrEmpty(token)) throw new InvalidOperationException("Access Token is null. Could not get Access Token.");
+            return token;
         }
 
         /// <summary>
@@ -103,6 +103,20 @@ namespace SpotifyApi.NetCore
 
             return response;
         }
+
+        #region Obsolete
+
+        [Obsolete("Use _tokenProvider")]
+        protected internal readonly IAccountsService _accounts;
+
+        [Obsolete("Use `SpotifyWebApi(HttpClient, IAccessTokenProvider)` instead. Will be removed in vNext")]
+        public SpotifyWebApi(HttpClient httpClient, IAccountsService accountsService)
+        {
+            _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _accounts = accountsService ?? throw new ArgumentNullException(nameof(accountsService));
+        }
+
+        #endregion
 
     }
 }

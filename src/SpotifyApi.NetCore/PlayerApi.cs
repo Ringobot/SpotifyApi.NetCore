@@ -11,17 +11,15 @@ namespace SpotifyApi.NetCore
 {
     public class PlayerApi : SpotifyWebApi, IPlayerApi
     {
-        [Obsolete("Will be removed in vNext")]
-        private readonly IUserAccountsService _userAccounts;
-
-        [Obsolete("Will be removed in vNext")]
-        public PlayerApi(HttpClient httpClient, IUserAccountsService userAccountsService) 
-            : base(httpClient, userAccountsService)
-        {
-            _userAccounts = userAccountsService ?? throw new ArgumentNullException("userAccountsService");
-        }
+        public PlayerApi(HttpClient httpClient) : base(httpClient) { }
 
         public PlayerApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken) { }
+
+        /*
+        // Add this ctor when obsolete UserAccountService overload is removed
+        public PlayerApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) 
+            : base(httpClient, accessTokenProvider) { }
+        */
 
         #region PlayTracks
 
@@ -380,6 +378,22 @@ namespace SpotifyApi.NetCore
             await Put(url, data, accessToken);
         }
 
+        private static string SpotifyTrackUri(string trackId) => $"spotify:track:{trackId}";
+        private static string SpotifyAlbumUri(string albumId) => $"spotify:album:{albumId}";
+        private static string SpotifyPlaylistUri(string playlistId) => $"spotify:playlist:{playlistId}";
+
+        #region Obsolete
+
+        [Obsolete("Will be removed in vNext")]
+        private readonly IUserAccountsService _userAccounts;
+
+        [Obsolete("Will be removed in vNext")]
+        public PlayerApi(HttpClient httpClient, IUserAccountsService userAccountsService)
+            : base(httpClient, userAccountsService)
+        {
+            _userAccounts = userAccountsService ?? throw new ArgumentNullException("userAccountsService");
+        }
+
         /// <summary>
         /// Helper to PUT an object as JSON body
         /// </summary>
@@ -398,9 +412,8 @@ namespace SpotifyApi.NetCore
             return response;
         }
 
-        private static string SpotifyTrackUri(string trackId) => $"spotify:track:{trackId}";
-        private static string SpotifyAlbumUri(string albumId) => $"spotify:album:{albumId}";
-        private static string SpotifyPlaylistUri(string playlistId) => $"spotify:playlist:{playlistId}";
+
+        #endregion
 
     }
 }
