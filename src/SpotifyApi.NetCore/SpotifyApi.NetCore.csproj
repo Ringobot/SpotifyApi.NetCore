@@ -4,10 +4,10 @@
     <PackageId>SpotifyApi.NetCore</PackageId>
     <Title>Spotify Web API .NET Core</Title>
     <Description>Lightweight .NET Core client wrapper for the Spotify Web API</Description>
-    <Version>2.3.2</Version>
+    <Version>2.3.3</Version>
     <Authors>Daniel Larsen</Authors>
     <Company>Ringobot</Company>
-    <Copyright>Copyright 2018 Daniel Larsen</Copyright>
+    <Copyright>Copyright 2019 Daniel Larsen, Andrew Evans</Copyright>
     <PackageLicenseUrl>https://github.com/Ringobot/SpotifyApi.NetCore/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ringobot/SpotifyApi.NetCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Ringobot/SpotifyApi.NetCore</RepositoryUrl>
