@@ -8,9 +8,10 @@ using Newtonsoft.Json;
 using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Http;
 
+//TODO: Move to SpotifyApi.NetCore.Authorization in vNext
 namespace SpotifyApi.NetCore
 {
-    public class AccountsService : IAccountsService
+    public class AccountsService : IAccountsService, IAccessTokenProvider
     {
         protected const string TokenUrl = "https://accounts.spotify.com/api/token";
 
@@ -77,5 +78,7 @@ namespace SpotifyApi.NetCore
             if (string.IsNullOrEmpty(_config["SpotifyApiClientSecret"]))
                 throw new ArgumentNullException("SpotifyApiClientSecret", "Expecting configuration value for `SpotifyApiClientSecret`");
         }
+
+        public async Task<string> GetAccessToken() => (await GetAppAccessToken()).AccessToken;
     }
 }
