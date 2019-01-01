@@ -158,6 +158,58 @@ namespace SpotifyApi.NetCore
 
         #endregion
 
+        #region PlayArtist
+
+        /// <summary>
+        /// BETA. Play an Artist on the user’s active device.
+        /// </summary>
+        /// <param name="artistId">Spotify Album Id to play</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <param name="positionMs">Optional. Indicates from what position to start playback. Must be a positive number. 
+        /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
+        /// next song.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
+        /// </remarks>
+        public async Task PlayArtist(string artistId, string accessToken = null, string deviceId = null, long positionMs = 0)
+        {
+            if (string.IsNullOrEmpty(artistId)) throw new ArgumentNullException(nameof(artistId));
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyArtistUri(artistId) });
+            await Play(data, accessToken, deviceId, positionMs);
+        }
+
+        /// <summary>
+        /// BETA. Play an Artist from a Track offset on the user’s active device.
+        /// </summary>
+        /// <param name="artistId">Spotify Artust Id to play</param>
+        /// <param name="offsetPosition">From where in the Artist top track list playback should start</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <param name="positionMs">Optional. Indicates from what position to start playback. Must be a positive number. 
+        /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
+        /// next song.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
+        /// </remarks>
+        public async Task PlayArtistOffset(string artistId, int offsetPosition, string accessToken = null, string deviceId = null,
+            long positionMs = 0)
+        {
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyArtistUri(artistId) });
+            if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition });
+            await Play(data, accessToken, deviceId, positionMs);
+        }
+
+        #endregion
+
         #region PlayPlaylist
 
         /// <summary>
@@ -380,6 +432,7 @@ namespace SpotifyApi.NetCore
 
         private static string SpotifyTrackUri(string trackId) => $"spotify:track:{trackId}";
         private static string SpotifyAlbumUri(string albumId) => $"spotify:album:{albumId}";
+        private static string SpotifyArtistUri(string artistId) => $"spotify:artist:{artistId}";
         private static string SpotifyPlaylistUri(string playlistId) => $"spotify:playlist:{playlistId}";
 
         #region Obsolete
