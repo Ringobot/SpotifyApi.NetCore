@@ -45,7 +45,7 @@ namespace SpotifyApi.NetCore
                 ?? _accessToken
                 ?? (_tokenProvider != null
                     ? (await _tokenProvider.GetAccessToken())
-                    : (await _accounts.GetAppAccessToken()).AccessToken);
+                    : _accounts != null ? (await _accounts.GetAppAccessToken()).AccessToken : null);
 
             if (string.IsNullOrEmpty(token)) throw new InvalidOperationException("Access Token is null. Could not get Access Token.");
             return token;
