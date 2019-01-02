@@ -57,24 +57,6 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestMethod]
-        public async Task PlayArtist_AlbumUri_ThrowsInvalidOperationException()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public async Task PlayArtist_ArtistUri_ArtistsUriInData()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public async Task PlayArtist_ArtistId_ArtistsUriInData()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
         public async Task PlayArtist_AccessToken_PutInvokedWithAccessToken()
         {
             // arrange
