@@ -57,14 +57,6 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestMethod]
-        public async Task SpotifyArtistUri_ArtistUriMoreThan3Parts_ThrowsInvalidOperationException()
-        {
-            const string uri = "spotify:artist:spotify:artist:0TnOYISbd1XYRBk9myaseg";
-            throw new NotImplementedException();
-        }
-
-
-        [TestMethod]
         public async Task PlayArtist_AlbumUri_ThrowsInvalidOperationException()
         {
             throw new NotImplementedException();

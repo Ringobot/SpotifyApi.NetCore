@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using SpotifyApi.NetCore.Helpers;
 
 namespace SpotifyApi.NetCore
 {
@@ -58,7 +59,7 @@ namespace SpotifyApi.NetCore
             long positionMs = 0) 
         {
             if (trackIds == null || trackIds.Length == 0) throw new ArgumentNullException(nameof(trackIds));
-            dynamic data = JObject.FromObject(new { uris = trackIds.Select(SpotifyTrackUri).ToArray() });
+            dynamic data = JObject.FromObject(new { uris = trackIds.Select(SpotifyUriHelper.TrackUri).ToArray() });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
@@ -102,7 +103,7 @@ namespace SpotifyApi.NetCore
         public async Task PlayAlbum(string albumId, string accessToken = null, string deviceId = null, long positionMs = 0)
         {
             if (string.IsNullOrEmpty(albumId)) throw new ArgumentNullException(nameof(albumId));
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyAlbumUri(albumId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.AlbumUri(albumId) });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
@@ -126,8 +127,8 @@ namespace SpotifyApi.NetCore
         public async Task PlayAlbumOffset(string albumId, string offsetTrackId, string accessToken = null, 
             string deviceId = null, long positionMs = 0)
         {
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyAlbumUri(albumId) });
-            if (offsetTrackId != null) data.offset = JObject.FromObject(new { uri = SpotifyTrackUri(offsetTrackId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.AlbumUri(albumId) });
+            if (offsetTrackId != null) data.offset = JObject.FromObject(new { uri = SpotifyUriHelper.TrackUri(offsetTrackId) });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
@@ -151,7 +152,7 @@ namespace SpotifyApi.NetCore
         public async Task PlayAlbumOffset(string albumId, int offsetPosition, string accessToken = null, 
             string deviceId = null, long positionMs = 0)
         {
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyAlbumUri(albumId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.AlbumUri(albumId) });
             if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition });
             await Play(data, accessToken, deviceId, positionMs);
         }
@@ -179,7 +180,7 @@ namespace SpotifyApi.NetCore
         public async Task PlayArtist(string artistId, string accessToken = null, string deviceId = null, long positionMs = 0)
         {
             if (string.IsNullOrEmpty(artistId)) throw new ArgumentNullException(nameof(artistId));
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyArtistUri(artistId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.ArtistUri(artistId) });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
@@ -203,7 +204,7 @@ namespace SpotifyApi.NetCore
         public async Task PlayArtistOffset(string artistId, int offsetPosition, string accessToken = null, string deviceId = null,
             long positionMs = 0)
         {
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyArtistUri(artistId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.ArtistUri(artistId) });
             if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition });
             await Play(data, accessToken, deviceId, positionMs);
         }
@@ -232,7 +233,7 @@ namespace SpotifyApi.NetCore
             long positionMs = 0)
         {
             if (string.IsNullOrEmpty(playlistId)) throw new ArgumentNullException(nameof(playlistId));
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyPlaylistUri(playlistId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.PlaylistUri(playlistId) });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
@@ -257,8 +258,8 @@ namespace SpotifyApi.NetCore
         public async Task PlayPlaylistOffset(string playlistId, string offsetTrackId, string accessToken = null, 
             string deviceId = null, long positionMs = 0)
         {
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyPlaylistUri(playlistId) });
-            if (offsetTrackId != null) data.offset = JObject.FromObject(new { uri = SpotifyTrackUri(offsetTrackId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.PlaylistUri(playlistId) });
+            if (offsetTrackId != null) data.offset = JObject.FromObject(new { uri = SpotifyUriHelper.TrackUri(offsetTrackId) });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
@@ -282,7 +283,7 @@ namespace SpotifyApi.NetCore
         public async Task PlayPlaylistOffset(string playlistId, int offsetPosition, string accessToken = null, 
             string deviceId = null, long positionMs = 0)
         {
-            dynamic data = JObject.FromObject(new { context_uri = SpotifyPlaylistUri(playlistId) });
+            dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.PlaylistUri(playlistId) });
             if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition});
             await Play(data, accessToken, deviceId, positionMs);
         }
@@ -429,11 +430,6 @@ namespace SpotifyApi.NetCore
             if (positionMs > 0) data.position_ms = positionMs;
             await Put(url, data, accessToken);
         }
-
-        private static string SpotifyTrackUri(string trackId) => $"spotify:track:{trackId}";
-        private static string SpotifyAlbumUri(string albumId) => $"spotify:album:{albumId}";
-        private static string SpotifyArtistUri(string artistId) => $"spotify:artist:{artistId}";
-        private static string SpotifyPlaylistUri(string playlistId) => $"spotify:playlist:{playlistId}";
 
         #region Obsolete
 
