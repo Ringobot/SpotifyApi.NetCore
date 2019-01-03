@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-     <PackageReference Include="SpotifyApi.NetCore" Version="2.3.4" /> 
+     <PackageReference Include="SpotifyApi.NetCore" Version="2.3.5" /> 
   </ItemGroup>
 
   <ItemGroup>
