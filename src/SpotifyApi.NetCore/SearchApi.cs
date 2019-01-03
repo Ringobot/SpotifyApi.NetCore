@@ -10,6 +10,14 @@ namespace SpotifyApi.NetCore
         {
         }
 
+        public SearchApi(HttpClient httpClient) : base(httpClient)
+        {
+        }
+
+        public SearchApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
+        {
+        }
+
         /// <summary>
         /// Get Spotify Catalog information about artists, albums, tracks or playlists that match a
         /// keyword string.
@@ -25,9 +33,12 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of <see cref="SearchResult"/></returns>
-        public async Task<SearchResult> Search(string query, string type, string market, (int limit, int offset) limitOffset)
-            => await Search<SearchResult>(query, new string[] { type }, market, limitOffset);
+        public async Task<SearchResult> Search(string query, string type, string market, (int limit, int offset) limitOffset,
+            string accessToken = null) => await Search<SearchResult>(query, new string[] { type }, market, 
+                limitOffset, accessToken);
 
         /// <summary>
         /// Get Spotify Catalog information about artists, albums, tracks or playlists that match a
@@ -46,9 +57,11 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of <see cref="SearchResult"/></returns>
-        public async Task<SearchResult> Search(string query, string[] types, string market, (int limit, int offset) limitOffset)
-            => await Search<SearchResult>(query, types, market, limitOffset);
+        public async Task<SearchResult> Search(string query, string[] types, string market, (int limit, int offset) limitOffset,
+            string accessToken = null) => await Search<SearchResult>(query, types, market, limitOffset, accessToken);
 
         /// <summary>
         /// Get Spotify Catalog information about artists, albums, tracks or playlists that match a
@@ -60,9 +73,11 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
         /// is specified, only artists, albums, and tracks with content that is playable in that market 
         /// is returned. Note: Playlist results are not affected by the market parameter.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of <see cref="SearchResult"/></returns>
-        public async Task<SearchResult> Search(string query, string type, string market = null)
-            => await Search<SearchResult>(query, new string[] { type }, market, (0, 0));
+        public async Task<SearchResult> Search(string query, string type, string market = null, string accessToken = null)
+            => await Search<SearchResult>(query, new string[] { type }, market, (0, 0), accessToken);
 
         /// <summary>
         /// Get Spotify Catalog information about artists, albums, tracks or playlists that match a
@@ -74,9 +89,11 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
         /// is specified, only artists, albums, and tracks with content that is playable in that market 
         /// is returned. Note: Playlist results are not affected by the market parameter.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of <see cref="SearchResult"/></returns>
-        public async Task<SearchResult> Search(string query, string[] types, string market = null)
-            => await Search<SearchResult>(query, types, market, (0, 0));
+        public async Task<SearchResult> Search(string query, string[] types, string market = null, string accessToken = null)
+            => await Search<SearchResult>(query, types, market, (0, 0), accessToken);
 
         /// <summary>
         /// Get Spotify Catalog information about artists, albums, tracks or playlists that match a
@@ -95,9 +112,12 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        public async Task<T> Search<T>(string query, string[] types, string market, (int limit, int offset) limitOffset)
+        public async Task<T> Search<T>(string query, string[] types, string market, (int limit, int offset) limitOffset,
+            string accessToken = null)
         {
             if (string.IsNullOrWhiteSpace(query)) throw new ArgumentNullException("query");
             if (types == null || types.Length == 0) throw new ArgumentNullException("types");
@@ -120,7 +140,7 @@ namespace SpotifyApi.NetCore
                 url += $"&offset={limitOffset.offset}";
             }
 
-            return await GetModel<T>(url);
+            return await GetModel<T>(url, accessToken);
         }
     }
 }
