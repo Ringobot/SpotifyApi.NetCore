@@ -57,11 +57,16 @@ namespace SpotifyVue.Controllers
             return MapToSearchArtistsModel(artists);
         }
 
+        private async Task<string> GetAccessToken() => 
+            (await _userAccounts.GetUserAccessToken(GetUserId())).AccessToken;
+
         [HttpGet("/api/spotify/devices")]
-        public async Task<IEnumerable<Device>> GetDevices() => await _player.GetDevices(GetUserId());
+        public async Task<IEnumerable<Device>> GetDevices() 
+            => await _player.GetDevices<Device[]>(await GetAccessToken());
 
         [HttpPut("/api/spotify/playArtist")]
-        public async Task PlayArtist([FromQuery]string spotifyUri) => await _player.PlayContext(GetUserId(), spotifyUri);
+        public async Task PlayArtist([FromQuery]string spotifyUri) 
+            => await _player.PlayArtist(spotifyUri, accessToken: await GetAccessToken());
 
         [HttpPost("[action]")]
         [Route("api/spotify/authorize")]
@@ -131,7 +136,7 @@ namespace SpotifyVue.Controllers
 
         private IEnumerable<Models.ArtistItem> MapToSearchArtistsModel(SearchResult searchResult)
         {
-            var list = new List<SpotifyApi.NetCore.ArtistItem>(searchResult.Artists.Items);
+            var list = new List<SpotifyApi.NetCore.Artist>(searchResult.Artists.Items);
             return list.Select(a => new Models.ArtistItem { Id = a.Id, Name = a.Name, Uri = a.Uri });
         }
 

@@ -57,6 +57,24 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestMethod]
+        public async Task PlayArtist_AccessToken_PutInvokedWithAccessToken()
+        {
+            // arrange
+            const string token = "abc123";
+            const string id = "0TnOYISbd1XYRBk9myaseg";
+
+            var http = new MockHttpClient();
+            http.SetupSendAsync();
+            var service = new Mock<PlayerApi>(http.HttpClient, token) { CallBase = true };
+
+            // act
+            await service.Object.PlayArtist(id, token);
+
+            // assert
+            service.Verify(s => s.Put(It.IsAny<string>(), It.IsAny<object>(), token));
+        }
+
+        [TestMethod]
         public async Task PlayPlaylist_AccessToken_PutInvokedWithAccessToken()
         {
             // arrange
