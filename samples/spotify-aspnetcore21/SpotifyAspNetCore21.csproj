@@ -10,11 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-     <PackageReference Include="SpotifyApi.NetCore" Version="2.3.3" /> 
+     <PackageReference Include="SpotifyApi.NetCore" Version="2.3.4" /> 
   </ItemGroup>
 
-  <!--<ItemGroup>
-    <ProjectReference Include="..\..\src\SpotifyApi.NetCore\SpotifyApi.NetCore.csproj" />
-  </ItemGroup>-->
+  <ItemGroup>
+    <!--<ProjectReference Include="..\..\src\SpotifyApi.NetCore\SpotifyApi.NetCore.csproj" />-->
+  </ItemGroup>
 
 </Project>

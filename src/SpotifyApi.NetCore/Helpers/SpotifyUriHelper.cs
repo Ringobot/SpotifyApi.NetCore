@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SpotifyApi.NetCore.Helpers
@@ -41,6 +39,8 @@ namespace SpotifyApi.NetCore.Helpers
             if (_idRegEx.IsMatch(id)) return $"spotify:{type}:{id}";
             throw new ArgumentException($"\"{id}\" is not a valid Spotify {type} identifier");
         }
+
+        //TODO: AlbumId, etc
 
         private static string SpotifyUriType(string uri) => uri.Split(':')[1];
     }
