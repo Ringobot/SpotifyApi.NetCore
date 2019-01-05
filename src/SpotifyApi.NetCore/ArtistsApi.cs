@@ -1,15 +1,12 @@
 using System;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// Endpoints for retrieving information about one or more artists from the Spotify catalog.
+    /// </summary>
     public class ArtistsApi : SpotifyWebApi, IArtistsApi
     {
         protected internal virtual ISearchApi SearchApi { get; set; }
@@ -17,6 +14,27 @@ namespace SpotifyApi.NetCore
         public ArtistsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
         {
             SearchApi = new SearchApi(httpClient, accountsService);
+        }
+
+        /// <summary>
+        /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
+        /// on each method
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        public ArtistsApi(HttpClient httpClient) : base(httpClient)
+        {
+            SearchApi = new SearchApi(httpClient);
+        }
+
+        /// <summary>
+        /// This constructor accepts a Spotify access token that will be used for all calls to the API 
+        /// (except when an accessToken is provided using the optional `accessToken` parameter on each method).
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
+        public ArtistsApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
+        {
+            SearchApi = new SearchApi(httpClient, accessToken);
         }
 
         #region GetArtist
@@ -28,7 +46,7 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of Artist</returns>
-        public async Task<Artist> GetArtist(string artistId, string accessToken = null) 
+        public async Task<Artist> GetArtist(string artistId, string accessToken = null)
             => await GetArtist<Artist>(artistId, accessToken);
 
         /// <summary>
@@ -39,7 +57,7 @@ namespace SpotifyApi.NetCore
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        public async Task<T> GetArtist<T>(string artistId, string accessToken = null) 
+        public async Task<T> GetArtist<T>(string artistId, string accessToken = null)
             => await GetModel<T>($"{BaseUrl}/artists/{artistId}", accessToken);
 
         #endregion
@@ -54,7 +72,7 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of Artist[]</returns>
-        public async Task<Artist[]> GetRelatedArtists(string artistId, string accessToken = null) 
+        public async Task<Artist[]> GetRelatedArtists(string artistId, string accessToken = null)
             => await GetRelatedArtists<Artist[]>(artistId, accessToken);
 
         /// <summary>
@@ -145,7 +163,7 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of Artist[]</returns>
-        public async Task<Artist[]> GetArtists(string[] artistIds, string accessToken = null) 
+        public async Task<Artist[]> GetArtists(string[] artistIds, string accessToken = null)
             => await GetArtists<Artist[]>(artistIds, accessToken);
 
         /// <summary>
@@ -180,7 +198,7 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of Track[]</returns>
-        public async Task<Track[]> GetArtistsTopTracks(string artistId, string market, string accessToken = null) 
+        public async Task<Track[]> GetArtistsTopTracks(string artistId, string market, string accessToken = null)
             => await GetArtistsTopTracks<Track[]>(artistId, market, accessToken);
 
         /// <summary>

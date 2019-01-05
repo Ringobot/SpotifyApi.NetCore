@@ -12,8 +12,19 @@ namespace SpotifyApi.NetCore
 {
     public class PlayerApi : SpotifyWebApi, IPlayerApi
     {
+        /// <summary>
+        /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
+        /// on each method
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
         public PlayerApi(HttpClient httpClient) : base(httpClient) { }
 
+        /// <summary>
+        /// This constructor accepts a Spotify access token that will be used for all calls to the API 
+        /// (except when an accessToken is provided using the optional `accessToken` parameter on each method).
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
         public PlayerApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken) { }
 
         /*

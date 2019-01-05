@@ -4,16 +4,30 @@ using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// Get Spotify Catalog information about artists, albums, tracks or playlists that match a keyword string.
+    /// </summary>
     public class SearchApi : SpotifyWebApi, ISearchApi
     {
         public SearchApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
         {
         }
 
+        /// <summary>
+        /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
+        /// on each method
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
         public SearchApi(HttpClient httpClient) : base(httpClient)
         {
         }
 
+        /// <summary>
+        /// This constructor accepts a Spotify access token that will be used for all calls to the API 
+        /// (except when an accessToken is provided using the optional `accessToken` parameter on each method).
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
         public SearchApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
         {
         }
