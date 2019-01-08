@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>SpotifyApi.NetCore</PackageId>
     <Title>Spotify Web API .NET Core</Title>
     <Description>Lightweight .NET Core client wrapper for the Spotify Web API</Description>
-    <Version>2.3.5</Version>
+    <Version>2.3.6</Version>
     <Authors>Daniel Larsen and contributors</Authors>
     <Company>Ringobot</Company>
     <Copyright>Copyright 2019 Daniel Larsen and contributors</Copyright>
