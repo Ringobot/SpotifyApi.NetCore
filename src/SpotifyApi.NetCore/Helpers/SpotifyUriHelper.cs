@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SpotifyApi.NetCore.Helpers
@@ -10,7 +11,7 @@ namespace SpotifyApi.NetCore.Helpers
     internal static class SpotifyUriHelper
     {
         private static readonly Regex _idRegEx = new Regex("^[a-zA-Z0-9]+$");
-        private static readonly Regex _uriRegEx = new Regex("^spotify:[a-z]+:[a-zA-Z0-9]+$");
+        private static readonly Regex _uriRegEx = new Regex("spotify:[a-z]+:[a-zA-Z0-9]+$");
 
         /// <summary>
         /// Converts a Spotify Track Id or URI into a Spotify URI
@@ -35,7 +36,12 @@ namespace SpotifyApi.NetCore.Helpers
         private static string ToUri(string type, string id)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id), $"Spotify {type} Id cannot be empty or null");
-            if (_uriRegEx.IsMatch(id) && SpotifyUriType(id) == type) return id;
+
+            // if a Spotify URI
+            MatchCollection matchesUri = _uriRegEx.Matches(id);
+            if (matchesUri.Count > 0 && SpotifyUriType(matchesUri[0].Value) == type) return matchesUri[0].Value;
+
+            // if a Spotify Id
             if (_idRegEx.IsMatch(id)) return $"spotify:{type}:{id}";
             throw new ArgumentException($"\"{id}\" is not a valid Spotify {type} identifier");
         }
