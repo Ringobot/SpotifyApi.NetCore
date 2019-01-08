@@ -20,17 +20,35 @@ namespace SpotifyApi.NetCore
 
         #region Constructors
 
+        /// <summary>
+        /// This constructor accepts an <see cref="IAccessTokenProvider"/> that will be used to provide a 
+        /// Spotify access token for all calls to the API (except when an accessToken is provided using the
+        /// optional `accessToken` parameter on each method).
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        /// <param name="accessTokenProvider">An instance of an <see cref="IAccessTokenProvider"/></param>
         public SpotifyWebApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : this(httpClient)
         {
             _tokenProvider = accessTokenProvider ?? throw new ArgumentNullException(nameof(accessTokenProvider));
         }
 
+        /// <summary>
+        /// This constructor accepts a Spotify access token that will be used for all calls to the API 
+        /// (except when an accessToken is provided using the optional `accessToken` parameter on each method).
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
         public SpotifyWebApi(HttpClient httpClient, string accessToken): this(httpClient)
         {
             if (string.IsNullOrEmpty(accessToken)) throw new ArgumentNullException(nameof(accessToken));
             _accessToken = accessToken;
         }
 
+        /// <summary>
+        /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
+        /// on each method
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
         public SpotifyWebApi(HttpClient httpClient)
         {
             _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));

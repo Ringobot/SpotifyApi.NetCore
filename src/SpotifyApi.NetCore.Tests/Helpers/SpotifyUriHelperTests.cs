@@ -8,14 +8,17 @@ namespace SpotifyApi.NetCore.Tests.Helpers
     public class SpotifyUriHelperTests
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ArtistUri_ArtistUriMoreThan3Parts_ThrowsArgumentException()
+        public void PlaylistUri_PlaylistUriMoreThan3Parts_ExtractsValidUri()
         {
             // arrange
-            const string uri = "spotify:artist:spotify:artist:0TnOYISbd1XYRBk9myaseg";
+            const string playlistUri = "spotify:playlist:0TnOYISbd1XYRBk9myaseg";
+            string fullUri = $"spotify:user:{playlistUri}";
 
             // act
-            SpotifyUriHelper.ArtistUri(uri);
+            string uri = SpotifyUriHelper.PlaylistUri(fullUri);
+
+            // assert
+            Assert.AreEqual(playlistUri, uri);
         }
 
         [TestMethod]

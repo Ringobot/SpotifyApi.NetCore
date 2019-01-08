@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using SpotifyApi.NetCore.Http;
 
 namespace SpotifyApi.NetCore
 {
@@ -25,15 +21,24 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Get a list of a user's playlists.
         /// </summary>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>The JSON result deserialized to object (as dynamic).</returns>
-        public async Task<T> GetPlaylists<T>(string username)
+        public async Task<T> GetPlaylists<T>(string username, string accessToken = null)
         {
             if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
-            return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists");
+            return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists", accessToken);
         }
 
-        public async Task<PlaylistsSearchResult> GetPlaylists(string username)
-            => await GetPlaylists<PlaylistsSearchResult>(username);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
+        /// <returns></returns>
+        public async Task<PlaylistsSearchResult> GetPlaylists(string username, string accessToken = null)
+            => await GetPlaylists<PlaylistsSearchResult>(username, accessToken);
 
         #endregion
 
@@ -90,9 +95,11 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
-        public async Task<PlaylistsSearchResult> SearchPlaylists(string query)
-            => (await SearchApi.Search(query, new string[] { SpotifySearchTypes.Playlist }, null, (0, 0))).Playlists;
+        public async Task<PlaylistsSearchResult> SearchPlaylists(string query, string accessToken = null)
+            => (await SearchApi.Search(query, new string[] { SpotifySearchTypes.Playlist }, null, (0, 0), accessToken)).Playlists;
 
         /// <summary>
         /// Get Spotify Catalog information about tracks that match a keyword string.
@@ -104,9 +111,11 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
-        public async Task<PlaylistsSearchResult> SearchPlaylists(string query, (int limit, int offset) limitOffset)
-            => (await SearchApi.Search(query, new string[] { SpotifySearchTypes.Playlist }, null, limitOffset)).Playlists;
+        public async Task<PlaylistsSearchResult> SearchPlaylists(string query, (int limit, int offset) limitOffset, string accessToken = null)
+            => (await SearchApi.Search(query, new string[] { SpotifySearchTypes.Playlist }, null, limitOffset, accessToken)).Playlists;
 
         #endregion
 
