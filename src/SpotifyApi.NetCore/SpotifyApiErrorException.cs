@@ -31,6 +31,7 @@ namespace SpotifyApi.NetCore
             if (response.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await response.Content.ReadAsStringAsync();
+            Logger.Debug(content, nameof(SpotifyApiErrorException));
 
             // if empty body
             if (string.IsNullOrWhiteSpace(content)) return null;

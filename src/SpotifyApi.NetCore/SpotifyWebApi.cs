@@ -111,11 +111,15 @@ namespace SpotifyApi.NetCore
         /// </summary>
         protected internal virtual async Task<HttpResponseMessage> Put(string url, object data, string accessToken = null)
         {
+            Logger.Debug($"PUT {url}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
+
             _http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()));
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var response = await _http.PutAsync(url, content);
+
+            Logger.Information($"Put {url} {response.StatusCode}", nameof(RestHttpClient));
 
             await RestHttpClient.CheckForErrors(response);
 

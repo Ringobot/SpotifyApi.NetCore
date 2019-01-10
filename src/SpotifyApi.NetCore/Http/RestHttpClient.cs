@@ -33,15 +33,23 @@ namespace SpotifyApi.NetCore.Http
         /// <returns>An (awaitable Task of) <seealso cref="string"/></returns>
         /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
         /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public static async Task<string> Get(this HttpClient http, string requestUrl, AuthenticationHeaderValue authenticationHeader)
+        public static async Task<string> Get(
+            this HttpClient http, 
+            string requestUrl, 
+            AuthenticationHeaderValue authenticationHeader)
         {
             //TODO: Implement if-modified-since support, serving from cache if response = 304
 
             if (string.IsNullOrEmpty(requestUrl)) throw new ArgumentNullException(requestUrl);
 
+            Logger.Debug(
+                $"GET {requestUrl}. Token = {authenticationHeader?.ToString()?.Substring(0, 11)}...", 
+                nameof(RestHttpClient));
+
             http.DefaultRequestHeaders.Authorization = authenticationHeader;            
             var response = await http.GetAsync(requestUrl);
-            Trace.TraceInformation("Got {0} {1}", requestUrl, response.StatusCode);
+
+            Logger.Information($"Got {requestUrl} {response.StatusCode}", nameof(RestHttpClient));
             
             await CheckForErrors(response);
 
@@ -70,17 +78,26 @@ namespace SpotifyApi.NetCore.Http
         /// <returns>An (awaitable Task of) <seealso cref="string"/> </returns>
         /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
         /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public static async Task<string> Post(this HttpClient http, string requestUrl, string formData, AuthenticationHeaderValue headerValue)
+        public static async Task<string> Post(
+            this HttpClient http, 
+            string requestUrl, 
+            string formData, 
+            AuthenticationHeaderValue headerValue)
         {
             if (string.IsNullOrEmpty(requestUrl)) throw new ArgumentNullException(requestUrl);
             if (string.IsNullOrEmpty(formData)) throw new ArgumentNullException(formData);
+
+            Logger.Debug(
+                $"POST {requestUrl}. Token = {headerValue?.ToString()?.Substring(0, 11)}...",
+                nameof(RestHttpClient));
 
             http.DefaultRequestHeaders.Authorization = headerValue;
             var response =
                 await
                     http.PostAsync(requestUrl,
                         new StringContent(formData, Encoding.UTF8, "application/x-www-form-urlencoded"));
-            Trace.TraceInformation("Posted {0} {1}", requestUrl, response.StatusCode);
+
+            Logger.Information($"Posted {requestUrl} {response.StatusCode}", nameof(RestHttpClient));
             
             await CheckForErrors(response);
 

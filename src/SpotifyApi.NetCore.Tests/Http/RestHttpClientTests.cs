@@ -130,6 +130,31 @@ namespace SpotifyApi.NetCore.Tests.Http
         }
 
         [TestMethod]
+        public async Task Get_RequestUrlNullHeader_NoError()
+        {
+            // Arrange
+            const string requestUrl = "http://abc123.def/456";
+
+            HttpRequestMessage message = null;
+
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns(Task<HttpResponseMessage>.Factory.StartNew(() =>
+                    new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("{}")
+                    }))
+                .Callback((HttpRequestMessage m, CancellationToken t) => message = m);
+
+            var http = new HttpClient(mockHttpMessageHandler.Object);
+
+            // Act
+            await http.Get(requestUrl);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(SpotifyApiErrorException))]
         public async Task CheckForErrors_SpotifyError_ThrowsSpotifyApiErrorException()
         {
