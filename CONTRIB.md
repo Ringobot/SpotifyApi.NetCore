@@ -19,10 +19,10 @@ Commit and push
 
 Pack
 
-    dotnet pack src/SpotifyApi.NetCore
+    dotnet pack src/SpotifyApi.NetCore -c Release
 
 Publish
 
-    dotnet nuget push .\src\SpotifyApi.NetCore\bin\Debug\SpotifyApi.NetCore.1.1.2.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
+    dotnet nuget push .\src\SpotifyApi.NetCore\bin\Release\SpotifyApi.NetCore.2.3.8.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
 
 And then create a release label in Github.
