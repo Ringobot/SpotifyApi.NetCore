@@ -50,10 +50,26 @@ namespace SpotifyApi.NetCore
 
         public string AuthorizeUrl(string state, string[] scopes)
         {
-            string scope = scopes == null || scopes.Length == 0 ? "" : string.Join(" ", scopes);
-            return $"{AccountsAuthorizeUrl}/?client_id={_config["SpotifyApiClientId"]}&response_type=code&redirect_uri={_config["SpotifyAuthRedirectUri"]}&scope={scope}&state={state}";
+            return AuthorizeUrl(state, scopes, _config["SpotifyApiClientId"], _config["SpotifyAuthRedirectUri"]);
         }
+
+        public static string AuthorizeUrl(string state, string[] scopes, string spotifyApiClientId, string spotifyAuthRedirectUri)
+        {
+            if (string.IsNullOrEmpty(spotifyApiClientId)) throw new ArgumentNullException(nameof(spotifyApiClientId));
+            if (string.IsNullOrEmpty(spotifyAuthRedirectUri)) throw new ArgumentNullException(nameof(spotifyAuthRedirectUri));
+
+            string scope = scopes == null || scopes.Length == 0 ? "" : string.Join(" ", scopes);
+            return $"{AccountsAuthorizeUrl}/?client_id={spotifyApiClientId}&response_type=code&redirect_uri={spotifyAuthRedirectUri}&scope={scope}&state={state}";
+        }
+
         public async Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code)
+        {
+            var token = await RequestAccessRefreshToken(code);
+            await _bearerTokenStore.InsertOrReplace(userHash, token);
+            return token;
+        }
+
+        public async Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string code)
         {
             var now = DateTime.UtcNow;
             // POST the code to get the tokens
@@ -61,7 +77,6 @@ namespace SpotifyApi.NetCore
             // set absolute expiry
             token.SetExpires(now);
             token.EnforceInvariants();
-            await _bearerTokenStore.InsertOrReplace(userHash, token);
             return token;
         }
 
