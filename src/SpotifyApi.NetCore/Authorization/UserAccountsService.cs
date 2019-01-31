@@ -13,6 +13,8 @@ namespace SpotifyApi.NetCore
 
         private readonly IRefreshTokenProvider _refreshTokenProvider;
 
+        #region constructors
+
         public UserAccountsService(
             HttpClient httpClient,
             IConfiguration configuration,
@@ -20,10 +22,6 @@ namespace SpotifyApi.NetCore
             IBearerTokenStore bearerTokenStore
             ) : base(httpClient, configuration, bearerTokenStore)
         {
-            //TODO: when does this get called?
-            ValidateConfig();
-
-            if (refreshTokenProvider == null) throw new ArgumentNullException("userTokenStore");
             _refreshTokenProvider = refreshTokenProvider;
         }
 
@@ -31,14 +29,29 @@ namespace SpotifyApi.NetCore
             HttpClient httpClient,
             IConfiguration configuration,
             IRefreshTokenProvider refreshTokenProvider
-            ) : this(new HttpClient(), configuration, refreshTokenProvider, null) { }
+            ) : this(httpClient, configuration, refreshTokenProvider, null) { }
 
         public UserAccountsService(
             IRefreshTokenProvider refreshTokenProvider
             ) : this(new HttpClient(), null, refreshTokenProvider, null) { }
 
+        public UserAccountsService(
+            HttpClient httpClient,
+            IConfiguration configuration
+            ) : this(httpClient, configuration, null, null) { }
+
+        public UserAccountsService(
+            IConfiguration configuration
+            ) : this(new HttpClient(), configuration, null, null) { }
+
+        #endregion
+
+        [Obsolete("This method will be removed in next major version")]
         public async Task<BearerAccessToken> GetUserAccessToken(string userHash)
         {
+            if (_refreshTokenProvider == null)
+                throw new InvalidOperationException("A Refresh Token Provider has not been set. See the constructors of UserAccountsService for options.");
+
             // get the refresh token for this user
             string refreshToken = await _refreshTokenProvider.GetRefreshToken(userHash);
             if (string.IsNullOrEmpty(refreshToken))

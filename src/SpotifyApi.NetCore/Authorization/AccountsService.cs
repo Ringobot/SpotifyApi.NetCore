@@ -19,6 +19,8 @@ namespace SpotifyApi.NetCore
         protected readonly IConfiguration _config;
         protected readonly IBearerTokenStore _bearerTokenStore;
 
+        #region constructors
+
         public AccountsService(HttpClient httpClient, IConfiguration configuration, IBearerTokenStore bearerTokenStore)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
@@ -36,6 +38,8 @@ namespace SpotifyApi.NetCore
         public AccountsService() : this(new HttpClient(), null, null) { }
         public AccountsService(HttpClient httpClient) : this(httpClient, null, null) { }
         public AccountsService(HttpClient httpClient, IConfiguration configuration) : this(new HttpClient(), configuration, null) { }
+
+        #endregion
 
         public async Task<BearerAccessToken> GetAppAccessToken()
         {
