@@ -61,6 +61,14 @@ namespace SpotifyApi.NetCore
                 $"grant_type=refresh_token&refresh_token={refreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}");
         }
 
+        public async Task<BearerAccessToken> RefreshUserAccessToken(string refreshToken)
+        {
+            if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentNullException(nameof(refreshToken));
+
+            return await RefreshAccessToken(
+                $"grant_type=refresh_token&refresh_token={refreshToken}&redirect_uri={_config["SpotifyAuthRedirectUri"]}");
+        }
+
         public string AuthorizeUrl(string state, string[] scopes)
         {
             return AuthorizeUrl(state, scopes, _config["SpotifyApiClientId"], _config["SpotifyAuthRedirectUri"]);
@@ -71,7 +79,7 @@ namespace SpotifyApi.NetCore
             if (string.IsNullOrEmpty(spotifyApiClientId)) throw new ArgumentNullException(nameof(spotifyApiClientId));
             if (string.IsNullOrEmpty(spotifyAuthRedirectUri)) throw new ArgumentNullException(nameof(spotifyAuthRedirectUri));
 
-            string scope = scopes == null || scopes.Length == 0 ? "" : string.Join(" ", scopes);
+            string scope = scopes == null || scopes.Length == 0 ? "" : string.Join("%20", scopes);
             return $"{AccountsAuthorizeUrl}/?client_id={spotifyApiClientId}&response_type=code&redirect_uri={spotifyAuthRedirectUri}&scope={scope}&state={state}";
         }
 

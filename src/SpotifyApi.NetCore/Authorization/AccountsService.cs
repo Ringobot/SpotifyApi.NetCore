@@ -67,6 +67,17 @@ namespace SpotifyApi.NetCore
             return newToken;
         }
 
+        protected async Task<BearerAccessToken> RefreshAccessToken(string body)
+        {
+            var now = DateTime.UtcNow;
+            string json = await _http.Post(TokenUrl, body, GetHeader(_config));
+            // deserialise the token
+            var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
+            // set absolute expiry
+            newToken.SetExpires(now);
+            return newToken;
+        }
+
         protected static AuthenticationHeaderValue GetHeader(IConfiguration configuration)
         {
             return new AuthenticationHeaderValue("Basic",

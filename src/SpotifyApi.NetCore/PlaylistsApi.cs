@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpotifyApi.NetCore.Helpers;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -44,14 +45,13 @@ namespace SpotifyApi.NetCore
 
         #region GetPlaylist
 
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        public async Task<Playlist> GetPlaylist(string username, string playlistId)
-            => await GetPlaylist<Playlist>(username, playlistId);
+        public async Task<PlaylistSimplified> GetPlaylist(string playlistId, string accessToken = null)
+            => await GetPlaylist<PlaylistSimplified>(playlistId, accessToken);
 
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        public Task<T> GetPlaylist<T>(string username, string playlistId)
+        public async Task<T> GetPlaylist<T>(string playlistId, string accessToken = null)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(playlistId)) throw new ArgumentNullException(nameof(playlistId));
+            return await GetModel<T>($"{BaseUrl}/playlists/{SpotifyUriHelper.PlaylistId(playlistId)}", accessToken);
         }
 
         #endregion

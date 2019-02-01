@@ -17,6 +17,8 @@ namespace SpotifyApi.NetCore
         /// <returns>A Bearer token as (awaitable) Task of BearerAccessToken</returns>
         [Obsolete("This method will be removed in next major version")]
         Task<BearerAccessToken> GetUserAccessToken(string userHash);
+
+        Task<BearerAccessToken> RefreshUserAccessToken(string refreshToken);
     }
 
     public interface IAccountsService
