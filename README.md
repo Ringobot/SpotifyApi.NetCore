@@ -67,11 +67,11 @@ See tests and samples for more usage examples.
 | Library | 8 | 0 | 0% |
 | Personalization | 1 | 0 | 0% |
 | Player | 13 | 3 | 23% |
-| Playlists | 12 | 1.5 | 13% |
+| Playlists | 12 | 2 | 17% |
 | Search | 1 | 1 | 100% | ✅ |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 0 | 0% |
-| **Total** | **63** | **15** | **24%** |
+| **Total** | **63** | **15.5** | **25%** |
 
 Feature requests welcomed! (log an issue)
 
