@@ -22,6 +22,19 @@ namespace SpotifyApi.NetCore.Tests.Helpers
         }
 
         [TestMethod]
+        public void PlaylistUri_NumericUsername_ExtractsValidUri()
+        {
+            // arrange
+            const string fullUri = "spotify:user:1298341199:playlist:6RTNx0BJWjbmJuEfvMau3r";
+
+            // act
+            string uri = SpotifyUriHelper.PlaylistUri(fullUri);
+
+            // assert
+            Assert.AreEqual(fullUri, uri);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ArtistUri_ArtistUriNull_ThrowsArgumentException()
         {

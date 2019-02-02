@@ -31,15 +31,9 @@ namespace SpotifyApi.NetCore
 
         #region GetPlaylist
 
-        /// <summary>
-        /// Get a list of a user's playlists.
-        /// </summary>
-        /// <returns>The JSON result deserialized to dynamic.</returns>
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        Task<Playlist> GetPlaylist(string username, string playlistId);
-        
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        Task<T> GetPlaylist<T>(string username, string playlistId);
+        Task<PlaylistSimplified> GetPlaylist(string playlistId, string accessToken = null);
+
+        Task<T> GetPlaylist<T>(string playlistId, string accessToken = null);
 
         #endregion
 

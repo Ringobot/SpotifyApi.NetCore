@@ -32,7 +32,17 @@ namespace SpotifyApi.NetCore.Authorization
             return GetAppAccessToken();
         }
 
+        public Task<BearerAccessToken> RefreshUserAccessToken(string refreshToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string code)
         {
             throw new NotImplementedException();
         }

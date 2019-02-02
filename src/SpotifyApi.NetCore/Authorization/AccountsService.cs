@@ -19,6 +19,8 @@ namespace SpotifyApi.NetCore
         protected readonly IConfiguration _config;
         protected readonly IBearerTokenStore _bearerTokenStore;
 
+        #region constructors
+
         public AccountsService(HttpClient httpClient, IConfiguration configuration, IBearerTokenStore bearerTokenStore)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
@@ -36,6 +38,8 @@ namespace SpotifyApi.NetCore
         public AccountsService() : this(new HttpClient(), null, null) { }
         public AccountsService(HttpClient httpClient) : this(httpClient, null, null) { }
         public AccountsService(HttpClient httpClient, IConfiguration configuration) : this(new HttpClient(), configuration, null) { }
+
+        #endregion
 
         public async Task<BearerAccessToken> GetAppAccessToken()
         {
@@ -60,6 +64,17 @@ namespace SpotifyApi.NetCore
             // add to store
             newToken.EnforceInvariants();
             await _bearerTokenStore.InsertOrReplace(tokenKey, newToken);
+            return newToken;
+        }
+
+        protected async Task<BearerAccessToken> RefreshAccessToken(string body)
+        {
+            var now = DateTime.UtcNow;
+            string json = await _http.Post(TokenUrl, body, GetHeader(_config));
+            // deserialise the token
+            var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
+            // set absolute expiry
+            newToken.SetExpires(now);
             return newToken;
         }
 
