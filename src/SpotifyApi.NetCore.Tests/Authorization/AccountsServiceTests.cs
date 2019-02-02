@@ -56,7 +56,7 @@ namespace SpotifyApi.NetCore.Tests
             string url = service.AuthorizeUrl(state, scopes);
 
             // assert
-            Assert.IsTrue(url.Contains(string.Join(" ", scopes)), "url should contain space delimited user scopes");
+            Assert.IsTrue(url.Contains(string.Join("%20", scopes)), "url should contain %20 (space) delimited user scopes");
             Trace.WriteLine("RequestAuthorizationUrl_Scopes_UrlContainsSpaceDelimitedScopes url =");
             Trace.WriteLine(url);
         }
