@@ -129,6 +129,32 @@ namespace SpotifyApi.NetCore.Tests.Helpers
         }
 
         [TestMethod]
+        public void PlaylistUri_UnderscoreInUri_ReturnsPlaylistUri()
+        {
+            // arrange
+            const string uri = "spotify:user:catstevens_islanduk:playlist:4DgyX0TYmDJvjKlAVtkRxo";
+            //spotify:user:122740800:playlist:6CI5ScAEKJdHMmQsfjHOmY
+            // act
+            string result = SpotifyUriHelper.PlaylistUri(uri);
+
+            // assert
+            Assert.AreSame(uri, result);
+        }
+
+        [TestMethod]
+        public void PlaylistUri_NumericUserIdInUri_ReturnsPlaylistUri()
+        {
+            // arrange
+            const string uri = "spotify:user:122740800:playlist:6CI5ScAEKJdHMmQsfjHOmY";
+
+            // act
+            string result = SpotifyUriHelper.PlaylistUri(uri);
+
+            // assert
+            Assert.AreSame(uri, result);
+        }
+
+        [TestMethod]
         public void TrackUri_ValidTrackUri_ReturnsTrackUri()
         {
             // arrange
