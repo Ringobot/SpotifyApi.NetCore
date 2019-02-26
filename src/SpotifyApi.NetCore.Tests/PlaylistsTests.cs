@@ -112,6 +112,30 @@ namespace SpotifyApi.NetCore.Tests
             Assert.IsTrue(response.Items[0].Track.Name.Length > 0);
             Assert.IsTrue(response.Items[0].Track.Album.Name.Length > 0);
             Assert.IsTrue(response.Items[0].Track.Artists.Length > 0);
-        }	
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetTracks_NewEndpoint_ReturnsValidPlaylistTracks()
+        {
+            // Arrange
+            const string playlistId = "37i9dQZF1DX3WvGXE8FqYX";
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new PlaylistsApi(http, accounts);
+
+            // Act
+            var response = await api.GetTracks(playlistId);
+
+            // Assert
+            Assert.IsNotNull(response.Items);
+            Assert.IsTrue(response.Items.Length > 0);
+            Assert.IsTrue(response.Items[0].Track.Name.Length > 0);
+            Assert.IsTrue(response.Items[0].Track.Album.Name.Length > 0);
+            Assert.IsTrue(response.Items[0].Track.Artists.Length > 0);
+        }
+
     }
 }
