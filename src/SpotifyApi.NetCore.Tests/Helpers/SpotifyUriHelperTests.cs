@@ -142,6 +142,19 @@ namespace SpotifyApi.NetCore.Tests.Helpers
         }
 
         [TestMethod]
+        public void PlaylistUri_DashInUserUri_ReturnsPlaylistUri()
+        {
+            // arrange
+            const string uri = "spotify:user:trojan-records:playlist:0HHuexBIs4gdPZ2WeNGDt3";
+
+            // act
+            string result = SpotifyUriHelper.PlaylistUri(uri);
+
+            // assert
+            Assert.AreSame(uri, result);
+        }
+
+        [TestMethod]
         public void PlaylistUri_NumericUserIdInUri_ReturnsPlaylistUri()
         {
             // arrange

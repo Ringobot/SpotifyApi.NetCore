@@ -12,7 +12,7 @@ namespace SpotifyApi.NetCore.Helpers
     {
         private static readonly Regex SpotifyIdRegEx = new Regex("^[a-zA-Z0-9]+$");
         public static readonly Regex SpotifyUriRegEx = new Regex("spotify:[a-z]+:[a-zA-Z0-9]+$");
-        public static readonly Regex SpotifyUserPlaylistUriRegEx = new Regex("spotify:user:[a-z0-9_]+:playlist:[a-zA-Z0-9]+");
+        public static readonly Regex SpotifyUserPlaylistUriRegEx = new Regex("spotify:user:[a-z0-9_-]+:playlist:[a-zA-Z0-9]+");
 
         /// <summary>
         /// Converts a Spotify Track Id or URI into a Spotify URI
