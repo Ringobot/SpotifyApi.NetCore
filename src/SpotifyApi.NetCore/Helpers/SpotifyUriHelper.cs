@@ -76,6 +76,10 @@ namespace SpotifyApi.NetCore.Helpers
 
         public static string ToId(string type, string idOrUri, bool throwIfNotValid = true)
         {
+            if (string.IsNullOrEmpty(idOrUri)) throw new ArgumentNullException(
+                nameof(idOrUri), 
+                $"Spotify {type} Id or URI cannot be empty or null");
+
             // if a Spotify Id
             if (SpotifyIdRegEx.IsMatch(idOrUri)) return idOrUri;
 
