@@ -60,7 +60,7 @@ See tests and samples for more usage examples.
 
 | Spotify API | Endpoints | Implemented | % | |
 | :---------- | --------: | ----------: | -: | - |
-| Albums | 3 | 0 | 0% |
+| Albums | 3 | 3 | 100% | ✅ |
 | Artists | 5 | 4 | 80% |
 | Browse | 6 | 0.5 | 8% |
 | Follow | 7 | 0 | 0% |
@@ -71,7 +71,7 @@ See tests and samples for more usage examples.
 | Search | 1 | 1 | 100% | ✅ |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 0 | 0% |
-| **Total** | **63** | **15.5** | **25%** |
+| **Total** | **63** | **18.5** | **29%** |
 
 Feature requests welcomed! (log an issue)
 
