@@ -61,6 +61,19 @@ namespace SpotifyApi.NetCore.Helpers
             return uri.FullUri;
         }
 
+        /// <summary>
+        /// Converts any valid spotify URI to the standard Spotify URI format, i.e. spotify:(type):(id)
+        /// </summary>
+        /// <param name="uri">Any Spotify URI</param>
+        /// <returns>The normalized Spotify URI</returns>
+        public static string NormalizeUri(string uri)
+        {
+            var spotifyUri = new SpotifyUri(uri);
+            if (!spotifyUri.IsValid || !spotifyUri.IsSpotifyUri)
+                throw new ArgumentException($"\"{uri}\" is not a valid Spotify URI.");
+            return spotifyUri.Uri;
+        }
+
         public static string ToId(string type, string idOrUri, bool throwIfNotValid = true)
         {
             var uri = new SpotifyUri(idOrUri, type);
