@@ -35,6 +35,33 @@ namespace SpotifyApi.NetCore.Tests.Helpers
         }
 
         [TestMethod]
+        public void ArtistUri_UserCollectionArtist_ReturnsCollectionUri()
+        {
+            // arrange
+            const string collectionUri = "spotify:user:daniellarsennz:collection:artist:65XA3lk0aG9XejO8y37jjD";
+
+            // act
+            string uri = SpotifyUriHelper.ArtistUri(collectionUri);
+
+            // assert
+            Assert.AreEqual(collectionUri, uri);
+        }
+
+        [TestMethod]
+        public void ArtistId_UserCollectionArtistUri_ReturnsArtistId()
+        {
+            // arrange
+            const string artistId = "65XA3lk0aG9XejO8y37jjD";
+            string collectionUri = $"spotify:user:daniellarsennz:collection:artist:{artistId}";
+
+            // act
+            string id = SpotifyUriHelper.ArtistId(collectionUri);
+
+            // assert
+            Assert.AreEqual(artistId, id);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ArtistUri_ArtistUriNull_ThrowsArgumentException()
         {
@@ -57,7 +84,7 @@ namespace SpotifyApi.NetCore.Tests.Helpers
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
         public void ArtistUri_ArtistUriWhitespaceString_ThrowsArgumentException()
         {
             // arrange
@@ -68,7 +95,7 @@ namespace SpotifyApi.NetCore.Tests.Helpers
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
         public void ArtistUri_ArtistUriLeadingWhitespace_ThrowsArgumentException()
         {
             // arrange
@@ -79,7 +106,7 @@ namespace SpotifyApi.NetCore.Tests.Helpers
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
         public void ArtistUri_AlbumUri_ThrowsArgumentException()
         {
             // arrange
@@ -179,6 +206,5 @@ namespace SpotifyApi.NetCore.Tests.Helpers
             // assert
             Assert.AreSame(uri, result);
         }
-
     }
 }

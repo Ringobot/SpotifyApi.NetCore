@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using SpotifyApi.NetCore.Models;
+using System;
 using System.Text.RegularExpressions;
 
 namespace SpotifyApi.NetCore.Helpers
@@ -10,9 +10,9 @@ namespace SpotifyApi.NetCore.Helpers
     /// <remarks> https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids </remarks>
     public static class SpotifyUriHelper
     {
-        private static readonly Regex SpotifyIdRegEx = new Regex("^[a-zA-Z0-9]+$");
-        public static readonly Regex SpotifyUriRegEx = new Regex("spotify:[a-z]+:[a-zA-Z0-9]+$");
-        public static readonly Regex SpotifyUserPlaylistUriRegEx = new Regex("spotify:user:[a-z0-9_-]+:playlist:[a-zA-Z0-9]+");
+        public static readonly Regex SpotifyUriRegEx = SpotifyUri.SpotifyIdRegEx;
+        public static readonly Regex SpotifyUserPlaylistUriRegEx = SpotifyUri.SpotifyUserPlaylistUriRegEx;
+        public static readonly Regex SpotifyIdRegEx = SpotifyUri.SpotifyIdRegEx;
 
         /// <summary>
         /// Converts a Spotify Track Id or URI into a Spotify URI
@@ -56,52 +56,25 @@ namespace SpotifyApi.NetCore.Helpers
 
         private static string ToUri(string type, string id)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id), $"Spotify {type} Id cannot be empty or null");
-
-            // if a Spotify URI
-            MatchCollection matchesUri = SpotifyUriRegEx.Matches(id);
-            if (matchesUri.Count > 0 && SpotifyUriType(matchesUri[0].Value) == type) return matchesUri[0].Value;
-
-            // if a Spotify User Playlist URI
-            if (type == "playlist")
-            {
-                MatchCollection matchesId = SpotifyUserPlaylistUriRegEx.Matches(id);
-                if (matchesId.Count > 0) return matchesId[0].Value;
-            }
-
-            // if a Spotify Id
-            if (SpotifyIdRegEx.IsMatch(id)) return $"spotify:{type}:{id}";
-            throw new ArgumentException($"\"{id}\" is not a valid Spotify {type} identifier");
+            var uri = new SpotifyUri(id, type);
+            if (!uri.IsValid) throw new ArgumentException($"\"{id}\" is not a valid Spotify identifier.");
+            return uri.FullUri;
         }
 
         public static string ToId(string type, string idOrUri, bool throwIfNotValid = true)
         {
-            if (string.IsNullOrEmpty(idOrUri)) throw new ArgumentNullException(
-                nameof(idOrUri), 
-                $"Spotify {type} Id or URI cannot be empty or null");
+            var uri = new SpotifyUri(idOrUri, type);
+            if (throwIfNotValid && !uri.IsValid)
+                throw new ArgumentException($"\"{idOrUri}\" is not a valid Spotify {type} identifier");
 
-            // if a Spotify Id
-            if (SpotifyIdRegEx.IsMatch(idOrUri)) return idOrUri;
-
-            // if a Spotify URI
-            MatchCollection matchesUri = SpotifyUriRegEx.Matches(idOrUri);
-            if (matchesUri.Count > 0 && SpotifyUriType(matchesUri[0].Value) == type)
-                return matchesUri[0].Value.Split(':').Last();
-
-            // if a Spotify User Playlist URI
-            if (type == "playlist")
-            {
-                MatchCollection matchesId = SpotifyUserPlaylistUriRegEx.Matches(idOrUri);
-                if (matchesId.Count > 0) return matchesId[0].Value.Split(':').Last();
-            }
-
-            if (throwIfNotValid) throw new ArgumentException($"\"{idOrUri}\" is not a valid Spotify {type} identifier");
-
-            return null;
+            return uri.Id;
         }
 
-        //TODO: AlbumId, etc
+        [Obsolete("Will be removed in vnext. Use SpotifyUri instead.")]
+        public static string SpotifyUriType(string uri)
+        {
+            return uri.Split(':')[1];
+        }
 
-        public static string SpotifyUriType(string uri) => uri.Split(':')[1];
     }
 }
