@@ -28,7 +28,10 @@ Nuget package versioning: <https://docs.microsoft.com/en-nz/nuget/reference/pack
 
 Nuget metadata properties: <https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties>
 
+Detecting git tag pushes in Azure DevOps: <https://edsnider.net/2018/11/14/detecting-git-tag-pushes-in-azure-devops.html>
+
 <https://www.hanselman.com/blog/AddingResilienceAndTransientFaultHandlingToYourNETCoreHttpClientWithPolly.aspx>
+
 ## Blazor
 
 `HttpClientJsonExtensions` <https://github.com/aspnet/Blazor/blob/release/0.1.0/src/Microsoft.AspNetCore.Blazor/Json/HttpClientJsonExtensions.cs>

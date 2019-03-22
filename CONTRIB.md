@@ -9,20 +9,18 @@
 Push the Version number in `SpotifyApi.NetCore.csproj`
 
 ```xml
-<Version>1.1.2</Version>
+<Version>2.5.0</Version>
 ```
 
 Commit and push
 
-    git commit -a -m "Packing v1.1.2"
+    git commit -a -m "Packing v2.5.0"
     git push
 
-Pack
+And then create a Release in Github.
 
-    dotnet pack src/SpotifyApi.NetCore -c Release
+    Tag = 2.5.0 (no "V")
+    Title = v2.5.0
+    Description = release notes
 
-Publish
-
-    dotnet nuget push .\src\SpotifyApi.NetCore\bin\Release\SpotifyApi.NetCore.2.3.8.nupkg -k (api-key) -s https://api.nuget.org/v3/index.json
-
-And then create a release label in Github.
+The Release will trigger a build that will pack and publish the Nuget package.
