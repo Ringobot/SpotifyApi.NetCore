@@ -34,6 +34,7 @@ steps:
 
 - script: |
     LATEST_TAG=$(git describe --abbrev=0 --tags)
+    echo NUGET PUSH TAG $LATEST_TAG - tag must match .csproj version
     dotnet pack src/SpotifyApi.NetCore -c $(buildConfiguration)
     dotnet nuget push src/SpotifyApi.NetCore/bin/Release/SpotifyApi.NetCore.$LATEST_TAG.nupkg -k $(nugetApiKey) -s https://api.nuget.org/v3/index.json
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
