@@ -314,5 +314,25 @@ namespace SpotifyApi.NetCore
 
         #endregion
 
+        #region Seek
+
+        /// <summary>
+        /// BETA. Seeks to the given position in the user’s currently playing track.
+        /// </summary>
+        /// <param name="positionMs">Required. The position in milliseconds to seek to. Must be a positive
+        /// number. Passing in a position that is greater than the length of the track will cause the
+        /// player to start playing the next song.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/
+        /// </remarks>
+        Task Seek(long positionMs, string accessToken = null, string deviceId = null);
+
+        #endregion
     }
 }

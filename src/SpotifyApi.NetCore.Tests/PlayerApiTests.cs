@@ -213,6 +213,16 @@ namespace SpotifyApi.NetCore.Tests
             await mockPlayerApi.Object.PlayAlbumOffset("albumid", "trackId", positionMs: 10000);
         }
 
+        //[TestMethod]
+        public async Task Seek_UserToken_HowDoesThisWork()
+        {
+            // arrange
+            var player = new PlayerApi(_http);
+
+            // act
+            await player.Seek(1000, accessToken: await GetAccessToken());
+        }
+
     }
 
     class BearerTokenStore
