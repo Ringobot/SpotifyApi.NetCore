@@ -2,12 +2,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
 trigger:
-  tags:
-    include:
-    - *
   branches:
     include:
     - master
+    - refs/tags/*
   paths:
     include:
     - src/SpotifyApi.NetCore/*
