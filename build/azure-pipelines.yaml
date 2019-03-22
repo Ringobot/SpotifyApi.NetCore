@@ -12,7 +12,7 @@ trigger:
     - src/SpotifyApi.NetCore.Tests/*
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'ubuntu-16.04'
   
 variables:
   buildConfiguration: 'Release'
