@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore
 {
@@ -329,10 +330,127 @@ namespace SpotifyApi.NetCore
         /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
         /// currently active device is the target.</param>
         /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/
+        /// https://developer.spotify.com/documentation/web-api/reference/player/seek-to-position-in-currently-playing-track/
         /// </remarks>
         Task Seek(long positionMs, string accessToken = null, string deviceId = null);
 
         #endregion
+
+        #region Shuffle
+
+        /// <summary>
+        /// BETA. Toggle shuffle on or off for user’s playback.
+        /// </summary>
+        /// <param name="state">Required. true : Shuffle user’s playback. false : Do not shuffle user’s playback.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/toggle-shuffle-for-users-playback/
+        /// </remarks>
+        Task Shuffle(bool state, string accessToken = null, string deviceId = null);
+
+        #endregion
+
+        #region Volume
+
+        /// <summary>
+        /// BETA. Set the volume for the user’s current playback device.
+        /// </summary>
+        /// <param name="volumePercent">Required. Integer. The volume to set. Must be a value from 0 to 100 inclusive.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/set-volume-for-users-playback/
+        /// </remarks>
+        Task Volume(int volumePercent, string accessToken = null, string deviceId = null);
+
+        #endregion
+
+        #region Repeat
+
+        /// <summary>
+        /// BETA. Set the repeat mode for the user’s playback. Options are repeat-track, repeat-context, and off.
+        /// </summary>
+        /// <param name="state">Required. <see cref="RepeatStates.Track"/>, <see cref="RepeatStates.Context"/> 
+        /// or <see cref="RepeatStates.Off"/>. Track will repeat the current track. Context will 
+        /// repeat the current context. Off will turn repeat off.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/set-repeat-mode-on-users-playback/
+        /// </remarks>
+        Task Repeat(string state, string accessToken = null, string deviceId = null);
+
+        #endregion
+
+        #region Pause
+
+        /// <summary>
+        /// BETA. Pause playback on the user’s account.
+        /// </summary>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/pause-a-users-playback/
+        /// </remarks>
+        Task Pause(string accessToken = null, string deviceId = null);
+
+        #endregion
+
+        #region SkipNext
+
+        /// <summary>
+        /// BETA. Skips to next track in the user’s queue.
+        /// </summary>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-next-track/
+        /// </remarks>
+        Task SkipNext(string accessToken = null, string deviceId = null);
+
+        #endregion
+
+        #region SkipPrevious
+
+        /// <summary>
+        /// BETA. Skips to previous track in the user’s queue.
+        /// </summary>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/skip-users-playback-to-previous-track/
+        /// Note that this will ALWAYS skip to the previous track, regardless of the current track’s progress. 
+        /// Returning to the start of the current track should be performed using the 
+        /// <see cref="Seek(long, string, string)"/> endpoint.
+        /// </remarks>
+        Task SkipPrevious(string accessToken = null, string deviceId = null);
+
+        #endregion
+
     }
 }

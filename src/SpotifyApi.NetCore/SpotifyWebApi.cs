@@ -110,16 +110,38 @@ namespace SpotifyApi.NetCore
         /// Helper to PUT an object as JSON body
         /// </summary>
         protected internal virtual async Task<HttpResponseMessage> Put(string url, object data, string accessToken = null)
+            => await PostOrPut("PUT", url, data, accessToken);
+
+        /// <summary>
+        /// Helper to POST an object as JSON body
+        /// </summary>
+        protected internal virtual async Task<HttpResponseMessage> Post(string url, object data, string accessToken = null)
+            => await PostOrPut("POST", url, data, accessToken);
+
+        private async Task<HttpResponseMessage> PostOrPut(string verb, string url, object data, string accessToken = null)
         {
-            Logger.Debug($"PUT {url}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
+            Logger.Debug($"{verb} {url}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
 
             _http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()));
-            var content = new StringContent(JsonConvert.SerializeObject(data));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var response = await _http.PutAsync(url, content);
 
-            Logger.Information($"Put {url} {response.StatusCode}", nameof(RestHttpClient));
+            var content = data == null ? new StringContent(null) : new StringContent(JsonConvert.SerializeObject(data));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = null;
+
+            switch (verb)
+            {
+                case "PUT":
+                    response = await _http.PutAsync(url, content);
+                    break;
+                case "POST":
+                    response = await _http.PostAsync(url, content);
+                    break;
+                default:
+                    throw new NotSupportedException($"{verb} is not a supported verb");
+            }
+
+            Logger.Information($"{verb} {url} {response.StatusCode}", nameof(RestHttpClient));
 
             await RestHttpClient.CheckForErrors(response);
 
