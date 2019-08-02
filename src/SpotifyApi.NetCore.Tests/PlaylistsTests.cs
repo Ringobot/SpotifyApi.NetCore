@@ -145,8 +145,12 @@ namespace SpotifyApi.NetCore.Tests
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
             var plapi = new PlaylistsApi(http, accounts);
-            var pl = await plapi.GetTracks("37i9dQZF1DX3WvGXE8FqYX");
+            var pl = await plapi.GetTracks("4h4urfIy5cyCdFOc1Ff4iN");
+
             var pl_tr = pl.Items.ElementAt(0).Track.Name;
+
+            var pl_page_2 = await plapi.GetTracks("4h4urfIy5cyCdFOc1Ff4iN", offset: 100);
+            var pl_page_2_tr = pl_page_2.Items.ElementAt(0).Track.Name;
         }
     }
 }
