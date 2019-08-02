@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Http;
 using System;
 using System.Net.Http;
@@ -63,7 +64,7 @@ namespace SpotifyApi.NetCore
                 ?? _accessToken
                 ?? (_tokenProvider != null
                     ? (await _tokenProvider.GetAccessToken())
-                    : _accounts != null ? (await _accounts.GetAppAccessToken()).AccessToken : null);
+                    : null);
 
             if (string.IsNullOrEmpty(token)) throw new InvalidOperationException("Access Token is null. Could not get Access Token.");
             return token;
@@ -147,20 +148,5 @@ namespace SpotifyApi.NetCore
 
             return response;
         }
-
-        #region Obsolete
-
-        [Obsolete("Use _tokenProvider")]
-        protected internal readonly IAccountsService _accounts;
-
-        [Obsolete("Use `SpotifyWebApi(HttpClient, IAccessTokenProvider)` instead. Will be removed in vNext")]
-        public SpotifyWebApi(HttpClient httpClient, IAccountsService accountsService)
-        {
-            _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _accounts = accountsService ?? throw new ArgumentNullException(nameof(accountsService));
-        }
-
-        #endregion
-
     }
 }

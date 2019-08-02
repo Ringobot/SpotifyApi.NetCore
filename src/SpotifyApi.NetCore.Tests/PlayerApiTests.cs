@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
@@ -17,8 +18,6 @@ namespace SpotifyApi.NetCore.Tests
         private static IConfiguration _config = TestsHelper.GetLocalConfig();
         private static HttpClient _http = new HttpClient();
         private static UserAccountsService _accounts = new UserAccountsService(_http, _config, new MockRefreshTokenStore(UserHash).Object, null);
-
-        private async Task<string> GetAccessToken() => (await _accounts.GetUserAccessToken(UserHash)).AccessToken;
 
         [TestMethod]
         public async Task PlayTracks_AccessToken_PutInvokedWithAccessToken()
@@ -143,58 +142,6 @@ namespace SpotifyApi.NetCore.Tests
             service.Verify(s => s.GetModel<CurrentPlaybackContext>(It.IsAny<string>(), token));
         }
 
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetDevices_AccessToken_ReturnsDevices()
-        {
-            // arrange
-            var api = new PlayerApi(_http);
-
-            // act
-            var devices = await api.GetDevices<Device[]>(await GetAccessToken());
-
-            Trace.WriteLine(devices);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetPlaybackInfo_AccessToken_ReturnsInfo()
-        {
-            // arrange
-            var api = new PlayerApi(_http);
-
-            // act
-            var info = await api.GetCurrentPlaybackInfo(await GetAccessToken());
-
-            Trace.WriteLine(info);
-        }
-
-        //[TestMethod] //TODO: Result changes if device online/offline
-        [TestCategory("Integration")]
-        public async Task PlayContext_SpotifyUri_SpotifyApiErrorException()
-        {
-            // arrange
-            const string spotifyUri = "spotify:user:palsvensson:playlist:2iL5fr6OmN8f4yoQvvuWSf";
-
-            var http = new HttpClient();
-            var config = TestsHelper.GetLocalConfig();
-
-            var accounts = new UserAccountsService(http, config, new MockRefreshTokenStore(UserHash).Object, null);
-            var api = new PlayerApi(http, accounts);
-
-            // act
-            //try
-            //{
-                await api.PlayContext(UserHash, spotifyUri);
-            //}
-            //catch (SpotifyApiErrorException ex)
-            //{
-                //Trace.WriteLine(ex.Message);
-                
-            //}
-
-            // assert
-        }
 
         //[TestMethod]
         public async Task Play_UserToken_HowDoesThisWork()
@@ -212,17 +159,6 @@ namespace SpotifyApi.NetCore.Tests
             await mockPlayerApi.Object.PlayAlbumOffset("albumid", "trackId");
             await mockPlayerApi.Object.PlayAlbumOffset("albumid", "trackId", positionMs: 10000);
         }
-
-        //[TestMethod]
-        public async Task Seek_UserToken_HowDoesThisWork()
-        {
-            // arrange
-            var player = new PlayerApi(_http);
-
-            // act
-            await player.Seek(1000, accessToken: await GetAccessToken());
-        }
-
     }
 
     class BearerTokenStore

@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore
 {
@@ -9,9 +10,7 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public class SearchApi : SpotifyWebApi, ISearchApi
     {
-        public SearchApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
-        {
-        }
+        #region Constructors
 
         /// <summary>
         /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
@@ -31,6 +30,12 @@ namespace SpotifyApi.NetCore
         public SearchApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
         {
         }
+
+        public SearchApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
+        {
+        }
+
+        #endregion
 
         /// <summary>
         /// Get Spotify Catalog information about artists, albums, tracks or playlists that match a

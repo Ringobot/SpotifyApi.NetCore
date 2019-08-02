@@ -6,26 +6,7 @@ namespace SpotifyApi.NetCore
 {
     public interface IPlayerApi
     {
-        #region PlayContext
-
-        [Obsolete("Will be removed in vNext. Use Play() instead.")]
-        Task PlayContext(string userHash, string spotifyUri);
-
-        [Obsolete("Will be removed in vNext. Use Play() instead.")]
-        Task PlayContext(string userHash, string spotifyUri, string offsetTrackUri = null, string deviceId = null);
-
-        [Obsolete("Will be removed in vNext. Use Play() instead.")]
-        Task PlayContext(string userHash, string spotifyUri, int offsetPosition = 0, string deviceId = null);
-        
-        #endregion
-
         #region PlayTracks
-
-        [Obsolete("userHash overrides Will be removed in vNext. Use accessToken parameter instead.")]
-        Task PlayTracks(string userHash, string[] trackIds, string offsetTrackUri = null, string deviceId = null);
-        
-        [Obsolete("userHash overrides Will be removed in vNext. Use accessToken parameter instead.")]
-        Task PlayTracks(string userHash, string[] trackIds, int offsetPosition = 0, string deviceId = null);
 
         /// <summary>
         /// BETA. Play a Track on the user’s active device.
@@ -244,15 +225,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         Task Play(string accessToken = null, string deviceId = null);
 
-        [Obsolete("Helper method will be removed from public interface in next major version")]
-        Task Play(string userHash, object data, string deviceId = null);
-
         #endregion
 
         #region GetDevices
-
-        [Obsolete("userHash overrides Will be removed in vNext.")]
-        Task<Device[]> GetDevices(string userHash);
 
         /// <summary>
         /// BETA. Get information about a user’s available devices.

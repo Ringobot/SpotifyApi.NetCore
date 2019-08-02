@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Helpers;
 
 namespace SpotifyApi.NetCore
@@ -15,11 +16,6 @@ namespace SpotifyApi.NetCore
         protected internal virtual ISearchApi SearchApi { get; set; }
 
         #region Constructors
-
-        public ArtistsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
-        {
-            SearchApi = new SearchApi(httpClient, accountsService);
-        }
 
         /// <summary>
         /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
@@ -40,6 +36,11 @@ namespace SpotifyApi.NetCore
         public ArtistsApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
         {
             SearchApi = new SearchApi(httpClient, accessToken);
+        }
+
+        public ArtistsApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
+        {
+            SearchApi = new SearchApi(httpClient, accessTokenProvider);
         }
 
         #endregion
@@ -140,24 +141,6 @@ namespace SpotifyApi.NetCore
         /// <returns>Task of <see cref="SearchResult">SearchResult</see></returns>
         public async Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset, string accessToken = null)
             => await SearchApi.Search(artist, new string[] { SpotifySearchTypes.Artist }, null, limitOffset, accessToken);
-
-        /// <summary>
-        /// Get Spotify Catalog information about artists that match a keyword string.
-        /// </summary>
-        /// <param name="artist">Artist search keyword(s). Wildcards accepted. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines
-        /// for more info.
-        /// </param>
-        /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
-        /// <param name="offset">The index of the first result to return. Default: 0 (the first result). 
-        /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
-        /// used for this call only. See constructors for more ways to provide access tokens.</param>
-        /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
-        /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        [Obsolete("Is replaced by SearchApi.Search<T>(). Will be deprecated in next major version")]
-        public async Task<T> SearchArtists<T>(string artist, (int limit, int offset) limitOffset)
-            => await SearchApi.Search<T>(artist, new string[] { SpotifySearchTypes.Artist }, null, limitOffset);
 
         #endregion
 

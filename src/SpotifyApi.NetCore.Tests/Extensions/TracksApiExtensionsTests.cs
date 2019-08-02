@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net.Http;
 using SpotifyApi.NetCore.Extensions;
 using Moq;
+using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore.Tests.Extensions
 {

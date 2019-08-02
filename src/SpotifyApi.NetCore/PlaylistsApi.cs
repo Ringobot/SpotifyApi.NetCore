@@ -1,4 +1,5 @@
-﻿using SpotifyApi.NetCore.Helpers;
+﻿using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Helpers;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,12 +11,23 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public class PlaylistsApi : SpotifyWebApi, IPlaylistsApi
     {
-        protected internal virtual ISearchApi SearchApi { get; set; }
+        #region constructors
 
-        public PlaylistsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
+        public PlaylistsApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
         {
-            SearchApi = new SearchApi(httpClient, accountsService);
         }
+
+        public PlaylistsApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
+        {
+        }
+
+        public PlaylistsApi(HttpClient httpClient) : base(httpClient)
+        {
+        }
+
+        #endregion
+
+        protected internal virtual ISearchApi SearchApi { get; set; }
 
         #region GetPlaylists
 
@@ -57,34 +69,6 @@ namespace SpotifyApi.NetCore
         #endregion
 
         #region GetTracks
-
-        /// <summary>
-        /// Get full details of the tracks of a playlist owned by a Spotify user.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="username">The user's Spotify user ID.</param>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
-        /// <returns></returns>
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        public async Task<PlaylistTracksSearchResult> GetTracks(string username, string playlistId)
-            => await GetTracks<PlaylistTracksSearchResult>(username, playlistId);
-
-        /// <summary>
-        /// Get full details of the tracks of a playlist owned by a Spotify user.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="username">The user's Spotify user ID.</param>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
-        /// <returns></returns>
-
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        public async Task<T> GetTracks<T>(string username, string playlistId)
-        {
-            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
-            if (string.IsNullOrEmpty(playlistId)) throw new ArgumentNullException("playlistId");
-
-            return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists/{Uri.EscapeDataString(playlistId)}/tracks");
-        }
 
         /// <summary>
         /// Get full details of the tracks of a playlist owned by a Spotify user.

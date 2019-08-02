@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SpotifyApi.NetCore.Authorization;
 using System.Net.Http;
 using System.Threading.Tasks;
 

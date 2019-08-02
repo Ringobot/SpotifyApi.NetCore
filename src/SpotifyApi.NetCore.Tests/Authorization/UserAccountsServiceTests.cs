@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
@@ -39,7 +40,7 @@ namespace SpotifyApi.NetCore.Tests
             var service = new UserAccountsService(http, config, refreshTokenStore, bearerTokenStore.Object);
 
             // act
-            var token = await service.GetUserAccessToken(UserHash);
+            var token = await service.GetAccessToken();
 
             // assert
             Assert.AreNotEqual(expiredToken, token);
@@ -66,7 +67,7 @@ namespace SpotifyApi.NetCore.Tests
             var service = new UserAccountsService(http, config, refreshTokenStore, bearerTokenStore.Object);
 
             // act
-            var token = await service.GetUserAccessToken(UserHash);
+            var token = await service.GetAccessToken();
 
             // assert
             Assert.AreEqual(currentToken, token);

@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Moq;
 using System.Net.Http;
+using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore.Tests
 {

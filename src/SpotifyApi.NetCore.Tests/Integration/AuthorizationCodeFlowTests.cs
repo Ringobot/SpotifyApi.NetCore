@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests.Integration
@@ -51,14 +52,6 @@ namespace SpotifyApi.NetCore.Tests.Integration
             // controller calls Accounts Service to get access and refresh tokens
             // account service updates store
             await _accounts.RequestAccessRefreshToken(UserHash, codeParam);
-        }
-
-        // only used for manual debugging
-        public async Task ControllerAuthorize3()
-        {
-            // AuthService provides access token to APIs, refreshes when necessary, updates userAuth record
-            var player = new PlayerApi(new HttpClient(), _accounts);
-            await player.PlayContext("", "");
         }
     }
 }

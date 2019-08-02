@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using SpotifyApi.NetCore.Tests.Mocks;
 using SpotifyApi.NetCore.Tests.Http;
+using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore.Tests
 {

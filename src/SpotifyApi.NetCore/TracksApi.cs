@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore
 {
@@ -11,10 +12,7 @@ namespace SpotifyApi.NetCore
     {
         protected internal virtual ISearchApi SearchApi { get; set; }
 
-        public TracksApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
-        {
-            SearchApi = new SearchApi(httpClient, accountsService);
-        }
+        #region Constructors
 
         /// <summary>
         /// This constructor accepts a Spotify access token that will be used for all calls to the API 
@@ -36,6 +34,13 @@ namespace SpotifyApi.NetCore
         {
             SearchApi = new SearchApi(httpClient);
         }
+
+        public TracksApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
+        {
+            SearchApi = new SearchApi(httpClient, accessTokenProvider);
+        }
+
+        #endregion
 
         #region GetTrack
 

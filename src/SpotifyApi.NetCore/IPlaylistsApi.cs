@@ -39,12 +39,6 @@ namespace SpotifyApi.NetCore
 
         #region GetTracks
 
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        Task<PlaylistTracksSearchResult> GetTracks(string username, string playlistId);
-        
-        [Obsolete("This endpoint has been deprecated by Spotify and will be removed in the next major release. See https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/")]
-        Task<T> GetTracks<T>(string username, string playlistId);
-
         /// <summary>
         /// Get full details of the tracks of a playlist owned by a Spotify user.
         /// </summary>

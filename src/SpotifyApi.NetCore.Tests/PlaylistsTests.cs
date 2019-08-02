@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
+using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Http;
 using SpotifyApi.NetCore.Tests.Http;
 using SpotifyApi.NetCore.Tests.Mocks;
@@ -48,7 +49,7 @@ namespace SpotifyApi.NetCore.Tests
             await api.GetPlaylists(username);
 
             // Assert
-            mockAccounts.Verify(a=>a.GetAppAccessToken());
+            mockAccounts.Verify(a=>a.GetAccessToken());
         }
 		
         [TestMethod]
@@ -68,7 +69,7 @@ namespace SpotifyApi.NetCore.Tests
             await api.GetTracks(username, playlistId);
 
             // Assert
-            mockAccounts.Verify(a => a.GetAppAccessToken());
+            mockAccounts.Verify(a => a.GetAccessToken());
         }
 
         [TestCategory("Integration")]

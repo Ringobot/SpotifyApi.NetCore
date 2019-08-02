@@ -37,9 +37,4 @@ namespace SpotifyApi.NetCore
         [JsonProperty("uri")]
         public string Uri { get; set; }
     }
-
-    // shim for backwards compatibility
-    [Obsolete("`ArtistItem` has been replaced by `Artist`")]
-    public partial class ArtistItem : Artist {}
-
 }

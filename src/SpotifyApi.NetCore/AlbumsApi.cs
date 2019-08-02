@@ -1,4 +1,5 @@
-﻿using SpotifyApi.NetCore.Helpers;
+﻿using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,6 @@ namespace SpotifyApi.NetCore
         protected internal virtual ISearchApi SearchApi { get; set; }
 
         #region Constructors
-
-        public AlbumsApi(HttpClient httpClient, IAccountsService accountsService) : base(httpClient, accountsService)
-        {
-            SearchApi = new SearchApi(httpClient, accountsService);
-        }
 
         /// <summary>
         /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
@@ -37,6 +33,11 @@ namespace SpotifyApi.NetCore
         public AlbumsApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
         {
             SearchApi = new SearchApi(httpClient, accessToken);
+        }
+
+        public AlbumsApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
+        {
+            SearchApi = new SearchApi(httpClient, accessTokenProvider);
         }
 
         #endregion

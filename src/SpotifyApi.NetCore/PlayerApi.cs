@@ -1,17 +1,17 @@
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SpotifyApi.NetCore.Http;
+using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Helpers;
 using System;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using SpotifyApi.NetCore.Helpers;
 
 namespace SpotifyApi.NetCore
 {
     public class PlayerApi : SpotifyWebApi, IPlayerApi
     {
+        #region Constructors
+
         /// <summary>
         /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
         /// on each method
@@ -27,11 +27,10 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
         public PlayerApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken) { }
 
-        /*
-        // Add this ctor when obsolete UserAccountService overload is removed
-        public PlayerApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) 
+        public PlayerApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider)
             : base(httpClient, accessTokenProvider) { }
-        */
+
+        #endregion
 
         #region PlayTracks
 
@@ -49,7 +48,7 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(string trackId, string accessToken = null, string deviceId = null, 
+        public async Task PlayTracks(string trackId, string accessToken = null, string deviceId = null,
             long positionMs = 0) => await PlayTracks(new[] { trackId }, accessToken, deviceId, positionMs);
 
         /// <summary>
@@ -66,29 +65,12 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(string[] trackIds, string accessToken = null, string deviceId = null, 
-            long positionMs = 0) 
+        public async Task PlayTracks(string[] trackIds, string accessToken = null, string deviceId = null,
+            long positionMs = 0)
         {
             if (trackIds == null || trackIds.Length == 0) throw new ArgumentNullException(nameof(trackIds));
             dynamic data = JObject.FromObject(new { uris = trackIds.Select(SpotifyUriHelper.TrackUri).ToArray() });
             await Play(data, accessToken, deviceId, positionMs);
-        }
-
-        [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task PlayTracks(string userHash, string[] trackIds, string offsetTrackUri = null, 
-            string deviceId = null)
-        {
-            dynamic data = JObject.FromObject(new { uris = trackIds });
-            if (offsetTrackUri != null) data.offset = JObject.FromObject(new { uri = offsetTrackUri });
-            await Play(userHash, data, deviceId);
-        }
-
-        [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task PlayTracks(string userHash, string[] trackIds, int offsetPosition = 0, string deviceId = null)
-        {
-            dynamic data = JObject.FromObject(new { uris = trackIds });
-            if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition });
-            await Play(userHash, data, deviceId);
         }
 
         #endregion
@@ -135,7 +117,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        public async Task PlayAlbumOffset(string albumId, string offsetTrackId, string accessToken = null, 
+        public async Task PlayAlbumOffset(string albumId, string offsetTrackId, string accessToken = null,
             string deviceId = null, long positionMs = 0)
         {
             dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.AlbumUri(albumId) });
@@ -160,7 +142,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        public async Task PlayAlbumOffset(string albumId, int offsetPosition, string accessToken = null, 
+        public async Task PlayAlbumOffset(string albumId, int offsetPosition, string accessToken = null,
             string deviceId = null, long positionMs = 0)
         {
             dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.AlbumUri(albumId) });
@@ -266,7 +248,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        public async Task PlayPlaylistOffset(string playlistId, string offsetTrackId, string accessToken = null, 
+        public async Task PlayPlaylistOffset(string playlistId, string offsetTrackId, string accessToken = null,
             string deviceId = null, long positionMs = 0)
         {
             dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.PlaylistUri(playlistId) });
@@ -291,11 +273,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        public async Task PlayPlaylistOffset(string playlistId, int offsetPosition, string accessToken = null, 
+        public async Task PlayPlaylistOffset(string playlistId, int offsetPosition, string accessToken = null,
             string deviceId = null, long positionMs = 0)
         {
             dynamic data = JObject.FromObject(new { context_uri = SpotifyUriHelper.PlaylistUri(playlistId) });
-            if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition});
+            if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition });
             await Play(data, accessToken, deviceId, positionMs);
         }
 
@@ -345,13 +327,8 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>
-        public async Task<T> GetDevices<T>(string accessToken = null) 
+        public async Task<T> GetDevices<T>(string accessToken = null)
             => await GetModelFromProperty<T>($"{BaseUrl}/me/player/devices", "devices", accessToken);
-
-        [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task<Device[]> GetDevices(string userHash) =>
-            await GetModelFromProperty<Device[]>($"{BaseUrl}/me/player/devices", "devices",
-                (await _userAccounts.GetUserAccessToken(userHash)).AccessToken);
 
         #endregion
 
@@ -395,43 +372,6 @@ namespace SpotifyApi.NetCore
         }
 
         #endregion
-
-        #region PlayContext
-
-        [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task PlayContext(string userHash, string spotifyUri, string offsetTrackUri = null, string deviceId = null)
-        {
-            dynamic data = JObject.FromObject(new { context_uri = spotifyUri });
-            if (offsetTrackUri != null) data.offset = JObject.FromObject(new { uri = offsetTrackUri });
-
-            await Play(userHash, data, deviceId);
-        }
-
-        [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task PlayContext(string userHash, string spotifyUri, int offsetPosition = 0, string deviceId = null)
-        {
-            dynamic data = JObject.FromObject(new { context_uri = spotifyUri });
-            if (offsetPosition > 0) data.offset = JObject.FromObject(new { position = offsetPosition });
-
-            await Play(userHash, data, deviceId);
-        }
-
-        [Obsolete("userHash overrides Will be removed in vNext.")]
-        public async Task PlayContext(string userHash, string spotifyUri)
-        {
-            await PlayContext(userHash, spotifyUri, null, null);
-        }
-
-        #endregion
-
-        public async Task Play(string userHash, object data, string deviceId = null)
-        {
-            // url
-            string url = $"{BaseUrl}/me/player/play";
-            if (deviceId != null) url += $"?device_id={deviceId}";
-
-            await PutWithUsersToken(url, userHash, data);
-        }
 
         private async Task Play(dynamic data, string accessToken, string deviceId, long positionMs)
         {
@@ -613,39 +553,6 @@ namespace SpotifyApi.NetCore
             if (deviceId != null) url += $"&device_id={deviceId}";
             await Post(url, null, accessToken);
         }
-
-        #endregion
-
-        #region Obsolete
-
-        [Obsolete("Will be removed in vNext")]
-        private readonly IUserAccountsService _userAccounts;
-
-        [Obsolete("Will be removed in vNext")]
-        public PlayerApi(HttpClient httpClient, IUserAccountsService userAccountsService)
-            : base(httpClient, userAccountsService)
-        {
-            _userAccounts = userAccountsService ?? throw new ArgumentNullException("userAccountsService");
-        }
-
-        /// <summary>
-        /// Helper to PUT an object as JSON body
-        /// </summary>
-        [Obsolete("Will be removed in vNext")]
-        protected internal virtual async Task<HttpResponseMessage> PutWithUsersToken(string url, string userHash, object data)
-        {
-            // TODO: Could cause unusual effects if multiple threads mix client auth and user auth?
-            _http.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", (await _userAccounts.GetUserAccessToken(userHash)).AccessToken);
-            var content = new StringContent(JsonConvert.SerializeObject(data));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var response = await _http.PutAsync(url, content);
-
-            await RestHttpClient.CheckForErrors(response);
-
-            return response;
-        }
-
 
         #endregion
 
