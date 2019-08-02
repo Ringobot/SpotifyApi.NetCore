@@ -138,5 +138,20 @@ namespace SpotifyApi.NetCore.Tests
             Assert.IsTrue(response.Items[0].Track.Artists.Length > 0);
         }
 
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetTracks_NewAccountsService_ReturnsTracks()
+        {
+            // Testing @DanixPC's use case
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+            var plapi = new PlaylistsApi(http, accounts);
+            var pl = await plapi.GetTracks("4h4urfIy5cyCdFOc1Ff4iN");
+
+            var pl_tr = pl.Items.ElementAt(0).Track.Name;
+
+            var pl_page_2 = await plapi.GetTracks("4h4urfIy5cyCdFOc1Ff4iN", offset: 100);
+            var pl_page_2_tr = pl_page_2.Items.ElementAt(0).Track.Name;
+        }
     }
 }
