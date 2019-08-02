@@ -83,10 +83,10 @@ namespace SpotifyApi.NetCore.Helpers
             return uri.Id;
         }
 
-        [Obsolete("Will be removed in vnext. Use SpotifyUri instead.")]
+        [Obsolete("Will be removed in vnext. Use SpotifyApi.NetCore.Models.SpotifyUri instead.")]
         public static string SpotifyUriType(string uri)
         {
-            return uri.Split(':')[1];
+            return new SpotifyUri(uri).ItemType;
         }
 
     }

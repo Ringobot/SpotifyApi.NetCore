@@ -29,6 +29,6 @@ namespace SpotifyApi.NetCore
         public string Type { get; set; }
 
         [JsonProperty("volume_percent")]
-        public long VolumePercent { get; set; }
+        public int VolumePercent { get; set; }
     }
 }

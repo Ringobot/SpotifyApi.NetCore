@@ -23,4 +23,10 @@ And then create a Release in Github.
     Title = v2.5.0
     Description = release notes
 
-The Release will trigger a build that will pack and publish the Nuget package.
+Or for pre-release
+
+    git tag -a -m "v2.5.0-beta" 2.5.0-beta
+    git push origin 2.5.0-beta
+
+Creating a Release in Github, or pushing a tag, will trigger a build that will pack and publish the Nuget 
+package.
