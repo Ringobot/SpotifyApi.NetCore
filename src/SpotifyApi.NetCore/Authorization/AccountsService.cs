@@ -37,7 +37,7 @@ namespace SpotifyApi.NetCore
 
         public AccountsService() : this(new HttpClient(), null, null) { }
         public AccountsService(HttpClient httpClient) : this(httpClient, null, null) { }
-        public AccountsService(HttpClient httpClient, IConfiguration configuration) : this(new HttpClient(), configuration, null) { }
+        public AccountsService(HttpClient httpClient, IConfiguration configuration) : this(httpClient, configuration, null) { }
 
         #endregion
 
