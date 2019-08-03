@@ -1,16 +1,16 @@
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using SpotifyApi.NetCore.Http;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SpotifyApi.NetCore.Http;
 
 //TODO: Move to SpotifyApi.NetCore.Authorization in vNext
 namespace SpotifyApi.NetCore.Authorization
 {
-    public class AccountsService : IAccountsService, IAccessTokenProvider
+    public class AccountsService : IAccountsService
     {
         protected const string TokenUrl = "https://accounts.spotify.com/api/token";
 
@@ -29,6 +29,7 @@ namespace SpotifyApi.NetCore.Authorization
             _config = configuration ?? new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .Build();
+
             ValidateConfig();
 
             _bearerTokenStore = bearerTokenStore ?? new MemoryBearerTokenStore();
@@ -36,13 +37,19 @@ namespace SpotifyApi.NetCore.Authorization
 
         public AccountsService() : this(new HttpClient(), null, null) { }
         public AccountsService(HttpClient httpClient) : this(httpClient, null, null) { }
-        public AccountsService(HttpClient httpClient, IConfiguration configuration) : this(new HttpClient(), configuration, null) { }
+        public AccountsService(HttpClient httpClient, IConfiguration configuration) : this(httpClient, configuration, null) { }
 
         #endregion
 
-        public async Task<BearerAccessToken> GetAppAccessToken()
+        //public async Task<BearerAccessToken> GetAppAccessToken()
+        //{
+        //    return await GetAccessToken(_config["SpotifyApiClientId"], "grant_type=client_credentials");
+        //}
+
+        public async Task<string> GetAccessToken()
         {
-            return await GetAccessToken(_config["SpotifyApiClientId"], "grant_type=client_credentials");
+            var token = await GetAccessToken(_config["SpotifyApiClientId"], "grant_type=client_credentials");
+            return token.AccessToken;
         }
 
         protected async Task<BearerAccessToken> GetAccessToken(string tokenKey, string body)
@@ -54,7 +61,6 @@ namespace SpotifyApi.NetCore.Authorization
             if (token != null && token.Expires != null && token.Expires > now) return token;
 
             string json = await _http.Post(TokenUrl, body, GetHeader(_config));
-
 
             // deserialise the token
             var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
@@ -93,7 +99,5 @@ namespace SpotifyApi.NetCore.Authorization
             if (string.IsNullOrEmpty(_config["SpotifyApiClientSecret"]))
                 throw new ArgumentNullException("SpotifyApiClientSecret", "Expecting configuration value for `SpotifyApiClientSecret`");
         }
-
-        public async Task<string> GetAccessToken() => (await GetAppAccessToken()).AccessToken;
     }
 }

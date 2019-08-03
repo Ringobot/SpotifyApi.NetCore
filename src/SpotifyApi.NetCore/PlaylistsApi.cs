@@ -15,14 +15,17 @@ namespace SpotifyApi.NetCore
 
         public PlaylistsApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
         {
+            SearchApi = new SearchApi(httpClient, accessTokenProvider);
         }
 
         public PlaylistsApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
         {
+            SearchApi = new SearchApi(httpClient, accessToken);
         }
 
         public PlaylistsApi(HttpClient httpClient) : base(httpClient)
         {
+            SearchApi = new SearchApi(httpClient);
         }
 
         #endregion

@@ -81,10 +81,9 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             const string accessToken = null;
             const string accountsServiceToken = "ghi789";
-            var bearerAccessToken = new BearerAccessToken { AccessToken = accountsServiceToken };
 
-            var mockAccountsService = new Mock<IAccountsService>();
-            mockAccountsService.Setup(s => s.GetAppAccessToken()).ReturnsAsync(bearerAccessToken);
+            var mockAccountsService = new Mock<IAccessTokenProvider>();
+            mockAccountsService.Setup(s => s.GetAccessToken()).ReturnsAsync(accountsServiceToken);
 
             var mockSpotifyWebApi = new Mock<SpotifyWebApi>(new Mock<HttpClient>().Object, mockAccountsService.Object)
             { CallBase = true };

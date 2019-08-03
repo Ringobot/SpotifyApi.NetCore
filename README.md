@@ -33,20 +33,20 @@ var accounts = new AccountsService(http);
 
 // Get an artist by Spotify Artist Id
 var artists = new ArtistsApi(http, accounts);
-var artist = await artists.GetArtist("1tpXaFf2F55E7kVJON4j4G");
+Artist artist = await artists.GetArtist("1tpXaFf2F55E7kVJON4j4G");
 string artistName = artist.Name;
 Trace.WriteLine($"Artist.Name = {artistName}");
 
 // Get recommendations based on seed Artist Ids
 var browse = new BrowseApi(http, accounts);
-var result = await browse.GetRecommendations(new[] { "1tpXaFf2F55E7kVJON4j4G", "4Z8W4fKeB5YxbusRsdQVPb" }, null, null);
+RecommendationsResult result = await browse.GetRecommendations(new[] { "1tpXaFf2F55E7kVJON4j4G", "4Z8W4fKeB5YxbusRsdQVPb" }, null, null);
 string firstTrackName = result.Tracks[0].Name;
 Trace.WriteLine($"First recommendation = {firstTrackName}");
 
 // Page through a list of tracks in a Playlist
 var playlists = new PlaylistsApi(http, accounts);
 int limit = 100;
-var playlist = await playlists.GetTracks("4h4urfIy5cyCdFOc1Ff4iN", limit: limit);
+PlaylistPaged playlist = await playlists.GetTracks("4h4urfIy5cyCdFOc1Ff4iN", limit: limit);
 int offset = 0;
 int j = 0;
 // using System.Linq
@@ -61,7 +61,50 @@ while (playlist.Items.Any())
 }
 ```
 
-See tests and samples for more usage examples.
+### User Authorization
+
+```csharp
+// Get a list of a User's devices
+// This requires User authentication and authorization. 
+// A `UserAccountsService` is provided to help with this.
+
+// HttpClient and UserAccountsService can be reused. 
+// Tokens can be cached by your code
+var http = new HttpClient();
+var accounts = new UserAccountsService(http);
+
+// See https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
+//  for an explanation of the Authorization code flow
+
+// Generate a random state value to use in the Auth request
+string state = Guid.NewGuid().ToString("N");
+// Accounts service will derive the Auth URL for you
+string url = accounts.AuthorizeUrl(state, new[] { "user-read-playback-state" });
+
+/*
+    Redirect the user to `url` and when they have auth'ed Spotify will redirect to your reply URL
+    The response will include two query parameters: `state` and `code`.
+    For a full working example see `SpotifyApi.NetCore.Samples`.
+*/
+
+// Check that the request has not been tampered with by checking the `state` value matches
+if (state != query["state"]) throw new ArgumentException();
+
+// Use the User accounts service to swap `code` for a Refresh token
+BearerAccessRefreshToken token = await accounts.RequestAccessRefreshToken(query["code"]);
+
+// Use the Bearer (Access) Token to call the Player API
+var player = new PlayerApi(http, accounts);
+Device[] devices = await player.GetDevices(accessToken: token.AccessToken);
+
+foreach(Device device in devices)
+{
+    Trace.WriteLine($"Device {device.Name} Status = {device.Type} Active = {device.IsActive}");
+}
+
+```
+
+See tests and `SpotifyApi.NetCore.Samples` for more usage examples.
 
 > There is a working demo using the sample project here: <https://spotifyaspnetcore.z5.web.core.windows.net/>
 
@@ -71,7 +114,6 @@ See tests and samples for more usage examples.
 | ---- | ------- |
 | `src/SpotifyApi.NetCore` | SpotifyApi.NetCore project |
 | `src/SpotifyApi.NetCore.Tests` | Tests |
-| `samples/SpotifyVue` | Sample project using ASP.NET Core + Vue.js. [Try the  demo](https://spotifyaspnetcore.z5.web.core.windows.net/). |
 
 ## Spotify Web API Coverage
 

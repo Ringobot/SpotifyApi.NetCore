@@ -232,12 +232,15 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// BETA. Get information about a user’s available devices.
         /// </summary>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-read-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
         /// <returns>Task of Array of <see cref="Device"/></returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>
-        Task<Device[]> GetDevices();
-        //Task<Device[]> GetDevices(string accessToken = null); //TODO: In vNext
+        Task<Device[]> GetDevices(string accessToken = null);
 
         /// <summary>
         /// BETA. Get information about a user’s available devices.
@@ -247,7 +250,7 @@ namespace SpotifyApi.NetCore
         /// `user-read-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
         /// </param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
-        /// <returns>Task of <see cref="Device"/></returns>
+        /// <returns>Task of <see cref="T"/></returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>

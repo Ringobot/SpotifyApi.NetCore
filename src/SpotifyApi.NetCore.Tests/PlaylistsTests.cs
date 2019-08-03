@@ -1,16 +1,10 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.Protected;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpotifyApi.NetCore.Authorization;
-using SpotifyApi.NetCore.Http;
-using SpotifyApi.NetCore.Tests.Http;
 using SpotifyApi.NetCore.Tests.Mocks;
+using System.Diagnostics;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -32,7 +26,7 @@ namespace SpotifyApi.NetCore.Tests
             var result1 = await playlists.GetPlaylists(username);
             Trace.WriteLine(result1);
         }
-	
+
         [TestMethod]
         public async Task GetPlaylists_Username_GetAccessTokenCalled()
         {
@@ -49,14 +43,13 @@ namespace SpotifyApi.NetCore.Tests
             await api.GetPlaylists(username);
 
             // Assert
-            mockAccounts.Verify(a=>a.GetAccessToken());
+            mockAccounts.Verify(a => a.GetAccessToken());
         }
-		
+
         [TestMethod]
         public async Task GetTracks_UsernameAndPlaylistId_GetAccessTokenCalled()
         {
             // Arrange
-            const string username = "abc123";
             const string playlistId = "jkl012";
 
             var mockHttp = new MockHttpClient();
@@ -66,7 +59,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new PlaylistsApi(mockHttp.HttpClient, mockAccounts.Object);
 
             // Act
-            await api.GetTracks(username, playlistId);
+            await api.GetTracks(playlistId);
 
             // Assert
             mockAccounts.Verify(a => a.GetAccessToken());
@@ -96,7 +89,6 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetTracks_ReturnsValidPlaylistTracks()
         {
             // Arrange
-            const string username = "spotify";
             const string playlistId = "37i9dQZF1DX3WvGXE8FqYX";
 
             var http = new HttpClient();
@@ -105,7 +97,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new PlaylistsApi(http, accounts);
 
             // Act
-            var response = await api.GetTracks(username, playlistId);
+            var response = await api.GetTracks(playlistId);
 
             // Assert
             Assert.IsNotNull(response.Items);

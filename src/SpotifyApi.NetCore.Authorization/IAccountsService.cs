@@ -14,12 +14,7 @@ namespace SpotifyApi.NetCore.Authorization
         Task<BearerAccessToken> RefreshUserAccessToken(string refreshToken);
     }
 
-    public interface IAccountsService
+    public interface IAccountsService : IAccessTokenProvider
     {        
-        /// <summary>
-        /// Returns a bearer access token to use for a Request to the Spotify API.
-        /// </summary>
-        /// <returns>A Bearer token as (awaitable) Task of BearerAccessToken</returns>
-        Task<BearerAccessToken> GetAppAccessToken();
     }
 }

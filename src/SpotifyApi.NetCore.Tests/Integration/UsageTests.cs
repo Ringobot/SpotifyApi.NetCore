@@ -25,20 +25,20 @@ namespace SpotifyApi.NetCore.Tests.Integration
 
             // Get an artist by Spotify Artist Id
             var artists = new ArtistsApi(http, accounts);
-            var artist = await artists.GetArtist("1tpXaFf2F55E7kVJON4j4G");
+            Artist artist = await artists.GetArtist("1tpXaFf2F55E7kVJON4j4G");
             string artistName = artist.Name;
             Trace.WriteLine($"Artist.Name = {artistName}");
 
             // Get recommendations based on seed Artist Ids
             var browse = new BrowseApi(http, accounts);
-            var result = await browse.GetRecommendations(new[] { "1tpXaFf2F55E7kVJON4j4G", "4Z8W4fKeB5YxbusRsdQVPb" }, null, null);
+            RecommendationsResult result = await browse.GetRecommendations(new[] { "1tpXaFf2F55E7kVJON4j4G", "4Z8W4fKeB5YxbusRsdQVPb" }, null, null);
             string firstTrackName = result.Tracks[0].Name;
             Trace.WriteLine($"First recommendation = {firstTrackName}");
 
             // Page through a list of tracks in a Playlist
             var playlists = new PlaylistsApi(http, accounts);
             int limit = 100;
-            var playlist = await playlists.GetTracks("4h4urfIy5cyCdFOc1Ff4iN", limit: limit);
+            PlaylistPaged playlist = await playlists.GetTracks("4h4urfIy5cyCdFOc1Ff4iN", limit: limit);
             int offset = 0;
             int j = 0;
             // using System.Linq
@@ -53,7 +53,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
             }
         }
 
-        [TestMethod]
+        //[TestMethod]
         public async Task Usage2()
         {
             // Get a list of a User's devices
@@ -84,7 +84,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
             if (state != query["state"]) throw new ArgumentException();
 
             // Use the User accounts service to swap `code` for a Refresh token
-            var token = await accounts.RequestAccessRefreshToken(query["code"]);
+            BearerAccessRefreshToken token = await accounts.RequestAccessRefreshToken(query["code"]);
 
             // Use the Bearer (Access) Token to call the Player API
             var player = new PlayerApi(http, accounts);
