@@ -13,7 +13,7 @@ namespace SpotifyApi.NetCore.Tests
     [TestClass]
     public class AccountsServiceTests
     {
-        const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
+        //const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
 
         [TestMethod]
         public void AuthorizeUrl_StateParam_UrlContainsState()
@@ -22,8 +22,8 @@ namespace SpotifyApi.NetCore.Tests
             const string state = "abc123";
             var http = new MockHttpClient().HttpClient;
             var config = new MockConfiguration().Object;
-            var tokenStore = new MockRefreshTokenStore(UserHash, config).Object;
-            var service = new UserAccountsService(http, config, tokenStore);
+            //var tokenStore = new MockRefreshTokenStore(UserHash, config).Object;
+            var service = new UserAccountsService(http, config);
 
             // act
             string url = service.AuthorizeUrl(state, null);
@@ -50,8 +50,8 @@ namespace SpotifyApi.NetCore.Tests
 
             var config = new MockConfiguration().Object;
             var http = new HttpClient();
-            var tokenStore = new MockRefreshTokenStore(UserHash, config).Object;
-            var service = new UserAccountsService(http, config, tokenStore);
+            //var tokenStore = new MockRefreshTokenStore(UserHash, config).Object;
+            var service = new UserAccountsService(http, config);
 
             // act
             string url = service.AuthorizeUrl(state, scopes);

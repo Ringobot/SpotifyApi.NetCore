@@ -15,15 +15,15 @@ namespace SpotifyApi.NetCore.Tests.Integration
     public class AuthorizationCodeFlowTests 
     {
         UserAccountsService _accounts;
-        IRefreshTokenProvider _refreshTokenProvider;
+        //IRefreshTokenProvider _refreshTokenProvider;
 
-        const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
+        //const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
 
         [TestInitialize]
         public void Initialize()
         {
-            _refreshTokenProvider = new MockRefreshTokenStore(UserHash).Object;
-            _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig(), _refreshTokenProvider);
+            //_refreshTokenProvider = new MockRefreshTokenStore(UserHash).Object;
+            _accounts = new UserAccountsService(new HttpClient(), TestsHelper.GetLocalConfig());
         }
 
         //[TestMethod]  // only used for manual debugging
@@ -51,7 +51,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
 
             // controller calls Accounts Service to get access and refresh tokens
             // account service updates store
-            await _accounts.RequestAccessRefreshToken(UserHash, codeParam);
+            await _accounts.RequestAccessRefreshToken(codeParam);
         }
     }
 }

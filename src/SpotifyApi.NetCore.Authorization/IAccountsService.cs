@@ -7,7 +7,7 @@ namespace SpotifyApi.NetCore.Authorization
     {
         string AuthorizeUrl(string state, string[] scopes);
 
-        Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code);
+        //Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code);
 
         Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string code);
 

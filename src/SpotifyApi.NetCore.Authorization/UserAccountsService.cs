@@ -11,38 +11,38 @@ namespace SpotifyApi.NetCore.Authorization
     {
         private const string AccountsAuthorizeUrl = "https://accounts.spotify.com/authorize";
 
-        private readonly IRefreshTokenProvider _refreshTokenProvider;
+        //private readonly IRefreshTokenProvider _refreshTokenProvider;
 
         #region constructors
 
-        public UserAccountsService(
-            HttpClient httpClient,
-            IConfiguration configuration,
-            IRefreshTokenProvider refreshTokenProvider,
-            IBearerTokenStore bearerTokenStore
-            ) : base(httpClient, configuration, bearerTokenStore)
-        {
-            _refreshTokenProvider = refreshTokenProvider;
-        }
+        //public UserAccountsService(
+        //    HttpClient httpClient,
+        //    IConfiguration configuration,
+        //    IRefreshTokenProvider refreshTokenProvider,
+        //    IBearerTokenStore bearerTokenStore
+        //    ) : base(httpClient, configuration, bearerTokenStore)
+        //{
+        //    _refreshTokenProvider = refreshTokenProvider;
+        //}
 
-        public UserAccountsService(
-            HttpClient httpClient,
-            IConfiguration configuration,
-            IRefreshTokenProvider refreshTokenProvider
-            ) : this(httpClient, configuration, refreshTokenProvider, null) { }
+        //public UserAccountsService(
+        //    HttpClient httpClient,
+        //    IConfiguration configuration,
+        //    IRefreshTokenProvider refreshTokenProvider
+        //    ) : this(httpClient, configuration, refreshTokenProvider, null) { }
 
-        public UserAccountsService(
-            IRefreshTokenProvider refreshTokenProvider
-            ) : this(new HttpClient(), null, refreshTokenProvider, null) { }
+        //public UserAccountsService(
+        //    IRefreshTokenProvider refreshTokenProvider
+        //    ) : this(new HttpClient(), null, refreshTokenProvider, null) { }
 
         public UserAccountsService(
             HttpClient httpClient,
             IConfiguration configuration
-            ) : this(httpClient, configuration, null, null) { }
+            ) : base(httpClient, configuration) { }
 
         public UserAccountsService(
             IConfiguration configuration
-            ) : this(new HttpClient(), configuration, null, null) { }
+            ) : base(new HttpClient(), configuration) { }
 
         #endregion
 
@@ -68,12 +68,12 @@ namespace SpotifyApi.NetCore.Authorization
             return $"{AccountsAuthorizeUrl}/?client_id={spotifyApiClientId}&response_type=code&redirect_uri={spotifyAuthRedirectUri}&scope={scope}&state={state}";
         }
 
-        public async Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code)
-        {
-            var token = await RequestAccessRefreshToken(code);
-            await _bearerTokenStore.InsertOrReplace(userHash, token);
-            return token;
-        }
+        //public async Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string userHash, string code)
+        //{
+        //    var token = await RequestAccessRefreshToken(code);
+        //    await _bearerTokenStore.InsertOrReplace(userHash, token);
+        //    return token;
+        //}
 
         public async Task<BearerAccessRefreshToken> RequestAccessRefreshToken(string code)
         {
@@ -94,11 +94,10 @@ namespace SpotifyApi.NetCore.Authorization
             return JsonConvert.DeserializeObject<BearerAccessRefreshToken>(result);
         }
 
-        private void ValidateConfig()
-        {
-            if (string.IsNullOrEmpty(_config["SpotifyAuthRedirectUri"]))
-                throw new ArgumentNullException("SpotifyAuthRedirectUri", "Expecting configuration value for `SpotifyAuthRedirectUri`");
-        }
-
+        //private void ValidateConfig()
+        //{
+        //    if (string.IsNullOrEmpty(_config["SpotifyAuthRedirectUri"]))
+        //        throw new ArgumentNullException("SpotifyAuthRedirectUri", "Expecting configuration value for `SpotifyAuthRedirectUri`");
+        //}
     }
 }

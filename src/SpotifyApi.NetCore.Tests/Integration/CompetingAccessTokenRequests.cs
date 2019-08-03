@@ -57,17 +57,17 @@ namespace SpotifyApi.NetCore.Tests.Integration
         //[TestMethod]
         public async Task TwoCompetingUserAccessTokenRequestsGetConsistentResults()
         {
-            const string userHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
+            //const string userHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
             //const string spotifyUri = "spotify:user:palsvensson:playlist:2iL5fr6OmN8f4yoQvvuWSf";
 
-            var store = new MockRefreshTokenStore(userHash).Object;
+            //var store = new MockRefreshTokenStore(userHash).Object;
 
             var http1 = new HttpClient();
-            var accounts1 = new UserAccountsService(http1, TestsHelper.GetLocalConfig(), store);
+            var accounts1 = new UserAccountsService(http1, TestsHelper.GetLocalConfig());
             var player1 = new PlayerApi(http1, accounts1);
 
             var http2 = new HttpClient();
-            var accounts2 = new UserAccountsService(http2, TestsHelper.GetLocalConfig(), store);
+            var accounts2 = new UserAccountsService(http2, TestsHelper.GetLocalConfig());
             var player2 = new PlayerApi(http2, accounts2);
 
             // act

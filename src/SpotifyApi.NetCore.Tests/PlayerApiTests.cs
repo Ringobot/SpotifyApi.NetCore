@@ -14,10 +14,10 @@ namespace SpotifyApi.NetCore.Tests
     [TestClass]
     public class PlayerApiTests
     {
-        public const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
+        //public const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
         private static IConfiguration _config = TestsHelper.GetLocalConfig();
         private static HttpClient _http = new HttpClient();
-        private static UserAccountsService _accounts = new UserAccountsService(_http, _config, new MockRefreshTokenStore(UserHash).Object, null);
+        private static UserAccountsService _accounts = new UserAccountsService(_http, _config);
 
         [TestMethod]
         public async Task PlayTracks_AccessToken_PutInvokedWithAccessToken()
