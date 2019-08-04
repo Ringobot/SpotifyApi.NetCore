@@ -1,6 +1,6 @@
 bin
 obj
-.vscode/launch.json
+.vscode
 appsettings.*.json
 _*
 node_modules
