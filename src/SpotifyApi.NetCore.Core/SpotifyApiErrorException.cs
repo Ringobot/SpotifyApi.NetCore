@@ -1,27 +1,49 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// A Spotify API Error Exception.
+    /// </summary>
     public class SpotifyApiErrorException : Exception
     {
-        //public SpotifyApiErrorException(string message, Exception innerException) : base(message, innerException) { }
+        /// <summary>
+        /// Instantiates a SpotifyApiErrorException with a message.
+        /// </summary>
+        /// <param name="message"></param>
         public SpotifyApiErrorException(string message) : base(message) { }
 
+        /// <summary>
+        /// Instantiates a SpotifyApiErrorException with a status code and a <see cref="SpotifyApiError"/> .
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <param name="spotifyApiError"></param>
         public SpotifyApiErrorException(HttpStatusCode statusCode, SpotifyApiError spotifyApiError) : base(spotifyApiError?.Message)
         {
             HttpStatusCode = statusCode;
             SpotifyApiError = spotifyApiError;
         }
 
+        /// <summary>
+        /// The HTTP Status Code returned from the Spotify API
+        /// </summary>
         public HttpStatusCode HttpStatusCode { get; private set; }
+
+        /// <summary>
+        /// The derived <see cref="SpotifyApiError"/> returned from the Spotify API
+        /// </summary>
         public SpotifyApiError SpotifyApiError { get; private set; }
 
+        /// <summary>
+        /// Reads an <see cref="HttpResponseMessage"/> to parse a <see cref="SpotifyApiError"/>.
+        /// </summary>
+        /// <param name="response">The <see cref="HttpResponseMessage"/>.</param>
+        /// <returns>An instance of <see cref="SpotifyApiError"/>.</returns>
         public static async Task<SpotifyApiError> ReadErrorResponse(HttpResponseMessage response)
         {
             // if no content
@@ -58,10 +80,19 @@ namespace SpotifyApi.NetCore
         }
     }
 
+    /// <summary>
+    /// A model for a Spotify API Error.
+    /// </summary>
     public class SpotifyApiError
     {
+        /// <summary>
+        /// The message returned by the API
+        /// </summary>
         public string Message { get; set; }
 
+        /// <summary>
+        /// The raw JSON string returned by the API
+        /// </summary>
         public string Json { get; set; }
     }
 }

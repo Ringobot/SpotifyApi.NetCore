@@ -46,6 +46,10 @@ namespace SpotifyApi.NetCore.Authorization
         //    return await GetAccessToken(_config["SpotifyApiClientId"], "grant_type=client_credentials");
         //}
 
+        /// <summary>
+        /// Returns a valid access token for the Spotify Service
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> GetAccessToken()
         {
             var token = await GetAccessToken(_config["SpotifyApiClientId"], "grant_type=client_credentials");
