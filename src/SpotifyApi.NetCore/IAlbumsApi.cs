@@ -49,7 +49,7 @@ namespace SpotifyApi.NetCore
         Task<Album> GetAlbumTracks(
             string albumId,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string market = null,
             string accessToken = null);
 
@@ -69,7 +69,7 @@ namespace SpotifyApi.NetCore
         Task<T> GetAlbumTracks<T>(
             string albumId,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string market = null,
             string accessToken = null);
 

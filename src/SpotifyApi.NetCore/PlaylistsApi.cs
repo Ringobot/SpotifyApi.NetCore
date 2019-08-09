@@ -37,24 +37,51 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Get a list of a user's playlists.
         /// </summary>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
-        /// used for this call only. See constructors for more ways to provide access tokens.</param>
-        /// <returns>The JSON result deserialized to object (as dynamic).</returns>
-        public async Task<T> GetPlaylists<T>(string username, string accessToken = null)
-        {
-            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
-            return await GetModel<T>($"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists", accessToken);
-        }
+        /// <param name="username"></param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
+        /// <param name="limit">Optional. The maximum number of playlists to return. Default: 20. Minimum: 
+        /// 1. Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first playlist to return. Default: 0 (the 
+        /// first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.</param>
+        /// <returns><see cref="PlaylistsSearchResult"/></returns>
+        public async Task<PlaylistsSearchResult> GetPlaylists(
+            string username,
+            string accessToken = null,
+            int? limit = null,
+            int offset = 0)
+            => await GetPlaylists<PlaylistsSearchResult>(username, accessToken);
 
         /// <summary>
-        /// 
+        /// Get a list of a user's playlists.
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
-        /// used for this call only. See constructors for more ways to provide access tokens.</param>
-        /// <returns></returns>
-        public async Task<PlaylistsSearchResult> GetPlaylists(string username, string accessToken = null)
-            => await GetPlaylists<PlaylistsSearchResult>(username, accessToken);
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
+        /// <param name="limit">Optional. The maximum number of playlists to return. Default: 20. Minimum: 
+        /// 1. Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first playlist to return. Default: 0 (the 
+        /// first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>The JSON result deserialized as `T`.</returns>
+        public async Task<T> GetPlaylists<T>(
+            string username,
+            string accessToken = null,
+            int? limit = null,
+            int offset = 0)
+        {
+            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
+
+            string url = $"{BaseUrl}/users/{Uri.EscapeDataString(username)}/playlists";
+
+            if ((limit ?? 0) > 0 || offset > 0)
+            {
+                url += "?";
+
+                if ((limit ?? 0) > 0) url += $"limit={limit.Value}&";
+                if (offset > 0) url += $"offset={offset}";
+            }
+
+            return await GetModel<T>(url, accessToken);
+        }
 
         #endregion
 
@@ -117,9 +144,9 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/
         /// </remarks>
         public async Task<T> GetTracks<T>(
-            string playlistId, 
-            string accessToken = null, 
-            string fields = null, 
+            string playlistId,
+            string accessToken = null,
+            string fields = null,
             int? limit = null,
             int offset = 0,
             string market = null)
@@ -160,10 +187,10 @@ namespace SpotifyApi.NetCore
             string query,
             int? limit = null,
             int offset = 0,
-            string accessToken = null) 
+            string accessToken = null)
             => (await SearchApi.Search(
-                query, 
-                SpotifySearchTypes.Playlist, limit:limit, offset:offset, accessToken: accessToken)).Playlists;
+                query,
+                SpotifySearchTypes.Playlist, limit: limit, offset: offset, accessToken: accessToken)).Playlists;
 
         #endregion
 

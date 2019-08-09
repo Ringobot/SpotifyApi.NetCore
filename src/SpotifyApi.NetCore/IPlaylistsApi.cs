@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
@@ -15,17 +14,33 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="username"></param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
-        /// <returns>The JSON result deserialized to object (as dynamic).</returns>
-        Task<PlaylistsSearchResult> GetPlaylists(string username, string accessToken = null);
+        /// <param name="limit">Optional. The maximum number of playlists to return. Default: 20. Minimum: 
+        /// 1. Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first playlist to return. Default: 0 (the 
+        /// first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.</param>
+        /// <returns><see cref="PlaylistsSearchResult"/></returns>
+        Task<PlaylistsSearchResult> GetPlaylists(
+            string username,
+            string accessToken = null,
+            int? limit = null,
+            int offset = 0);
 
         /// <summary>
         /// Get a list of a user's playlists.
         /// </summary>
         /// <param name="username"></param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
+        /// <param name="limit">Optional. The maximum number of playlists to return. Default: 20. Minimum: 
+        /// 1. Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first playlist to return. Default: 0 (the 
+        /// first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.</param>
         /// <typeparam name="T"></typeparam>
-        /// <returns>The JSON result deserialized to object (as dynamic).</returns>
-        Task<T> GetPlaylists<T>(string username, string accessToken = null);
+        /// <returns>The JSON result deserialized as `T`.</returns>
+        Task<T> GetPlaylists<T>(
+            string username,
+            string accessToken = null,
+            int? limit = null,
+            int offset = 0);
 
         #endregion
 

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// Player API endpoints.
+    /// </summary>
+    /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/ </remarks>
     public class PlayerApi : SpotifyWebApi, IPlayerApi
     {
         #region Constructors

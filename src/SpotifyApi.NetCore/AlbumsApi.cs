@@ -106,7 +106,7 @@ namespace SpotifyApi.NetCore
         public async Task<Album> GetAlbumTracks(
             string albumId,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string market = null,
             string accessToken = null)
             => await GetAlbumTracks<Album>(albumId, limit: limit, offset: offset, market: market, accessToken: accessToken);
@@ -127,13 +127,13 @@ namespace SpotifyApi.NetCore
         public async Task<T> GetAlbumTracks<T>(
             string albumId,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string market = null,
             string accessToken = null)
         {
             string url = $"{BaseUrl}/albums/{SpotifyUriHelper.AlbumId(albumId)}/tracks";
             if (limit.HasValue || !string.IsNullOrEmpty(market)) url += "?";
-            if (limit.HasValue) url += $"limit={limit.Value}&offset={offset.Value}&";
+            if (limit.HasValue) url += $"limit={limit.Value}&offset={offset}&";
             if (!string.IsNullOrEmpty(market)) url += $"market={market}";
             return await GetModel<T>(url, accessToken);
         }

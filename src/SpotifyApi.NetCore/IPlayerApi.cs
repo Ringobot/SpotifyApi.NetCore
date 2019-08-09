@@ -1,9 +1,12 @@
-﻿using System;
+﻿using SpotifyApi.NetCore.Models;
 using System.Threading.Tasks;
-using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// Player API endpoints.
+    /// </summary>
+    /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/ </remarks>
     public interface IPlayerApi
     {
         #region PlayTracks
@@ -79,7 +82,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        Task PlayAlbumOffset(string albumId, string offsetTrackId, string accessToken = null, string deviceId = null, 
+        Task PlayAlbumOffset(
+            string albumId,
+            string offsetTrackId,
+            string accessToken = null,
+            string deviceId = null,
             long positionMs = 0);
 
         /// <summary>
@@ -99,7 +106,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        Task PlayAlbumOffset(string albumId, int offsetPosition, string accessToken = null, string deviceId = null, 
+        Task PlayAlbumOffset(
+            string albumId,
+            int offsetPosition,
+            string accessToken = null,
+            string deviceId = null,
             long positionMs = 0);
 
         #endregion
@@ -141,7 +152,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        Task PlayArtistOffset(string artistId, int offsetPosition, string accessToken = null, string deviceId = null,
+        Task PlayArtistOffset(
+            string artistId,
+            int offsetPosition,
+            string accessToken = null,
+            string deviceId = null,
             long positionMs = 0);
 
         #endregion
@@ -164,7 +179,10 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        Task PlayPlaylist(string playlistId, string accessToken = null, string deviceId = null,
+        Task PlayPlaylist(
+            string playlistId,
+            string accessToken = null,
+            string deviceId = null,
             long positionMs = 0);
 
         /// <summary>
@@ -184,7 +202,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        Task PlayPlaylistOffset(string playlistId, string offsetTrackId, string accessToken = null, string deviceId = null, 
+        Task PlayPlaylistOffset(
+            string playlistId,
+            string offsetTrackId,
+            string accessToken = null,
+            string deviceId = null,
             long positionMs = 0);
 
         /// <summary>
@@ -204,7 +226,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ 
         /// </remarks>
-        Task PlayPlaylistOffset(string playlistId, int offsetPosition, string accessToken = null, string deviceId = null, 
+        Task PlayPlaylistOffset(
+            string playlistId,
+            int offsetPosition,
+            string accessToken = null,
+            string deviceId = null,
             long positionMs = 0);
 
         #endregion
