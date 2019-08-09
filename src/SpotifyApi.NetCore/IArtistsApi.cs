@@ -60,35 +60,12 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines
         /// for more info.
         /// </param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
-        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
-        Task<SearchResult> SearchArtists(string artist, string accessToken = null);
-
-        /// <summary>
-        /// Get Spotify Catalog information about artists that match a keyword string.
-        /// </summary>
-        /// <param name="artist">Artist search keyword(s). Wildcards accepted. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines
-        /// for more info.
-        /// </param>
-        /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
-        /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
-        Task<SearchResult> SearchArtists(string artist, int limit, string accessToken = null);
-
-        /// <summary>
-        /// Get Spotify Catalog information about artists that match a keyword string.
-        /// </summary>
-        /// <param name="artist">Artist search keyword(s). Wildcards accepted. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines
-        /// for more info.
-        /// </param>
         /// <param name="limit">Maximum number of results to return. Default: 20 Minimum: 1 Maximum: 50</param>
         /// <param name="offset">The index of the first result to return. Default: 0 (the first result). 
         /// Maximum offset (including limit): 10,000. Use with limit to get the next page of search results.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="ArtistsSearchResult">SearchResult</see></returns>
-        Task<SearchResult> SearchArtists(string artist, (int limit, int offset) limitOffset, string accessToken = null);
+        Task<SearchResult> SearchArtists(string artist, int? limit = null, int offset = 0, string accessToken = null);
 
         #endregion
 

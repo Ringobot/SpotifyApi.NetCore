@@ -127,26 +127,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
-        /// <returns>Task of <see cref="TracksSearchResult" /></returns>
-        Task<TracksSearchResult> SearchTracks(string query, string accessToken = null);
-
-        /// <summary>
-        /// Get Spotify Catalog information about tracks that match a keyword string.
-        /// </summary>
-        /// <param name="query">Search query keywords and optional field filters and operators. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
-        /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
-        /// is specified, only tracks with content that is playable in that market is returned. </param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
-        /// <returns>Task of <see cref="TracksSearchResult" /></returns>
-        Task<TracksSearchResult> SearchTracks(string query, string market, string accessToken = null);
-
-        /// <summary>
-        /// Get Spotify Catalog information about tracks that match a keyword string.
-        /// </summary>
-        /// <param name="query">Search query keywords and optional field filters and operators. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
         /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
         /// is specified, only tracks with content that is playable in that market is returned. </param>
         /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
@@ -156,7 +136,12 @@ namespace SpotifyApi.NetCore
         /// page of search results.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="TracksSearchResult" /></returns>
-        Task<TracksSearchResult> SearchTracks(string query, string market, (int limit, int offset) limitOffset, string accessToken = null);
+        Task<TracksSearchResult> SearchTracks(
+            string query,
+            string market = null,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null);
 
         #endregion
     }

@@ -30,7 +30,7 @@ namespace SpotifyApi.NetCore
             string type,
             string market = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string accessToken = null);
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace SpotifyApi.NetCore
             string[] types,
             string market = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string accessToken = null);
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SpotifyApi.NetCore
             string[] types,
             string market = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string accessToken = null);
     }
 }

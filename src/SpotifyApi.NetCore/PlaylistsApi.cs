@@ -92,7 +92,7 @@ namespace SpotifyApi.NetCore
             string accessToken = null,
             string fields = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string market = null) => await GetTracks<PlaylistPaged>(
                 playlistId,
                 accessToken,
@@ -121,18 +121,18 @@ namespace SpotifyApi.NetCore
             string accessToken = null, 
             string fields = null, 
             int? limit = null,
-            int? offset = null,
+            int offset = 0,
             string market = null)
         {
             if (string.IsNullOrEmpty(playlistId)) throw new ArgumentNullException(nameof(playlistId));
             string url = $"{BaseUrl}/playlists/{SpotifyUriHelper.PlaylistId(playlistId)}/tracks";
-            if (!string.IsNullOrEmpty(fields) || limit.HasValue || offset.HasValue || !string.IsNullOrEmpty(market))
+            if (!string.IsNullOrEmpty(fields) || (limit ?? 0) > 0 || offset > 0 || !string.IsNullOrEmpty(market))
             {
                 url += "?";
 
                 if (!string.IsNullOrEmpty(fields)) url += $"fields={fields}&";
-                if (limit.HasValue) url += $"limit={limit}&";
-                if (offset.HasValue) url += $"offset={offset}&";
+                if ((limit ?? 0) > 0) url += $"limit={limit.Value}&";
+                if (offset > 0) url += $"offset={offset}&";
                 if (!string.IsNullOrEmpty(market)) url += $"market={market}";
             }
 
@@ -148,17 +148,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
-        /// used for this call only. See constructors for more ways to provide access tokens.</param>
-        /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
-        public async Task<PlaylistsSearchResult> SearchPlaylists(string query, string accessToken = null)
-            => (await SearchApi.Search(query, new string[] { SpotifySearchTypes.Playlist }, null, (0, 0), accessToken)).Playlists;
-
-        /// <summary>
-        /// Get Spotify Catalog information about tracks that match a keyword string.
-        /// </summary>
-        /// <param name="query">Search query keywords and optional field filters and operators. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
         /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
         /// Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
@@ -167,8 +156,14 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
-        public async Task<PlaylistsSearchResult> SearchPlaylists(string query, (int limit, int offset) limitOffset, string accessToken = null)
-            => (await SearchApi.Search(query, new string[] { SpotifySearchTypes.Playlist }, null, limitOffset, accessToken)).Playlists;
+        public async Task<PlaylistsSearchResult> SearchPlaylists(
+            string query,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null) 
+            => (await SearchApi.Search(
+                query, 
+                SpotifySearchTypes.Playlist, limit:limit, offset:offset, accessToken: accessToken)).Playlists;
 
         #endregion
 

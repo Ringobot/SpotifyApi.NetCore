@@ -58,7 +58,7 @@ namespace SpotifyApi.NetCore
             string accessToken = null,
             string fields = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string market = null);
 
         /// <summary>
@@ -81,21 +81,12 @@ namespace SpotifyApi.NetCore
             string accessToken = null,
             string fields = null,
             int? limit = null,
-            int? offset = null,
+            int offset = 0,
             string market = null);
 
         #endregion
 
         #region SearchPlaylists
-
-        /// <summary>
-        /// Get Spotify Catalog information about tracks that match a keyword string.
-        /// </summary>
-        /// <param name="query">Search query keywords and optional field filters and operators. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
-        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
-        /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
-        Task<PlaylistsSearchResult> SearchPlaylists(string query, string accessToken = null);
 
         /// <summary>
         /// Get Spotify Catalog information about tracks that match a keyword string.
@@ -109,7 +100,7 @@ namespace SpotifyApi.NetCore
         /// page of search results.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
-        Task<PlaylistsSearchResult> SearchPlaylists(string query, (int limit, int offset) limitOffset, string accessToken = null);
+        Task<PlaylistsSearchResult> SearchPlaylists(string query, int? limit = null, int offset = 0, string accessToken = null);
 
         #endregion
     }

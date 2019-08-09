@@ -77,11 +77,6 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             string[] seedArtists = new[] { "1tpXaFf2F55E7kVJON4j4G", "4Z8W4fKeB5YxbusRsdQVPb" };
 
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\.."))
-                .AddJsonFile("appsettings.local.json", false)
-                .Build();
-
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
 
@@ -90,6 +85,22 @@ namespace SpotifyApi.NetCore.Tests
             // act
             var response = await api.GetRecommendations(seedArtists, null, null);
             string name = response.Tracks[0].Name;
+            Trace.WriteLine(name);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetAvailableGenreSeeds_NoParams_NoError()
+        {
+            // arrange
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new BrowseApi(http, accounts);
+
+            // act
+            var response = await api.GetAvailableGenreSeeds();
+            string name = response[0];
             Trace.WriteLine(name);
         }
     }

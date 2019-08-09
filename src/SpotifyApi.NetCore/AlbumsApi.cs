@@ -195,7 +195,7 @@ namespace SpotifyApi.NetCore
         public async Task<SearchResult> SearchAlbums(
             string query,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string market = null,
             string accessToken = null)
             => await SearchApi.Search<SearchResult>(

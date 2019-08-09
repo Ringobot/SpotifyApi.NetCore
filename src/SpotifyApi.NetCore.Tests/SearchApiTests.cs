@@ -23,7 +23,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+            var response = await api.Search<SearchResult>(query, types);
 
             // assert
             Assert.IsTrue(response.Artists.Items.Any(i=>i.Name == "Prince"));
@@ -43,7 +43,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+            var response = await api.Search<SearchResult>(query, types);
 
             // assert
             Assert.IsTrue(response.Albums.Items.Length > 0);
@@ -63,7 +63,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+            var response = await api.Search<SearchResult>(query, types);
 
             // assert
             Assert.IsTrue(response.Tracks.Items.Length > 0);
@@ -83,7 +83,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+            var response = await api.Search<SearchResult>(query, types);
 
             // assert
             Assert.IsTrue(response.Playlists.Items.Length > 0);
@@ -103,7 +103,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, (0, 0));
+            var response = await api.Search<SearchResult>(query, types);
 
             // assert
             Assert.IsTrue(response.Albums.Items.Length > 0
@@ -118,7 +118,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             const string query = "dance";
             string[] types = new[] { SpotifySearchTypes.Track };
-            var limitOffset = (5, 0);
+            var limit = 5;
 
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
@@ -126,10 +126,10 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, limitOffset);
+            var response = await api.Search<SearchResult>(query, types, limit:limit);
 
             // assert
-            Assert.AreEqual(limitOffset.Item1, response.Tracks.Items.Length);
+            Assert.AreEqual(limit, response.Tracks.Items.Length);
         }
 
         [TestCategory("Integration")]
@@ -139,7 +139,8 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             const string query = "dance";
             string[] types = new[] { SpotifySearchTypes.Track };
-            var limitOffset = (5, 9);
+            int limit = 5;
+            int offset = 9;
 
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
@@ -147,10 +148,10 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, limitOffset);
+            var response = await api.Search<SearchResult>(query, types, limit:limit, offset:offset);
 
             // assert
-            Assert.AreEqual(limitOffset.Item2, response.Tracks.Offset);
+            Assert.AreEqual(offset, response.Tracks.Offset);
         }
 
         [TestCategory("Integration")]
@@ -161,7 +162,7 @@ namespace SpotifyApi.NetCore.Tests
             const string isrc = "USUM71703861";
             const string query = "isrc:" + isrc;
             string[] types = new[] { SpotifySearchTypes.Track };
-            var limitOffset = (1, 0);
+            var limit = 1;
 
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
@@ -169,7 +170,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, limitOffset);
+            var response = await api.Search<SearchResult>(query, types, limit: limit);
 
             // assert
             Assert.AreEqual(isrc, response.Tracks.Items[0].ExternalIds.Isrc);
@@ -183,7 +184,7 @@ namespace SpotifyApi.NetCore.Tests
             const string isrc = "NOPE12345678";
             const string query = "isrc:" + isrc;
             string[] types = new[] { SpotifySearchTypes.Track };
-            var limitOffset = (1, 0);
+            int limit = 1;
 
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
@@ -191,7 +192,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new SearchApi(http, accounts);
 
             // act
-            var response = await api.Search<SearchResult>(query, types, null, limitOffset);
+            var response = await api.Search<SearchResult>(query, types, limit: limit);
 
             // assert
             Assert.AreEqual(0, response.Tracks.Items.Length);

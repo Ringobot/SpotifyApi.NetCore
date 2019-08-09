@@ -19,7 +19,7 @@ namespace SpotifyApi.NetCore.Tests.Extensions
             var tracks = new[] { new Track { ExternalIds = new ExternalIds { Isrc = "GB0409700200" } } };
             var mockTracksApi = new Mock<ITracksApi>();
             mockTracksApi
-                .Setup(a => a.SearchTracks(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<(int, int)>(), It.IsAny<string>()))
+                .Setup(a => a.SearchTracks(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
                 .ReturnsAsync(new TracksSearchResult { Items = tracks });
 
             // act

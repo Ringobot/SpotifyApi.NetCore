@@ -175,26 +175,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="query">Search query keywords and optional field filters and operators. See
         /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
-        /// <returns>Task of <see cref="SearchResult" /></returns>
-        public async Task<TracksSearchResult> SearchTracks(string query, string accessToken = null)
-            => (await SearchApi.Search(query, SpotifySearchTypes.Track, null, (0, 0), accessToken)).Tracks;
-
-        /// <summary>
-        /// Get Spotify Catalog information about tracks that match a keyword string.
-        /// </summary>
-        /// <param name="query">Search query keywords and optional field filters and operators. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
-        /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
-        /// is specified, only tracks with content that is playable in that market is returned. </param>
-        /// <returns>Task of <see cref="SearchResult" /></returns>
-        public async Task<TracksSearchResult> SearchTracks(string query, string market, string accessToken = null)
-            => (await SearchApi.Search(query, SpotifySearchTypes.Track, market, (0, 0), accessToken)).Tracks;
-
-        /// <summary>
-        /// Get Spotify Catalog information about tracks that match a keyword string.
-        /// </summary>
-        /// <param name="query">Search query keywords and optional field filters and operators. See
-        /// https://developer.spotify.com/documentation/web-api/reference/search/search/#writing-a-query---guidelines</param>
         /// <param name="market">Optional. Choose a <see cref="SpotifyCountryCodes"/>. If a country code
         /// is specified, only tracks with content that is playable in that market is returned. </param>
         /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
@@ -203,8 +183,19 @@ namespace SpotifyApi.NetCore
         /// first result). Maximum offset (including limit): 10,000. Use with limit to get the next
         /// page of search results.</param>
         /// <returns>Task of <see cref="SearchResult" /></returns>
-        public async Task<TracksSearchResult> SearchTracks(string query, string market, (int limit, int offset) limitOffset, string accessToken = null)
-            => (await SearchApi.Search(query, SpotifySearchTypes.Track, market, limitOffset, accessToken)).Tracks;
+        public async Task<TracksSearchResult> SearchTracks(
+            string query,
+            string market = null,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null)
+            => (await SearchApi.Search(
+                query,
+                SpotifySearchTypes.Track,
+                market: market,
+                limit: limit,
+                offset: offset,
+                accessToken: accessToken)).Tracks;
 
         #endregion
 

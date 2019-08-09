@@ -71,7 +71,7 @@ namespace SpotifyApi.NetCore
             string type,
             string market = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string accessToken = null) => await Search<SearchResult>(
                 query,
                 new string[] { type },
@@ -105,7 +105,7 @@ namespace SpotifyApi.NetCore
             string[] types,
             string market = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string accessToken = null) => await Search<SearchResult>(
                 query,
                 types,
@@ -140,7 +140,7 @@ namespace SpotifyApi.NetCore
             string[] types,
             string market = null,
             int? limit = null,
-            int? offset = 0,
+            int offset = 0,
             string accessToken = null)
         {
             if (string.IsNullOrWhiteSpace(query)) throw new ArgumentNullException("query");
@@ -159,9 +159,9 @@ namespace SpotifyApi.NetCore
                 url += $"&limit={limit.Value}";
             }
 
-            if (offset.HasValue && limit > 0)
+            if (offset > 0)
             {
-                url += $"&offset={offset.Value}";
+                url += $"&offset={offset}";
             }
 
             return await GetModel<T>(url, accessToken);
