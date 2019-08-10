@@ -11,8 +11,9 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 * Targets .NET Standard 2.0
 * `async` by default
 * BYO `HttpClient`
-* Multi-user auth support
+* Authorization support (App and User flows)
 * MIT license
+* Fully documented
 
 ## Installation
 
