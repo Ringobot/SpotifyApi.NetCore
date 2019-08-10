@@ -1,6 +1,9 @@
 ﻿namespace SpotifyApi.NetCore.Models
 {
-    public class RepeatStates
+    /// <summary>
+    /// Repeat States constants
+    /// </summary>
+    public static class RepeatStates
     {
         public const string Track = "track";
 

@@ -5,24 +5,39 @@ namespace SpotifyApi.NetCore
     using System;
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Currently Playing Object
+    /// </summary>
+    /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
     public partial class CurrentPlaybackContext
     {
+        /// <summary>
+        /// Unix Millisecond Timestamp when data was fetched.
+        /// </summary>
         [JsonProperty("timestamp")]
         public long Timestamp { get; set; }
 
         [JsonProperty("device")]
         public Device Device { get; set; }
 
-        [JsonProperty("progress_ms")]
-        //[JsonConverter(typeof(ParseStringConverter))]
-        public long ProgressMs { get; set; }
+        /// <summary>
+        /// Progress into the currently playing track. Can be null.
+        /// </summary>
+        [JsonProperty("progress_ms", NullValueHandling = NullValueHandling.Ignore)]
+        public long? ProgressMs { get; set; }
 
         [JsonProperty("is_playing")]
         public bool IsPlaying { get; set; }
 
+        /// <summary>
+        /// The object type of the currently playing item. Can be one of track, episode, ad or unknown.
+        /// </summary>
         [JsonProperty("currently_playing_type")]
         public string CurrentlyPlayingType { get; set; }
 
+        /// <summary>
+        /// The currently playing track. Can be null.
+        /// </summary>
         [JsonProperty("item")]
         public Track Item { get; set; }
 
@@ -32,23 +47,37 @@ namespace SpotifyApi.NetCore
         [JsonProperty("repeat_state")]
         public string RepeatState { get; set; }
 
+        /// <summary>
+        /// A Context Object. Can be null.
+        /// </summary>
         [JsonProperty("context")]
         public Context Context { get; set; }
     }
 
     public partial class Context
     {
+        /// <summary>
+        /// The external_urls of the context, or null if not available.
+        /// </summary>
         [JsonProperty("external_urls")]
         public ExternalUrls ExternalUrls { get; set; }
 
+        /// <summary>
+        /// The href of the context, or null if not available.
+        /// </summary>
         [JsonProperty("href")]
         public Uri Href { get; set; }
 
+        /// <summary>
+        /// The object type of the item’s context. Can be one of album , artist or playlist.
+        /// </summary>
         [JsonProperty("type")]
         public string Type { get; set; }
 
+        /// <summary>
+        /// The uri of the context.
+        /// </summary>
         [JsonProperty("uri")]
         public string Uri { get; set; }
     }
-
 }

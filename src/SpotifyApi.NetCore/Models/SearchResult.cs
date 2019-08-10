@@ -2,9 +2,13 @@
 
 namespace SpotifyApi.NetCore
 {
-    using System;
     using Newtonsoft.Json;
+    using System;
 
+    /// <summary>
+    /// Search Result.
+    /// </summary>
+    /// <remarks> https://developer.spotify.com/documentation/web-api/reference/search/search/ </remarks>
     public partial class SearchResult
     {
         [JsonProperty("artists")]
@@ -20,6 +24,9 @@ namespace SpotifyApi.NetCore
         public PlaylistsSearchResult Playlists { get; set; }
     }
 
+    /// <summary>
+    /// Artists Search Result.
+    /// </summary>
     public partial class ArtistsSearchResult
     {
         [JsonProperty("href")]
@@ -44,6 +51,9 @@ namespace SpotifyApi.NetCore
         public int Total { get; set; }
     }
 
+    /// <summary>
+    /// Albums Search Result.
+    /// </summary>
     public partial class AlbumsSearchResult
     {
         [JsonProperty("href")]
@@ -68,6 +78,9 @@ namespace SpotifyApi.NetCore
         public long Total { get; set; }
     }
 
+    /// <summary>
+    /// Tracks Search Result.
+    /// </summary>
     public partial class TracksSearchResult
     {
         [JsonProperty("href")]
@@ -92,6 +105,9 @@ namespace SpotifyApi.NetCore
         public long Total { get; set; }
     }
 
+    /// <summary>
+    /// Playlists Search Result
+    /// </summary>
     public partial class PlaylistsSearchResult
     {
         [JsonProperty("href")]

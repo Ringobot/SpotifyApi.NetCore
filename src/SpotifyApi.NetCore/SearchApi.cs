@@ -154,7 +154,7 @@ namespace SpotifyApi.NetCore
                 url += $"&market={market}";
             }
 
-            if (limit.HasValue && limit > 0)
+            if (limit.HasValue && limit.Value > 0)
             {
                 url += $"&limit={limit.Value}";
             }

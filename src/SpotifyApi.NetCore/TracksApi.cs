@@ -1,7 +1,7 @@
+using SpotifyApi.NetCore.Authorization;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SpotifyApi.NetCore.Authorization;
 
 namespace SpotifyApi.NetCore
 {
@@ -15,26 +15,38 @@ namespace SpotifyApi.NetCore
         #region Constructors
 
         /// <summary>
-        /// This constructor accepts a Spotify access token that will be used for all calls to the API 
-        /// (except when an accessToken is provided using the optional `accessToken` parameter on each method).
+        /// Instantiates a new <see cref="TracksApi"/>.
         /// </summary>
-        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
-        /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
-        public TracksApi(HttpClient httpClient, string accessToken): base(httpClient, accessToken)
-        {
-            SearchApi = new SearchApi(httpClient, accessToken);
-        }
-
-        /// <summary>
+        /// <remarks>
         /// Use this constructor when an accessToken will be provided using the `accessToken` parameter 
         /// on each method
-        /// </summary>
+        /// </remarks>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
         public TracksApi(HttpClient httpClient) : base(httpClient)
         {
             SearchApi = new SearchApi(httpClient);
         }
 
+        /// <summary>
+        /// Instantiates a new <see cref="TracksApi"/>.
+        /// </summary>
+        /// <remarks>
+        /// This constructor accepts a Spotify access token that will be used for all calls to the API 
+        /// (except when an accessToken is provided using the optional `accessToken` parameter on each method).
+        /// </remarks>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
+        public TracksApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
+        {
+            SearchApi = new SearchApi(httpClient, accessToken);
+        }
+
+
+        /// <summary>
+        /// Instantiates a new <see cref="TracksApi"/>.
+        /// </summary>
+        /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
+        /// <param name="accessTokenProvider">An instance of <see cref="IAccessTokenProvider"/>, e.g. <see cref="Authorization.AccountsService"/>.</param>
         public TracksApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
         {
             SearchApi = new SearchApi(httpClient, accessTokenProvider);
@@ -51,8 +63,8 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 <see cref="SpotifyCountryCode"/> or the
         /// string `from_token`. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>Task of Track</returns>
-        public Task<Track> GetTrack(string trackId, string market = null, string accessToken = null) 
-            => GetTrack<Track>(trackId, market, accessToken);
+        public Task<Track> GetTrack(string trackId, string market = null, string accessToken = null)
+            => GetTrack<Track>(trackId, market: market, accessToken: accessToken);
 
         /// <summary>
         /// Get Spotify catalog information for a single track identified by its unique Spotify ID.
@@ -80,8 +92,8 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 <see cref="SpotifyCountryCode"/> or the
         /// string `from_token`. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>Task of Track[]</returns>
-        public async Task<Track[]> GetTracks(string[] trackIds, string market = null, string accessToken = null) 
-            => await GetTracks<Track[]>(trackIds, market, accessToken);
+        public async Task<Track[]> GetTracks(string[] trackIds, string market = null, string accessToken = null)
+            => await GetTracks<Track[]>(trackIds, market: market, accessToken: accessToken);
 
         /// <summary>
         /// Get Spotify catalog information for multiple tracks based on their Spotify IDs.
@@ -108,8 +120,8 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="trackId">The Spotify ID for the track.</param>
         /// <returns>Task of <see cref="TrackAudioAnalysis" /></returns>
-        public async Task<TrackAudioAnalysis> GetTrackAudioAnalysis(string trackId, string accessToken = null) 
-            => await GetTrackAudioAnalysis<TrackAudioAnalysis>(trackId, accessToken);
+        public async Task<TrackAudioAnalysis> GetTrackAudioAnalysis(string trackId, string accessToken = null)
+            => await GetTrackAudioAnalysis<TrackAudioAnalysis>(trackId, accessToken: accessToken);
 
         /// <summary>
         /// Get a detailed audio analysis for a single track identified by its unique Spotify ID.
@@ -117,7 +129,7 @@ namespace SpotifyApi.NetCore
         /// <param name="trackId">The Spotify ID for the track.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        public async Task<T> GetTrackAudioAnalysis<T>(string trackId, string accessToken = null) 
+        public async Task<T> GetTrackAudioAnalysis<T>(string trackId, string accessToken = null)
             => await GetModel<T>($"{BaseUrl}/audio-analysis/{trackId}", accessToken);
 
         #endregion
@@ -129,8 +141,8 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="trackId">The Spotify ID for the track.</param>
         /// <returns>Task of <see cref="TrackAudioFeatures" /></returns>
-        public async Task<TrackAudioFeatures> GetTrackAudioFeatures(string trackId, string accessToken = null) 
-            => await GetTrackAudioFeatures<TrackAudioFeatures>(trackId, accessToken);
+        public async Task<TrackAudioFeatures> GetTrackAudioFeatures(string trackId, string accessToken = null)
+            => await GetTrackAudioFeatures<TrackAudioFeatures>(trackId, accessToken: accessToken);
 
         /// <summary>
         /// Get audio feature information for a single track identified by its unique Spotify ID.
@@ -138,7 +150,7 @@ namespace SpotifyApi.NetCore
         /// <param name="trackId">The Spotify ID for the track.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
-        public async Task<T> GetTrackAudioFeatures<T>(string trackId, string accessToken = null) 
+        public async Task<T> GetTrackAudioFeatures<T>(string trackId, string accessToken = null)
             => await GetModel<T>($"{BaseUrl}/audio-features/{trackId}", accessToken);
 
         #endregion
@@ -150,8 +162,8 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="trackIds">An array of the Spotify IDs for the tracks. Maximum: 100 IDs.</param>
         /// <returns>Task of <see cref="TrackAudioFeatures[]" /></returns>
-        public async Task<TrackAudioFeatures[]> GetTracksAudioFeatures(string[] trackIds, string accessToken = null) 
-            => await GetTracksAudioFeatures<TrackAudioFeatures[]>(trackIds, accessToken);
+        public async Task<TrackAudioFeatures[]> GetTracksAudioFeatures(string[] trackIds, string accessToken = null)
+            => await GetTracksAudioFeatures<TrackAudioFeatures[]>(trackIds, accessToken: accessToken);
 
         /// <summary>
         /// Get audio features for multiple tracks based on their Spotify IDs.

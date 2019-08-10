@@ -74,7 +74,7 @@ namespace SpotifyApi.NetCore.Helpers
             return spotifyUri.Uri;
         }
 
-        public static string ToId(string type, string idOrUri, bool throwIfNotValid = true)
+        internal static string ToId(string type, string idOrUri, bool throwIfNotValid = true)
         {
             var uri = new SpotifyUri(idOrUri, type);
             if (throwIfNotValid && !uri.IsValid)

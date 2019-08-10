@@ -9,6 +9,12 @@ namespace SpotifyApi.NetCore.Extensions
     /// </summary>
     public static class TracksApiExtensions
     {
+        /// <summary>
+        /// Get a single track by its ISRC code.
+        /// </summary>
+        /// <param name="tracksApi">This instance of <see cref="ITracksApi"/>.</param>
+        /// <param name="isrc">A valid 12 digit ISRC code.</param>
+        /// <returns></returns>
         public static async Task<Track> GetTrackByIsrcCode(this ITracksApi tracksApi, string isrc)
         {
             if (isrc == null || isrc.Length != 12) throw new ArgumentException("12 digit ISRC code expected.");

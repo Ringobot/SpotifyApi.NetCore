@@ -39,7 +39,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="httpClient">An instance of <see cref="HttpClient"/></param>
         /// <param name="accessToken">A valid access token from the Spotify Accounts service</param>
-        public SpotifyWebApi(HttpClient httpClient, string accessToken): this(httpClient)
+        public SpotifyWebApi(HttpClient httpClient, string accessToken) : this(httpClient)
         {
             if (string.IsNullOrEmpty(accessToken)) throw new ArgumentNullException(nameof(accessToken));
             _accessToken = accessToken;
@@ -94,7 +94,9 @@ namespace SpotifyApi.NetCore
         /// <param name="rootPropertyName">The name of the root property of the JSON response to deserialise, e.g. "artists"</param>
         /// <typeparam name="T">The type to deserialise to</typeparam>
         /// <returns></returns>
-        protected internal virtual async Task<T> GetModelFromProperty<T>(string url, string rootPropertyName,
+        protected internal virtual async Task<T> GetModelFromProperty<T>(
+            string url,
+            string rootPropertyName,
             string accessToken = null)
         {
             string json = await _http.Get

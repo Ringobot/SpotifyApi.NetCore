@@ -68,7 +68,7 @@ namespace SpotifyApi.NetCore
         /// <returns>A Task that, once successfully completed, returns a full <see cref="Album"/> object.</returns>
         /// <remarks>https://developer.spotify.com/documentation/web-api/reference/albums/get-album/</remarks>
         public async Task<Album> GetAlbum(string albumId, string market = null, string accessToken = null)
-            => await GetAlbum<Album>(albumId, market, accessToken);
+            => await GetAlbum<Album>(albumId, market: market, accessToken: accessToken);
 
         /// <summary>
         /// Get Spotify catalog information for a single album.
@@ -201,7 +201,7 @@ namespace SpotifyApi.NetCore
             => await SearchApi.Search<SearchResult>(
                 query,
                 new string[] { SpotifySearchTypes.Album },
-                market,
+                market: market,
                 limit: limit,
                 offset: offset,
                 accessToken);
