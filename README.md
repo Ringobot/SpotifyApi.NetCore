@@ -109,13 +109,6 @@ See tests and `SpotifyApi.NetCore.Samples` for more usage examples.
 
 > There is a working demo using the sample project here: <https://spotifyaspnetcore.z5.web.core.windows.net/>
 
-## In this repo
-
-| Path | Remarks |
-| ---- | ------- |
-| `src/SpotifyApi.NetCore` | SpotifyApi.NetCore project |
-| `src/SpotifyApi.NetCore.Tests` | Tests |
-
 ## Spotify Web API Coverage
 
 | Spotify API | Endpoints | Implemented | % | |

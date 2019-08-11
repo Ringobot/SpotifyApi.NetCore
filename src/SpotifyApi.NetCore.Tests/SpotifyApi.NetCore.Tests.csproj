@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpotifyApi.NetCore.Authorization\SpotifyApi.NetCore.Authorization.csproj" />
     <ProjectReference Include="..\SpotifyApi.NetCore\SpotifyApi.NetCore.csproj" />
   </ItemGroup>
 
