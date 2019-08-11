@@ -8,7 +8,7 @@
     <Authors>Daniel Larsen and contributors</Authors>
     <Company>Ringobot</Company>
     <Copyright>Copyright 2019 Daniel Larsen and contributors</Copyright>
-    <PackageLicense>https://github.com/Ringobot/SpotifyApi.NetCore/blob/master/LICENSE</PackageLicense>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Ringobot/SpotifyApi.NetCore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Ringobot/SpotifyApi.NetCore</RepositoryUrl>
     <PackageTags>spotify;.net core;dotnet core;api;client;wrapper</PackageTags>

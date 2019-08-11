@@ -8,6 +8,8 @@ Auth guide <https://developer.spotify.com/documentation/general/guides/authoriza
 
 Concurrent Dictionary <https://docs.microsoft.com/en-nz/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=netframework-4.7.1#remarks>
 
+Additions to the csproj format for .NET Core: <https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties>
+
 ### HttpClient factory
 
 <https://blogs.msdn.microsoft.com/webdev/2018/02/28/asp-net-core-2-1-preview1-introducing-httpclient-factory/>
