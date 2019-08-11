@@ -17,7 +17,46 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 
 ## Installation
 
+Install the latest version using dotnet CLI:
+
     > dotnet add package SpotifyApi.NetCore
+
+Install using Package Manager Console:
+
+    > Install-Package SpotifyApi.NetCore
+
+## Version 3
+
+A new Version 3 of `SpotifyApi.NetCore` is in preview.
+
+Install the preview using dotnet CLI:
+
+    > dotnet add package SpotifyApi.NetCore --version 3.0.1-preview
+
+Install using Package Manager Console:
+
+    > Install-Package SpotifyApi.NetCore -Version 3.0.1-preview
+
+Version 3 of `SpotifyApi.NetCore` is a major version overhaul with many improvements including:
+
+* Removal of multi-user authentication in favour of bring-your-own auth
+* Simplification of Authentication services
+* Consistent approach to paging and auth params throughout the library
+* Removal of many overloads in favour of optional params
+* Complete XML comment documentation of public methods including links to Spotify reference docs
+* Separate `SpotifyApi.NetCore.Samples` repo
+
+> It is highly recommended that users upgrade to `SpotifyApi.NetCore` >= v3.0.1 as soon as possible. 
+> Version >= 2.4.7 will be supported until the next major version ships.
+
+### Upgrading from v2 to v3
+
+There are breaking changes in v3 but, for most users, upgrading should be straight-forward. Some minor 
+refactoring may be required, e.g.
+
+* Most Authorization objects have moved from namespace `SpotifyApi.NetCore` to `SpotifyApi.NetCore.Authorization`
+* `Models.Image.Height` and `Models.Image.Width` have changed from `int` to `int?`
+* `Models.CurrentPlaybackContext.ProgressMs` has changed from `long` to `long?`
 
 ## Basic usage
 
