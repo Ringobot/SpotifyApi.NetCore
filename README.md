@@ -27,16 +27,6 @@ Install using Package Manager Console:
 
 ## Version 3
 
-A new Version 3 of `SpotifyApi.NetCore` is in preview.
-
-Install the preview using dotnet CLI:
-
-    > dotnet add package SpotifyApi.NetCore --version 3.0.1-preview
-
-Install using Package Manager Console:
-
-    > Install-Package SpotifyApi.NetCore -Version 3.0.1-preview
-
 Version 3 of `SpotifyApi.NetCore` is a major version overhaul with many improvements including:
 
 * Removal of multi-user authentication in favour of bring-your-own auth
