@@ -100,5 +100,22 @@ namespace SpotifyApi.NetCore.Tests
             var result = await artists.GetArtistsTopTracks(artistId, market);
         }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetRelatedArtists_When_Given_Valid_ArtistId_Returns_Artists()
+        {
+            // arrange
+            const string artistId = "6lcwlkAjBPSKnFBZjjZFJs";
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+            var artists = new ArtistsApi(http, accounts);
+
+            // act
+            var result = await artists.GetRelatedArtists(artistId);
+
+            // assert
+            Assert.AreNotSame(result.Length, 0);
+        }
     }
 }
