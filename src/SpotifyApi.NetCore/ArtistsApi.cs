@@ -93,7 +93,7 @@ namespace SpotifyApi.NetCore
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         public async Task<T> GetRelatedArtists<T>(string artistId, string accessToken = null)
-            => await GetModel<T>($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}/related-artists", accessToken);
+            => await GetModelFromProperty<T>($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}/related-artists", "artists", accessToken);
 
         #endregion
 
