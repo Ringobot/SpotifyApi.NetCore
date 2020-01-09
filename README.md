@@ -13,7 +13,7 @@ Lightweight .NET Core wrapper for the Spotify Web API.
 * BYO `HttpClient`
 * Authorization support (App and User flows)
 * MIT license
-* Fully documented
+* Fully XML documented
 
 ## Installation
 
@@ -155,10 +155,14 @@ See tests and `SpotifyApi.NetCore.Samples` for more usage examples.
 | Users Profile | 2 | 0 | 0% |
 | **Total** | **64** | **26** | **41%** |
 
-Feature requests welcomed! (log an issue)
+Feature requests welcomed! (create an issue)
+
+## Maintainer
+
+This project is actively maintained by @DanielLarsenNZ. The easiest way to get in touch is to create an issue. But you can also email daniel@larsen.nz.
 
 ## Contributors
 
-Thanks to @aevansme for his contributions!
+Thanks to @aevansme and @brandongregoryscott for their contributions!
 
 Contributions welcomed. Read [CONTRIB.md](./CONTRIB.md)
