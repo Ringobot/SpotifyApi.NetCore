@@ -101,7 +101,7 @@ namespace SpotifyApi.NetCore.Authorization
 
         protected internal virtual async Task<BearerAccessRefreshToken> GetAuthorizationTokens(string code)
         {
-            var result = await _http.Post(TokenUrl,
+            var result = await _http.Post(new Uri(TokenUrl),
                 $"grant_type=authorization_code&code={code}&redirect_uri={_config["SpotifyAuthRedirectUri"]}",
                 GetHeader(_config));
             return JsonConvert.DeserializeObject<BearerAccessRefreshToken>(result);

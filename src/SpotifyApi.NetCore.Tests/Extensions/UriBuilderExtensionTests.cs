@@ -10,7 +10,7 @@ namespace SpotifyApi.NetCore.Tests.Extensions
     public class UriBuilderExtensionsTests
     {
         [TestMethod]
-        public void AppendQueryParam_OneParam_WellFormed()
+        public void AppendToQuery_OneParam_WellFormed()
         {
             // arrange
             var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
@@ -23,7 +23,7 @@ namespace SpotifyApi.NetCore.Tests.Extensions
         }
 
         [TestMethod]
-        public void AppendQueryParam_TwoParams_WellFormed()
+        public void AppendToQuery_TwoParams_WellFormed()
         {
             // arrange
             var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
@@ -37,7 +37,7 @@ namespace SpotifyApi.NetCore.Tests.Extensions
         }
 
         [TestMethod]
-        public void AppendQueryParam_ParamInOriginalUrlString_WellFormed()
+        public void AppendToQuery_ParamInOriginalUrlString_WellFormed()
         {
             // arrange
             var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases?local=en-nz");
@@ -51,7 +51,7 @@ namespace SpotifyApi.NetCore.Tests.Extensions
         }
 
         [TestMethod]
-        public void AppendQueryParam_TwoParamsDifferentValues_WellFormed()
+        public void AppendToQuery_TwoParamsDifferentValues_WellFormed()
         {
             // arrange
             var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
@@ -65,7 +65,7 @@ namespace SpotifyApi.NetCore.Tests.Extensions
         }
 
         [TestMethod]
-        public void AppendQueryParam_SpaceInParamValue_EscapedAndWellFormed()
+        public void AppendToQuery_SpaceInParamValue_EscapedAndWellFormed()
         {
             // arrange
             var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
@@ -76,5 +76,73 @@ namespace SpotifyApi.NetCore.Tests.Extensions
             // assert
             Assert.AreEqual("?artist=Massive%20Attack", builder.Uri.Query);
         }
+
+        [TestMethod]
+        public void AppendToQueryIfValueNotNullOrWhiteSpace_QueryNotSetAndValueIsNull_QueryIsNullEmpty()
+        {
+            // arrange
+            var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
+
+            // act
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("artist", null);
+
+            // assert
+            Assert.IsTrue(string.IsNullOrEmpty(builder.Uri.Query));
+        }
+
+        [TestMethod]
+        public void AppendToQueryIfValueNotNullOrWhiteSpace_QuerySetAndValueIsNull_QueryNotAppended()
+        {
+            // arrange
+            var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
+            builder.AppendToQuery("1", "1");
+
+            // act
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("2", null);
+
+            // assert
+            Assert.AreEqual("?1=1", builder.Uri.Query);
+        }
+
+        [TestMethod]
+        public void AppendToQueryIfValueGreaterThan0_QuerySetAndValueIsNull_QueryNotAppended()
+        {
+            // arrange
+            var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
+            builder.AppendToQuery("1", "1");
+
+            // act
+            builder.AppendToQueryIfValueGreaterThan0("2", null);
+
+            // assert
+            Assert.AreEqual("?1=1", builder.Uri.Query);
+        }
+
+        [TestMethod]
+        public void AppendToQueryIfValueGreaterThan0_QueryNotSetAndValueIs0_QueryIsNullOrEmpty()
+        {
+            // arrange
+            var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
+
+            // act
+            builder.AppendToQueryIfValueGreaterThan0("1", 0);
+
+            // assert
+            Assert.IsTrue(string.IsNullOrEmpty(builder.Uri.Query));
+        }
+
+        [TestMethod]
+        public void AppendToQueryAsCsv_ThreeValues_WellFormed()
+        {
+            // arrange
+            var builder = new UriBuilder("https://api.spotify.com/v1/browse/new-releases");
+
+            // act
+            builder.AppendToQueryAsCsv("numbers", new[] { "1", "2", "3" });
+
+            // assert
+            Assert.AreEqual("?numbers=1,2,3", builder.Uri.Query);
+        }
+
     }
 }

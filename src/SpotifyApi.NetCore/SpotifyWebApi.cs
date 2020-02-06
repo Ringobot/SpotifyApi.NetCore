@@ -90,7 +90,7 @@ namespace SpotifyApi.NetCore
             (
                 await _http.Get
                 (
-                    uri.ToString(),
+                    uri,
                     new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
                 )
             );
@@ -125,7 +125,7 @@ namespace SpotifyApi.NetCore
         {
             string json = await _http.Get
             (
-                uri.ToString(),
+                uri,
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
             );
             var deserialized = JsonConvert.DeserializeObject(json) as JObject;

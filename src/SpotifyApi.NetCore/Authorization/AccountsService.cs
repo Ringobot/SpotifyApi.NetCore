@@ -81,7 +81,7 @@ namespace SpotifyApi.NetCore.Authorization
             var now = DateTime.UtcNow;
             if (token != null && token.Expires != null && token.Expires > now) return token;
 
-            string json = await _http.Post(TokenUrl, body, GetHeader(_config));
+            string json = await _http.Post(new Uri(TokenUrl), body, GetHeader(_config));
 
             // deserialise the token
             var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
@@ -97,7 +97,7 @@ namespace SpotifyApi.NetCore.Authorization
         protected async Task<BearerAccessToken> RefreshAccessToken(string body)
         {
             var now = DateTime.UtcNow;
-            string json = await _http.Post(TokenUrl, body, GetHeader(_config));
+            string json = await _http.Post(new Uri(TokenUrl), body, GetHeader(_config));
             // deserialise the token
             var newToken = JsonConvert.DeserializeObject<BearerAccessToken>(json);
             // set absolute expiry

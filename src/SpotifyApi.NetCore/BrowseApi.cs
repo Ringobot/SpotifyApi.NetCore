@@ -48,7 +48,7 @@ namespace SpotifyApi.NetCore
 
         public async Task<string[]> GetAvailableGenreSeeds()
         {
-            string url = $"{BaseUrl}/recommendations/available-genre-seeds";
+            var url = new Uri($"{BaseUrl}/recommendations/available-genre-seeds");
             return await GetModelFromProperty<string[]>(url, "genres");
         }
 
@@ -151,14 +151,12 @@ namespace SpotifyApi.NetCore
             if (seedArtists == null && seedGenres == null && seedTracks == null)
                 throw new ArgumentException("At least one of `seedArtists`, `seedGenres` or `seedTracks` must be provided.");
 
-            string url = $"{BaseUrl}/recommendations?";
-
-            if (seedArtists != null && seedArtists.Length > 0) url += $"seed_artists={string.Join(",", seedArtists)}&";
-            if (seedGenres != null && seedGenres.Length > 0) url += $"seed_genres={string.Join(",", seedGenres)}&";
-            if (seedTracks != null && seedTracks.Length > 0) url += $"seed_tracks={string.Join(",", seedTracks)}&";
-            if (limit.HasValue && limit.Value > 0) url += $"limit={limit}";
-
-            return await GetModel<T>(url);
+            var builder = new UriBuilder($"{BaseUrl}/recommendations");
+            builder.AppendToQueryAsCsv("seed_artists", seedArtists);
+            builder.AppendToQueryAsCsv("seed_genres", seedGenres);
+            builder.AppendToQueryAsCsv("seed_tracks", seedTracks);
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            return await GetModel<T>(builder.Uri);
         }
     }
 }

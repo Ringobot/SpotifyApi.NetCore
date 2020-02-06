@@ -13,12 +13,10 @@ namespace SpotifyApi.NetCore
             else builder.Query = $"{builder.Query.Substring(1)}&{name}={value}";
         }
 
-        public static void AppendToQueryIfValueNotNullOrWhiteSpace(
-            this UriBuilder builder,
-            string name,
-            string value)
+        public static void AppendToQueryAsCsv(this UriBuilder builder, string name, string[] values)
         {
-            if (!string.IsNullOrWhiteSpace(value)) AppendToQuery(builder, name, value);
+            if (values != null && values.Length > 0) 
+                AppendToQuery(builder, name, string.Join(",", values));
         }
 
         public static void AppendToQueryIfValueGreaterThan0(
@@ -35,6 +33,14 @@ namespace SpotifyApi.NetCore
             int value)
         {
             if (value > 0) AppendToQuery(builder, name, value);
+        }
+
+        public static void AppendToQueryIfValueNotNullOrWhiteSpace(
+            this UriBuilder builder,
+            string name,
+            string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value)) AppendToQuery(builder, name, value);
         }
     }
 }

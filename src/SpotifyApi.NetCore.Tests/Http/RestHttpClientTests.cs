@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace SpotifyApi.NetCore.Tests.Http
         public async Task Get_RequestUrlAndAuthHeader_RequestMessageUriSet()
         {
             // Arrange
-            const string requestUrl = "http://abc123.def/456";
+            var requestUrl = new Uri("http://abc123.def/456");
             
             HttpRequestMessage message = null;
             
@@ -47,8 +48,8 @@ namespace SpotifyApi.NetCore.Tests.Http
         public async Task Get_RequestUrlAndAuthHeader_RequestMessageMethodIsGet()
         {
             // Arrange
-            const string requestUrl = "http://abc123.def/456";
-            
+            var requestUrl = new Uri("http://abc123.def/456");
+
             HttpRequestMessage message = null;
             
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
@@ -75,7 +76,7 @@ namespace SpotifyApi.NetCore.Tests.Http
         public async Task Post_RequestUrlAndAuthHeader_RequestMessageUriSet()
         {
             // Arrange
-            const string requestUrl = "http://abc123.def/456";
+            var requestUrl = new Uri("http://abc123.def/456");
             const string formData = "ghi=789";
             
             HttpRequestMessage message = null;
@@ -104,7 +105,7 @@ namespace SpotifyApi.NetCore.Tests.Http
         public async Task Post_RequestUrlAndAuthHeader_RequestMessageMethodIsGet()
         {
             // Arrange
-            const string requestUrl = "http://abc123.def/456";
+            var requestUrl = new Uri("http://abc123.def/456");
             const string formData = "ghi=789";
 
             HttpRequestMessage message = null;
@@ -133,7 +134,7 @@ namespace SpotifyApi.NetCore.Tests.Http
         public async Task Get_RequestUrlNullHeader_NoError()
         {
             // Arrange
-            const string requestUrl = "http://abc123.def/456";
+            var requestUrl = new Uri("http://abc123.def/456");
 
             HttpRequestMessage message = null;
 
