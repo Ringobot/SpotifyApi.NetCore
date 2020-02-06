@@ -67,11 +67,11 @@ namespace SpotifyApi.NetCore
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Array of <see cref="Album"/></returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/ </remarks>
-        public Task<Album[]> GetNewReleases(
+        public Task<AlbumsSearchResult> GetNewReleases(
             string country = null,
             int? limit = null,
             int offset = 0,
-            string accessToken = null) => GetNewReleases<Album[]>(country, limit, offset, accessToken);
+            string accessToken = null) => GetNewReleases<AlbumsSearchResult>(country, limit, offset, accessToken);
 
         /// <summary>
         /// Get a list of new album releases featured in Spotify (shown, for example, on a Spotify 
@@ -95,24 +95,11 @@ namespace SpotifyApi.NetCore
             int offset = 0,
             string accessToken = null)
         {
-            string url = $"{BaseUrl}/browse/new-releases?";
-
-            if (!string.IsNullOrWhiteSpace(country))
-            {
-                url += $"&country={country}";
-            }
-
-            if (limit.HasValue && limit.Value > 0)
-            {
-                url += $"&limit={limit.Value}";
-            }
-
-            if (offset > 0)
-            {
-                url += $"&offset={offset}";
-            }
-
-            return await GetModel<T>(url, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/browse/new-releases");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("country", country);
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            builder.AppendToQueryIfValueGreaterThan0("offset", offset);
+            return await GetModelFromProperty<T>(builder.Uri, "albums", accessToken: accessToken);
         }
 
         #endregion

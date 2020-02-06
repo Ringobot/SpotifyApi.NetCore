@@ -26,9 +26,9 @@ namespace SpotifyApi.NetCore
         /// first result). Use with limit to get the next page of search results.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
-        /// <returns>Array of <see cref="Album"/></returns>
+        /// <returns><see cref="AlbumsSearchResult"/></returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/ </remarks>
-        Task<Album[]> GetNewReleases(
+        Task<AlbumsSearchResult> GetNewReleases(
             string country = null,
             int? limit = null,
             int offset = 0,

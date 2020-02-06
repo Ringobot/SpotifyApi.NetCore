@@ -75,13 +75,22 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="url">The URL to GET</param>
         /// <typeparam name="T">The type to deserialise to</typeparam>
-        protected internal virtual async Task<T> GetModel<T>(string url, string accessToken = null)
+        [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
+        protected internal virtual Task<T> GetModel<T>(string url, string accessToken = null)
+            => GetModel<T>(new Uri(url), accessToken: accessToken);
+
+        /// <summary>
+        /// Invoke a GET request and deserialise the JSON to a model of T
+        /// </summary>
+        /// <param name="url">The URL to GET</param>
+        /// <typeparam name="T">The type to deserialise to</typeparam>
+        protected internal virtual async Task<T> GetModel<T>(Uri uri, string accessToken = null)
         {
             return JsonConvert.DeserializeObject<T>
             (
                 await _http.Get
                 (
-                    url,
+                    uri.ToString(),
                     new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
                 )
             );
@@ -94,14 +103,29 @@ namespace SpotifyApi.NetCore
         /// <param name="rootPropertyName">The name of the root property of the JSON response to deserialise, e.g. "artists"</param>
         /// <typeparam name="T">The type to deserialise to</typeparam>
         /// <returns></returns>
-        protected internal virtual async Task<T> GetModelFromProperty<T>(
+        [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
+        protected internal virtual Task<T> GetModelFromProperty<T>(
             string url,
+            string rootPropertyName,
+            string accessToken = null)
+                => GetModelFromProperty<T>(new Uri(url), rootPropertyName, accessToken: accessToken);
+
+
+        /// <summary>
+        /// Invoke a GET request and deserialise the result to JSON from a root property of the Spotify Response
+        /// </summary>
+        /// <param name="url">The URL to GET</param>
+        /// <param name="rootPropertyName">The name of the root property of the JSON response to deserialise, e.g. "artists"</param>
+        /// <typeparam name="T">The type to deserialise to</typeparam>
+        /// <returns></returns>
+        protected internal virtual async Task<T> GetModelFromProperty<T>(
+            Uri uri,
             string rootPropertyName,
             string accessToken = null)
         {
             string json = await _http.Get
             (
-                url,
+                uri.ToString(),
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
             );
             var deserialized = JsonConvert.DeserializeObject(json) as JObject;

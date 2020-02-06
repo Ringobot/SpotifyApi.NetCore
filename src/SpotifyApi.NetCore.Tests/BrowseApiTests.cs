@@ -8,12 +8,54 @@ using System.IO;
 using SpotifyApi.NetCore.Tests.Mocks;
 using SpotifyApi.NetCore.Tests.Http;
 using SpotifyApi.NetCore.Authorization;
+using System;
 
 namespace SpotifyApi.NetCore.Tests
 {
     [TestClass]
     public class BrowseApiTests
     {
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetNewReleases_NoParams_NoError()
+        {
+            // arrange
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new BrowseApi(http, accounts);
+
+            // act
+            var response = await api.GetNewReleases();
+            string name = response.Items[0].Name;
+            Trace.WriteLine(name);
+        }
+
+        [TestMethod]
+        public async Task GetNewReleases_Country_UrlContainsCountry()
+        {
+            // arrange
+            const string country = SpotifyCountryCodes.New_Zealand;
+
+            var http = new MockHttpClient();
+            var accounts = new MockAccountsService().Object;
+
+            var api = new Mock<BrowseApi>(http.HttpClient, accounts) { CallBase = true };
+            api.Setup(a => a.GetModelFromProperty<AlbumsSearchResult>(
+                It.IsAny<Uri>(), 
+                It.IsAny<string>(), 
+                It.IsAny<string>())).ReturnsAsync(new AlbumsSearchResult());
+
+            // act
+            await api.Object.GetNewReleases(country: country);
+
+            // assert
+            api.Verify(a => a.GetModelFromProperty<AlbumsSearchResult>(
+                new Uri($"https://api.spotify.com/v1/browse/new-releases?country={SpotifyCountryCodes.New_Zealand}"),
+                It.IsAny<string>(),
+                It.IsAny<string>()));
+        }
+
         [TestMethod]
         public async Task GetRecommendations_2SeedArtists_UrlContainsArtists()
         {
