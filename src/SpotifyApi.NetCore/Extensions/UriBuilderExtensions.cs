@@ -2,7 +2,7 @@
 
 namespace SpotifyApi.NetCore
 {
-    public static class UriBuilderExtensions
+    internal static class UriBuilderExtensions
     {
         public static void AppendToQuery(this UriBuilder builder, string name, int value)
             => AppendToQuery(builder, name, value.ToString());
@@ -15,7 +15,7 @@ namespace SpotifyApi.NetCore
 
         public static void AppendToQueryAsCsv(this UriBuilder builder, string name, string[] values)
         {
-            if (values != null && values.Length > 0) 
+            if (values != null && values.Length > 0)
                 AppendToQuery(builder, name, string.Join(",", values));
         }
 

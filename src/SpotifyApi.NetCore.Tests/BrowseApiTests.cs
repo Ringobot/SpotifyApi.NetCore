@@ -1,14 +1,11 @@
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Net.Http;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using SpotifyApi.NetCore.Tests.Mocks;
-using SpotifyApi.NetCore.Tests.Http;
 using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Tests.Mocks;
 using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -42,8 +39,8 @@ namespace SpotifyApi.NetCore.Tests
 
             var api = new Mock<BrowseApi>(http.HttpClient, accounts) { CallBase = true };
             api.Setup(a => a.GetModelFromProperty<AlbumsSearchResult>(
-                It.IsAny<Uri>(), 
-                It.IsAny<string>(), 
+                It.IsAny<Uri>(),
+                It.IsAny<string>(),
                 It.IsAny<string>())).ReturnsAsync(new AlbumsSearchResult());
 
             // act
@@ -117,7 +114,7 @@ namespace SpotifyApi.NetCore.Tests
 
             // assert
             api.Verify(a => a.GetModel<RecommendationsResult>(
-                new Uri("https://api.spotify.com/v1/recommendations?seed_tracks=trackabc123,trackdef456"), 
+                new Uri("https://api.spotify.com/v1/recommendations?seed_tracks=trackabc123,trackdef456"),
                 null));
         }
 
