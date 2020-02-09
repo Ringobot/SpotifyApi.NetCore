@@ -3,6 +3,7 @@
 namespace SpotifyApi.NetCore
 {
     using Newtonsoft.Json;
+    using SpotifyApi.NetCore.Models;
     using System;
 
     /// <summary>
@@ -27,108 +28,28 @@ namespace SpotifyApi.NetCore
     /// <summary>
     /// Artists Search Result.
     /// </summary>
-    public partial class ArtistsSearchResult
+    public partial class ArtistsSearchResult : Paged<Artist>
     {
-        [JsonProperty("href")]
-        public string Href { get; set; }
-
-        [JsonProperty("items")]
-        public Artist[] Items { get; set; }
-
-        [JsonProperty("limit")]
-        public int Limit { get; set; }
-
-        [JsonProperty("next")]
-        public string Next { get; set; }
-
-        [JsonProperty("offset")]
-        public int Offset { get; set; }
-
-        [JsonProperty("previous")]
-        public string Previous { get; set; }
-
-        [JsonProperty("total")]
-        public int Total { get; set; }
     }
 
     /// <summary>
     /// Albums Search Result.
     /// </summary>
-    public partial class AlbumsSearchResult
+    public partial class AlbumsSearchResult : Paged<Album>
     {
-        [JsonProperty("href")]
-        public Uri Href { get; set; }
-
-        [JsonProperty("items")]
-        public Album[] Items { get; set; }
-
-        [JsonProperty("limit")]
-        public long Limit { get; set; }
-
-        [JsonProperty("next")]
-        public Uri Next { get; set; }
-
-        [JsonProperty("offset")]
-        public long Offset { get; set; }
-
-        [JsonProperty("previous")]
-        public object Previous { get; set; }
-
-        [JsonProperty("total")]
-        public long Total { get; set; }
     }
 
     /// <summary>
     /// Tracks Search Result.
     /// </summary>
-    public partial class TracksSearchResult
+    public partial class TracksSearchResult : Paged<Track>
     {
-        [JsonProperty("href")]
-        public Uri Href { get; set; }
-
-        [JsonProperty("items")]
-        public Track[] Items { get; set; }
-
-        [JsonProperty("limit")]
-        public long Limit { get; set; }
-
-        [JsonProperty("next")]
-        public Uri Next { get; set; }
-
-        [JsonProperty("offset")]
-        public long Offset { get; set; }
-
-        [JsonProperty("previous")]
-        public object Previous { get; set; }
-
-        [JsonProperty("total")]
-        public long Total { get; set; }
     }
 
     /// <summary>
     /// Playlists Search Result
     /// </summary>
-    public partial class PlaylistsSearchResult
+    public partial class PlaylistsSearchResult : Paged<PlaylistSimplified>
     {
-        [JsonProperty("href")]
-        public Uri Href { get; set; }
-
-        [JsonProperty("items")]
-        public PlaylistSimplified[] Items { get; set; }
-
-        [JsonProperty("limit")]
-        public long Limit { get; set; }
-
-        [JsonProperty("next")]
-        public Uri Next { get; set; }
-
-        [JsonProperty("offset")]
-        public long Offset { get; set; }
-
-        [JsonProperty("previous")]
-        public object Previous { get; set; }
-
-        [JsonProperty("total")]
-        public long Total { get; set; }
     }
 }
