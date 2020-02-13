@@ -34,7 +34,7 @@ Version 3 of `SpotifyApi.NetCore` is a major version overhaul with many improvem
 * Consistent approach to paging and auth params throughout the library
 * Removal of many overloads in favour of optional params
 * Complete XML comment documentation of public methods including links to Spotify reference docs
-* Separate `SpotifyApi.NetCore.Samples` repo
+* Separate [SpotifyApi.NetCore.Samples] repo
 
 > It is highly recommended that users upgrade to `SpotifyApi.NetCore` >= v3.0.1 as soon as possible. 
 > Version >= 2.4.7 will be supported until the next major version ships.
@@ -134,9 +134,7 @@ foreach(Device device in devices)
 
 ```
 
-See tests and `SpotifyApi.NetCore.Samples` for more usage examples.
-
-> There is a working demo using the sample project here: <https://spotifyaspnetcore.z5.web.core.windows.net/>
+See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 
 ## Spotify Web API Coverage
 
@@ -166,3 +164,5 @@ This project is actively maintained by @DanielLarsenNZ. The easiest way to get i
 Thanks to @aevansme and @brandongregoryscott for their contributions!
 
 Contributions welcomed. Read [CONTRIB.md](./CONTRIB.md)
+
+[SpotifyApi.NetCore.Samples]:https://github.com/Ringobot/SpotifyApi.NetCore.Samples
