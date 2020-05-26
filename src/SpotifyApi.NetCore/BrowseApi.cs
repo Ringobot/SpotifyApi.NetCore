@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SpotifyApi.NetCore
 {
     /// <summary>
-    /// Endpoints for getting playlists and new album releases featured on Spotify’s Browse tab.
+    /// Endpoints for getting playlists and new album releases featured on Spotify's Browse tab.
     /// </summary>
     public class BrowseApi : SpotifyWebApi, IBrowseApi
     {
@@ -46,50 +46,261 @@ namespace SpotifyApi.NetCore
         {
         }
 
+        #endregion
+
         public async Task<string[]> GetAvailableGenreSeeds()
         {
             var url = new Uri($"{BaseUrl}/recommendations/available-genre-seeds");
             return await GetModelFromProperty<string[]>(url, "genres");
         }
 
-        public Task<PagedCategories> GetCategories(string country = null, string locale = null, int? limit = null, int offset = 0, string accessToken = null)
+        /// <summary>
+        /// Get a list of categories used to tag items in Spotify (on, for example, the Spotify player's "Browse" tab).
+        /// </summary>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="locale">Optional. The desired language, consisting of an ISO 639-1 language 
+        /// code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, 
+        /// meaning "Spanish (Mexico)". Provide this parameter if you want the category strings returned 
+        /// in a particular language. Note that, if locale is not supplied, or if the specified language 
+        /// is not available, the category strings returned will be in the Spotify default language 
+        /// (American English).</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
+        /// first result). Use with limit to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>A <see cref="PagedCategories"/> object</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-categories/ </remarks>
+        public Task<PagedCategories> GetCategories(
+            string country = null,
+            string locale = null,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null) => GetCategories<PagedCategories>(
+                country: country,
+                locale: locale,
+                limit: limit,
+                offset: offset,
+                accessToken: accessToken);
+
+        /// <summary>
+        /// Get a list of categories used to tag items in Spotify (on, for example, the Spotify player's "Browse" tab).
+        /// </summary>
+        /// <typeparam name="T">Type to deserialise result to.</typeparam>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="locale">Optional. The desired language, consisting of an ISO 639-1 language 
+        /// code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, 
+        /// meaning "Spanish (Mexico)". Provide this parameter if you want the category strings returned 
+        /// in a particular language. Note that, if locale is not supplied, or if the specified language 
+        /// is not available, the category strings returned will be in the Spotify default language 
+        /// (American English).</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
+        /// first result). Use with limit to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Result deserialised to `T`.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-categories/ </remarks>
+        public async Task<T> GetCategories<T>(string country = null, string locale = null, int? limit = null, int offset = 0, string accessToken = null)
         {
-            throw new NotImplementedException();
+            var builder = new UriBuilder($"{BaseUrl}/browse/categories");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("country", country);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("locale", locale);
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            builder.AppendToQueryIfValueGreaterThan0("offset", offset);
+            return await GetModelFromProperty<T>(builder.Uri, "categories", accessToken: accessToken);
         }
 
-        public Task<T> GetCategories<T>(string country = null, string locale = null, int? limit = null, int offset = 0, string accessToken = null)
+        /// <summary>
+        /// Get a single category used to tag items in Spotify (on, for example, the Spotify player's "Browse" tab).
+        /// </summary>
+        /// <param name="categoryId">The Spotify category ID for the category.</param>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="locale">Optional. The desired language, consisting of an ISO 639-1 language 
+        /// code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, 
+        /// meaning "Spanish (Mexico)". Provide this parameter if you want the category strings returned 
+        /// in a particular language. Note that, if locale is not supplied, or if the specified language 
+        /// is not available, the category strings returned will be in the Spotify default language 
+        /// (American English).</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>A <see cref="Category"/> object</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-category/ </remarks>
+        public Task<Category> GetCategory(
+            string categoryId,
+            string country = null,
+            string locale = null,
+            string accessToken = null) => GetCategory<Category>(
+                categoryId,
+                country: country,
+                locale: locale,
+                accessToken: accessToken);
+
+        /// <summary>
+        /// Get a single category used to tag items in Spotify (on, for example, the Spotify player's "Browse" tab).
+        /// </summary>
+        /// <typeparam name="T">Type to deserialise result to.</typeparam>
+        /// <param name="categoryId">The Spotify category ID for the category.</param>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="locale">Optional. The desired language, consisting of an ISO 639-1 language 
+        /// code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, 
+        /// meaning "Spanish (Mexico)". Provide this parameter if you want the category strings returned 
+        /// in a particular language. Note that, if locale is not supplied, or if the specified language 
+        /// is not available, the category strings returned will be in the Spotify default language 
+        /// (American English).</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Result deserialised to `T`.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-category/ </remarks>
+        public async Task<T> GetCategory<T>(string categoryId, string country = null, string locale = null, string accessToken = null)
         {
-            throw new NotImplementedException();
+            var builder = new UriBuilder($"{BaseUrl}/browse/categories/{categoryId}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("country", country);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("locale", locale);
+            return await GetModel<T>(builder.Uri, accessToken: accessToken);
         }
 
-        public Task<Category> GetCategory(string categoryId, string country = null, string locale = null, string accessToken = null)
+        /// <summary>
+        /// Get a list of Spotify playlists tagged with a particular category.
+        /// </summary>
+        /// <param name="categoryId">The Spotify category ID for the category.</param>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
+        /// first result). Use with limit to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>A <see cref="PagedPlaylists"/> object</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-categorys-playlists/ </remarks>
+        public Task<PagedPlaylists> GetCategoryPlaylists(
+            string categoryId,
+            string country = null,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null) => GetCategoryPlaylists<PagedPlaylists>(
+                categoryId,
+                country: country,
+                limit: limit,
+                offset: offset,
+                accessToken: accessToken);
+
+        /// <summary>
+        /// Get a list of Spotify playlists tagged with a particular category.
+        /// </summary>
+        /// <typeparam name="T">Type to deserialise result to.</typeparam>
+        /// <param name="categoryId">The Spotify category ID for the category.</param>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
+        /// first result). Use with limit to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Result deserialised to `T`.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-categorys-playlists/ </remarks>
+        public async Task<T> GetCategoryPlaylists<T>(
+            string categoryId, 
+            string country = null, 
+            int? limit = null, 
+            int offset = 0, 
+            string accessToken = null)
         {
-            throw new NotImplementedException();
+            var builder = new UriBuilder($"{BaseUrl}/browse/categories/{categoryId}/playlists");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("country", country);
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            builder.AppendToQueryIfValueGreaterThan0("offset", offset);
+            return await GetModelFromProperty<T>(builder.Uri, "playlists", accessToken: accessToken);
         }
 
-        public Task<T> GetCategory<T>(string categoryId, string country = null, string locale = null, string accessToken = null)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Get a list of Spotify featured playlists (shown, for example, on a Spotify player's "Browse" tab).
+        /// </summary>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="locale">Optional. The desired language, consisting of an ISO 639-1 language 
+        /// code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, 
+        /// meaning "Spanish (Mexico)". Provide this parameter if you want the category strings returned 
+        /// in a particular language. Note that, if locale is not supplied, or if the specified language 
+        /// is not available, the category strings returned will be in the Spotify default language 
+        /// (American English).</param>
+        /// <param name="timestamp">Optional. A timestamp in ISO 8601 format: yyyy-MM-ddTHH:mm:ss. 
+        /// Use this parameter to specify the user’s local time to get results tailored for that specific 
+        /// date and time in the day. If not provided, the response defaults to the current UTC time. 
+        /// Example: “2014-10-23T09:00:00” for a user whose local time is 9AM. If there were no featured 
+        /// playlists (or there is no data) at the specified time, the response will revert to the 
+        /// current UTC time.</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
+        /// first result). Use with limit to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>A <see cref="FeaturedPlaylists"/> object</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/ </remarks>
+        public Task<FeaturedPlaylists> GetFeaturedPlaylists(
+            string country = null,
+            string locale = null,
+            string timestamp = null,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null) => GetFeaturedPlaylists<FeaturedPlaylists>(
+                country: country,
+                locale: locale,
+                timestamp: timestamp,
+                limit: limit,
+                offset: offset, 
+                accessToken: accessToken);
 
-        public Task<PagedPlaylists> GetCategoryPlaylists(string categoryId, string country = null, int? limit = null, int offset = 0, string accessToken = null)
+        /// <summary>
+        /// Get a list of Spotify featured playlists (shown, for example, on a Spotify player's "Browse" tab).
+        /// </summary>
+        /// <typeparam name="T">Type to deserialise result to.</typeparam>
+        /// <param name="country">Optional. A country: a <see cref="SpotifyCountryCodes"/>. Provide 
+        /// this parameter to ensure that the category exists for a particular country.</param>
+        /// <param name="locale">Optional. The desired language, consisting of an ISO 639-1 language 
+        /// code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, 
+        /// meaning "Spanish (Mexico)". Provide this parameter if you want the category strings returned 
+        /// in a particular language. Note that, if locale is not supplied, or if the specified language 
+        /// is not available, the category strings returned will be in the Spotify default language 
+        /// (American English).</param>
+        /// <param name="timestamp">Optional. A timestamp in ISO 8601 format: yyyy-MM-ddTHH:mm:ss. 
+        /// Use this parameter to specify the user’s local time to get results tailored for that specific 
+        /// date and time in the day. If not provided, the response defaults to the current UTC time. 
+        /// Example: “2014-10-23T09:00:00” for a user whose local time is 9AM. If there were no featured 
+        /// playlists (or there is no data) at the specified time, the response will revert to the 
+        /// current UTC time.</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
+        /// first result). Use with limit to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Result deserialised to `T`.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/ </remarks>
+        public async Task<T> GetFeaturedPlaylists<T>(
+            string country = null, 
+            string locale = null, 
+            string timestamp = null, 
+            int? limit = null, 
+            int offset = 0, 
+            string accessToken = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> GetCategoryPlaylists<T>(string categoryId, string country = null, int? limit = null, int offset = 0, string accessToken = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<FeaturedPlaylists> GetFeaturedPlaylists(string country = null, string locale = null, string timestamp = null, int? limit = null, int offset = 0, string accessToken = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> GetFeaturedPlaylists<T>(string country = null, string locale = null, string timestamp = null, int? limit = null, int offset = 0, string accessToken = null)
-        {
-            throw new NotImplementedException();
+            var builder = new UriBuilder($"{BaseUrl}/browse/featured-playlists");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("country", country);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("locale", locale);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("timestamp", timestamp);
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            builder.AppendToQueryIfValueGreaterThan0("offset", offset);
+            return await GetModelFromProperty<T>(builder.Uri, "playlists", accessToken: accessToken);
         }
 
         /// <summary>
@@ -107,11 +318,11 @@ namespace SpotifyApi.NetCore
         /// used for this call only. See constructors for more ways to provide access tokens.</param>
         /// <returns>Array of <see cref="Album"/></returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-new-releases/ </remarks>
-        public Task<AlbumsSearchResult> GetNewReleases(
+        public Task<PagedAlbums> GetNewReleases(
             string country = null,
             int? limit = null,
             int offset = 0,
-            string accessToken = null) => GetNewReleases<AlbumsSearchResult>(country, limit, offset, accessToken);
+            string accessToken = null) => GetNewReleases<PagedAlbums>(country, limit, offset, accessToken);
 
         /// <summary>
         /// Get a list of new album releases featured in Spotify (shown, for example, on a Spotify 
@@ -141,8 +352,6 @@ namespace SpotifyApi.NetCore
             builder.AppendToQueryIfValueGreaterThan0("offset", offset);
             return await GetModelFromProperty<T>(builder.Uri, "albums", accessToken: accessToken);
         }
-
-        #endregion
 
         /// <summary>
         /// Create a playlist-style listening experience based on seed artists, tracks and genres.
@@ -200,11 +409,6 @@ namespace SpotifyApi.NetCore
             builder.AppendToQueryAsCsv("seed_tracks", seedTracks);
             builder.AppendToQueryIfValueGreaterThan0("limit", limit);
             return await GetModel<T>(builder.Uri, accessToken);
-        }
-
-        Task<PagedAlbums> IBrowseApi.GetNewReleases(string country, int? limit, int offset, string accessToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }
