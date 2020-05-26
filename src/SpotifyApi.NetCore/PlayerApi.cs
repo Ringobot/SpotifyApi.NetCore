@@ -387,6 +387,7 @@ namespace SpotifyApi.NetCore
         /// <returns>Task of <see cref="CurrentPlaybackContext"/></returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
+        /// If no devices are active API may return 204 (No Content) which will be returned as `null`. 
         /// </remarks>
         public Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(string accessToken = null, string market = null)
             => GetCurrentPlaybackInfo<CurrentPlaybackContext>(accessToken, market);

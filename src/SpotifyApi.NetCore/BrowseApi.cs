@@ -52,6 +52,46 @@ namespace SpotifyApi.NetCore
             return await GetModelFromProperty<string[]>(url, "genres");
         }
 
+        public Task<PagedCategories> GetCategories(string country = null, string locale = null, int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetCategories<T>(string country = null, string locale = null, int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Category> GetCategory(string categoryId, string country = null, string locale = null, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetCategory<T>(string categoryId, string country = null, string locale = null, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedPlaylists> GetCategoryPlaylists(string categoryId, string country = null, int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetCategoryPlaylists<T>(string categoryId, string country = null, int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<FeaturedPlaylists> GetFeaturedPlaylists(string country = null, string locale = null, string timestamp = null, int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetFeaturedPlaylists<T>(string country = null, string locale = null, string timestamp = null, int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Get a list of new album releases featured in Spotify (shown, for example, on a Spotify 
         /// player's "Browse" tab).
@@ -121,12 +161,14 @@ namespace SpotifyApi.NetCore
             string[] seedArtists = null,
             string[] seedGenres = null,
             string[] seedTracks = null,
-            int? limit = null)
+            int? limit = null,
+            string accessToken = null)
             => await GetRecommendations<RecommendationsResult>(
                 seedArtists: seedArtists,
                 seedGenres: seedGenres,
                 seedTracks: seedTracks,
-                limit: limit);
+                limit: limit,
+                accessToken: accessToken);
 
         /// <summary>
         /// Create a playlist-style listening experience based on seed artists, tracks and genres.
@@ -146,7 +188,8 @@ namespace SpotifyApi.NetCore
             string[] seedArtists = null,
             string[] seedGenres = null,
             string[] seedTracks = null,
-            int? limit = null)
+            int? limit = null,
+            string accessToken = null)
         {
             if (seedArtists == null && seedGenres == null && seedTracks == null)
                 throw new ArgumentException("At least one of `seedArtists`, `seedGenres` or `seedTracks` must be provided.");
@@ -156,7 +199,12 @@ namespace SpotifyApi.NetCore
             builder.AppendToQueryAsCsv("seed_genres", seedGenres);
             builder.AppendToQueryAsCsv("seed_tracks", seedTracks);
             builder.AppendToQueryIfValueGreaterThan0("limit", limit);
-            return await GetModel<T>(builder.Uri);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
+
+        Task<PagedAlbums> IBrowseApi.GetNewReleases(string country, int? limit, int offset, string accessToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -142,6 +142,19 @@ namespace SpotifyApi.NetCore.Tests
             service.Verify(s => s.GetModel<CurrentPlaybackContext>(It.IsAny<string>(), token));
         }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public async Task GetCurrentPlaybackInfo_NoToken_ThrowsInvalidOperationException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+
+            // act
+            await player.GetCurrentPlaybackInfo();
+        }
+
 
         //[TestMethod]
         public async Task Play_UserToken_HowDoesThisWork()

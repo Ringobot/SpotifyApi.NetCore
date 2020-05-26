@@ -67,7 +67,7 @@ namespace SpotifyApi.NetCore.Tests
                 .ReturnsAsync(new RecommendationsResult());
 
             // act
-            await api.Object.GetRecommendations(artists, null, null);
+            await api.Object.GetRecommendations(seedArtists: artists);
 
             // assert
             api.Verify(a => a.GetModel<RecommendationsResult>(
