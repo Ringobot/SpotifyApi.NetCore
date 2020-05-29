@@ -1,7 +1,6 @@
 using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -66,7 +65,7 @@ namespace SpotifyApi.NetCore
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         public async Task<T> GetArtist<T>(string artistId, string accessToken = null)
-            => await GetModel<T>($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}", accessToken);
+            => await GetModel<T>(new Uri($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}"), accessToken);
 
         #endregion
 
@@ -93,7 +92,10 @@ namespace SpotifyApi.NetCore
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
         public async Task<T> GetRelatedArtists<T>(string artistId, string accessToken = null)
-            => await GetModelFromProperty<T>($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}/related-artists", "artists", accessToken);
+            => await GetModelFromProperty<T>(
+                new Uri($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}/related-artists"),
+                "artists",
+                accessToken);
 
         #endregion
 
@@ -145,9 +147,9 @@ namespace SpotifyApi.NetCore
                 throw new ArgumentNullException("artistIds");
             }
 
-            IEnumerable<string> ids = artistIds.Select(SpotifyUriHelper.ArtistId);
-
-            return await GetModelFromProperty<T>($"{BaseUrl}/artists?ids={string.Join(",", ids)}", "artists", accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/artists");
+            builder.AppendToQueryAsCsv("ids", artistIds.Select(SpotifyUriHelper.ArtistId).ToArray());
+            return await GetModelFromProperty<T>(builder.Uri, "artists", accessToken);
         }
 
         #endregion
@@ -181,7 +183,10 @@ namespace SpotifyApi.NetCore
             if (string.IsNullOrWhiteSpace(artistId)) throw new ArgumentNullException("artistId");
             if (string.IsNullOrWhiteSpace(market)) throw new ArgumentNullException("market");
 
-            return await GetModelFromProperty<T>($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}/top-tracks?country={market}", "tracks", accessToken);
+            return await GetModelFromProperty<T>(
+                new Uri($"{BaseUrl}/artists/{SpotifyUriHelper.ArtistId(artistId)}/top-tracks?country={market}"),
+                "tracks",
+                accessToken);
         }
 
         #endregion
@@ -254,7 +259,5 @@ namespace SpotifyApi.NetCore
         }
 
         #endregion
-
-
     }
 }

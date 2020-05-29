@@ -1,7 +1,8 @@
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
 using SpotifyApi.NetCore.Authorization;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -51,7 +52,7 @@ namespace SpotifyApi.NetCore.Tests
         {
             // arrange
             string[] artistIds = new[] { "1tpXaFf2F55E7kVJON4j4G", "0oSGxfWSnnOXhD2fKuz2Gy" };
-            
+
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
             var artists = new ArtistsApi(http, accounts);
@@ -116,6 +117,45 @@ namespace SpotifyApi.NetCore.Tests
 
             // assert
             Assert.AreNotSame(result.Length, 0);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetArtistsAlbums_Limit2_ItemsLength2()
+        {
+            // arrange
+            const string artistId = "1tpXaFf2F55E7kVJON4j4G";
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+            var artists = new ArtistsApi(http, accounts);
+
+            // act
+            var result = await artists.GetArtistsAlbums(artistId, country: SpotifyCountryCodes.New_Zealand, limit: 2);
+
+            // assert
+            Assert.AreEqual(2, result.Items.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetArtistsAlbums_IncludeGroupsSingles_ItemsAllSingles()
+        {
+            // arrange
+            const string artistId = "1tpXaFf2F55E7kVJON4j4G";
+
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+            var artists = new ArtistsApi(http, accounts);
+
+            // act
+            var result = await artists.GetArtistsAlbums(
+                artistId,
+                country: SpotifyCountryCodes.New_Zealand,
+                includeGroups: new[] { SpotifyArtistAlbumGroups.Single });
+
+            // assert
+            Assert.IsTrue(result.Items.All(a => a.AlbumType == SpotifyArtistAlbumGroups.Single));
         }
     }
 }

@@ -38,16 +38,16 @@ namespace SpotifyApi.NetCore.Tests
             var accounts = new MockAccountsService().Object;
 
             var api = new Mock<BrowseApi>(http.HttpClient, accounts) { CallBase = true };
-            api.Setup(a => a.GetModelFromProperty<AlbumsSearchResult>(
+            api.Setup(a => a.GetModelFromProperty<PagedAlbums>(
                 It.IsAny<Uri>(),
                 It.IsAny<string>(),
-                It.IsAny<string>())).ReturnsAsync(new AlbumsSearchResult());
+                It.IsAny<string>())).ReturnsAsync(new PagedAlbums());
 
             // act
             await api.Object.GetNewReleases(country: country);
 
             // assert
-            api.Verify(a => a.GetModelFromProperty<AlbumsSearchResult>(
+            api.Verify(a => a.GetModelFromProperty<PagedAlbums>(
                 new Uri($"https://api.spotify.com/v1/browse/new-releases?country={SpotifyCountryCodes.New_Zealand}"),
                 It.IsAny<string>(),
                 It.IsAny<string>()));
