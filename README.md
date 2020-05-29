@@ -141,8 +141,8 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Spotify API | Endpoints | Implemented | % | |
 | :---------- | --------: | ----------: | -: | - |
 | Albums | 3 | 3 | 100% | ✅ |
-| Artists | 5 | 4 | 80% |
-| Browse | 7 | 1 | 14% |
+| Artists | 5 | 5 | 100% | ✅ |
+| Browse | 7 | 7 | 100% | ✅ |
 | Follow | 7 | 0 | 0% |
 | Library | 8 | 0 | 0% |
 | Personalization | 1 | 0 | 0% |
@@ -151,7 +151,7 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Search | 1 | 1 | 100% | ✅ |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 0 | 0% |
-| **Total** | **64** | **26** | **41%** |
+| **Total** | **64** | **33** | **52%** |
 
 Feature requests welcomed! (create an issue)
 

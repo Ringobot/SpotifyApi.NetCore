@@ -113,5 +113,60 @@ namespace SpotifyApi.NetCore
         Task<T> GetArtistsTopTracks<T>(string artistId, string market, string accessToken = null);
 
         #endregion
+
+        #region GetArtistsAlbums
+
+        /// <summary>
+        /// Get Spotify catalog information about an artist’s albums.
+        /// </summary>
+        /// <param name="artistId">The Spotify ID for the artist.</param>
+        /// <param name="includeGroups">Optional. An array of keywords (<see cref="SpotifyArtistAlbumGroups"/>) 
+        /// that will be used to filter the response. If not supplied, all album types will be returned.</param>
+        /// <param name="country">Optional. An ISO 3166-1 alpha-2 country code (<see cref="SpotifyCountryCodes"/>) 
+        /// or the string from_token. Supply this parameter to limit the response to one particular 
+        /// geographical market. If not given, results will be returned for all countries and you are 
+        /// likely to get duplicate results per album, one for each country in which the album is available!</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first album to return. Default: 0 (the
+        /// first result). Use with <paramref name="limit"/> to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
+        /// <returns>Task of Album[]</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-albums/ </remarks>
+        Task<PagedAlbums> GetArtistsAlbums(
+            string artistId, 
+            string[] includeGroups = null, 
+            string country = null,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null);
+
+        /// <summary>
+        /// Get Spotify catalog information about an artist’s albums.
+        /// </summary>
+        /// <param name="artistId">The Spotify ID for the artist.</param>
+        /// <param name="includeGroups">Optional. An array of keywords (<see cref="SpotifyArtistAlbumGroups"/>) 
+        /// that will be used to filter the response. If not supplied, all album types will be returned.</param>
+        /// <param name="country">Optional. An ISO 3166-1 alpha-2 country code (<see cref="SpotifyCountryCodes"/>) 
+        /// or the string from_token. Supply this parameter to limit the response to one particular 
+        /// geographical market. If not given, results will be returned for all countries and you are 
+        /// likely to get duplicate results per album, one for each country in which the album is available!</param>
+        /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
+        /// Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first album to return. Default: 0 (the
+        /// first result). Use with <paramref name="limit"/> to get the next page of search results.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
+        /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
+        /// <returns>Task of T. The Spotify response is deserialised as T.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-albums/ </remarks>
+        Task<T> GetArtistsAlbums<T>(
+            string artistId,
+            string[] includeGroups = null,
+            string country = null,
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null);
+
+        #endregion
     }
 }
