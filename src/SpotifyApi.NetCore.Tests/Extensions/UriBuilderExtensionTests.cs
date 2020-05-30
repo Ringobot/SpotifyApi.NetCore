@@ -144,5 +144,18 @@ namespace SpotifyApi.NetCore.Tests.Extensions
             Assert.AreEqual("?numbers=1,2,3", builder.Uri.Query);
         }
 
+        [TestMethod]
+        public void AppendToQueryAsTimestampIso8601_DateTime_ExpectedFormat()
+        {
+            // arrange
+            var builder = new UriBuilder("https://api.spotify.com/v1/browse/featured-playlists");
+
+            // act
+            builder.AppendToQueryAsTimestampIso8601("timestamp", new DateTime(2014, 10, 23, 9, 0, 0));
+
+            // assert
+            Assert.AreEqual("?timestamp=2014-10-23T09:00:00", builder.Uri.Query);
+        }
+
     }
 }

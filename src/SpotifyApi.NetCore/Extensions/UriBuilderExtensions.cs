@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace SpotifyApi.NetCore
 {
@@ -41,6 +42,11 @@ namespace SpotifyApi.NetCore
             string value)
         {
             if (!string.IsNullOrWhiteSpace(value)) AppendToQuery(builder, name, value);
+        }
+
+        public static void AppendToQueryAsTimestampIso8601(this UriBuilder builder, string name, DateTime? timestamp)
+        {
+            if (timestamp.HasValue) AppendToQuery(builder, name, timestamp.Value.ToString("s", CultureInfo.InvariantCulture));
         }
     }
 }

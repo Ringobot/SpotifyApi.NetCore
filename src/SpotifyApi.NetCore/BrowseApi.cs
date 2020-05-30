@@ -232,12 +232,10 @@ namespace SpotifyApi.NetCore
         /// in a particular language. Note that, if locale is not supplied, or if the specified language 
         /// is not available, the category strings returned will be in the Spotify default language 
         /// (American English).</param>
-        /// <param name="timestamp">Optional. A timestamp in ISO 8601 format: yyyy-MM-ddTHH:mm:ss. 
-        /// Use this parameter to specify the user’s local time to get results tailored for that specific 
-        /// date and time in the day. If not provided, the response defaults to the current UTC time. 
-        /// Example: “2014-10-23T09:00:00” for a user whose local time is 9AM. If there were no featured 
-        /// playlists (or there is no data) at the specified time, the response will revert to the 
-        /// current UTC time.</param>
+        /// <param name="timestamp">Optional. Use this parameter to specify the user’s local time to 
+        /// get results tailored for that specific date and time in the day. If not provided, the response 
+        /// defaults to the current UTC time. If there were no featured playlists (or there is no data) 
+        /// at the specified time, the response will revert to the current UTC time.</param>
         /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
         /// Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
@@ -249,7 +247,7 @@ namespace SpotifyApi.NetCore
         public Task<FeaturedPlaylists> GetFeaturedPlaylists(
             string country = null,
             string locale = null,
-            string timestamp = null,
+            DateTime? timestamp = null,
             int? limit = null,
             int offset = 0,
             string accessToken = null) => GetFeaturedPlaylists<FeaturedPlaylists>(
@@ -272,12 +270,10 @@ namespace SpotifyApi.NetCore
         /// in a particular language. Note that, if locale is not supplied, or if the specified language 
         /// is not available, the category strings returned will be in the Spotify default language 
         /// (American English).</param>
-        /// <param name="timestamp">Optional. A timestamp in ISO 8601 format: yyyy-MM-ddTHH:mm:ss. 
-        /// Use this parameter to specify the user’s local time to get results tailored for that specific 
-        /// date and time in the day. If not provided, the response defaults to the current UTC time. 
-        /// Example: “2014-10-23T09:00:00” for a user whose local time is 9AM. If there were no featured 
-        /// playlists (or there is no data) at the specified time, the response will revert to the 
-        /// current UTC time.</param>
+        /// <param name="timestamp">Optional. Use this parameter to specify the user’s local time to 
+        /// get results tailored for that specific date and time in the day. If not provided, the response 
+        /// defaults to the current UTC time. If there were no featured playlists (or there is no data) 
+        /// at the specified time, the response will revert to the current UTC time.</param>
         /// <param name="limit">Optional. Maximum number of results to return. Default: 20, Minimum: 1,
         /// Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first result to return. Default: 0 (the
@@ -288,8 +284,8 @@ namespace SpotifyApi.NetCore
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/ </remarks>
         public async Task<T> GetFeaturedPlaylists<T>(
             string country = null, 
-            string locale = null, 
-            string timestamp = null, 
+            string locale = null,
+            DateTime? timestamp = null, 
             int? limit = null, 
             int offset = 0, 
             string accessToken = null)
@@ -297,7 +293,7 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/browse/featured-playlists");
             builder.AppendToQueryIfValueNotNullOrWhiteSpace("country", country);
             builder.AppendToQueryIfValueNotNullOrWhiteSpace("locale", locale);
-            builder.AppendToQueryIfValueNotNullOrWhiteSpace("timestamp", timestamp);
+            builder.AppendToQueryAsTimestampIso8601("timestamp", timestamp);
             builder.AppendToQueryIfValueGreaterThan0("limit", limit);
             builder.AppendToQueryIfValueGreaterThan0("offset", offset);
             return await GetModelFromProperty<T>(builder.Uri, "playlists", accessToken: accessToken);

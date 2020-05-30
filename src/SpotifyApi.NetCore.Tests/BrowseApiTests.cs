@@ -14,6 +14,71 @@ namespace SpotifyApi.NetCore.Tests
     {
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task GetCategories_Limit2_ItemsLength2()
+        {
+            // arrange
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new BrowseApi(http, accounts);
+
+            // act
+            var response = await api.GetCategories(limit:2);
+            Assert.AreEqual(2, response.Items.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetCategory_FromNZCategories_SameCategoryHref()
+        {
+            // arrange
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new BrowseApi(http, accounts);
+            var category = (await api.GetCategories(limit: 1, country:SpotifyCountryCodes.New_Zealand)).Items[0];
+
+            // act
+            var response = await api.GetCategory(category.Id, country:SpotifyCountryCodes.New_Zealand);
+
+            Assert.AreEqual(category.Href, response.Href);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetCategoryPlaylists_FromFirstNZCategoryLimit2_ItemsLength2()
+        {
+            // arrange
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new BrowseApi(http, accounts);
+            var category = (await api.GetCategories(limit: 1, country: SpotifyCountryCodes.New_Zealand)).Items[0];
+
+            // act
+            var response = await api.GetCategoryPlaylists(category.Id, country: SpotifyCountryCodes.New_Zealand, limit: 2);
+
+            Assert.AreEqual(2, response.Items.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetFeaturedPlaylists_Limit2_ItemsLength2()
+        {
+            // arrange
+            var http = new HttpClient();
+            var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
+
+            var api = new BrowseApi(http, accounts);
+
+            // act
+            var response = await api.GetFeaturedPlaylists(country: SpotifyCountryCodes.New_Zealand, limit: 2);
+
+            Assert.AreEqual(2, response.Items.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetNewReleases_NoParams_NoError()
         {
             // arrange
