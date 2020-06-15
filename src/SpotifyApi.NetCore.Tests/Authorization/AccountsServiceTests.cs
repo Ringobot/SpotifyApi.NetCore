@@ -45,7 +45,8 @@ namespace SpotifyApi.NetCore.Tests
                 "playlist-read-collaborative",
                 "playlist-modify-public",
                 "playlist-modify-private",
-                "playlist-read-private"
+                "playlist-read-private",
+                "user-read-email"
             };
 
             var config = new MockConfiguration().Object;

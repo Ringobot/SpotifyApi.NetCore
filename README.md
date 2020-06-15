@@ -143,15 +143,17 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Albums | 3 | 3 | 100% | ✅ |
 | Artists | 5 | 5 | 100% | ✅ |
 | Browse | 7 | 7 | 100% | ✅ |
+| Episodes | 2 | 0 | 100% | |
 | Follow | 7 | 0 | 0% |
 | Library | 8 | 0 | 0% |
 | Personalization | 1 | 0 | 0% |
 | Player | 13 | 10 | 77% |
 | Playlists | 12 | 2 | 17% |
 | Search | 1 | 1 | 100% | ✅ |
+| Shows | 3 | 0 | 0% | |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 0 | 0% |
-| **Total** | **64** | **33** | **52%** |
+| **Total** | **67** | **33** | **49%** |
 
 Feature requests welcomed! (create an issue)
 

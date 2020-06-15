@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -34,7 +35,16 @@ namespace SpotifyApi.NetCore.Tests.Integration
      
             // controller encodes userHash and state (this is optional)            
             // controller calls Helper to get Auth URL (userHash, state)
-            string url = _accounts.AuthorizeUrl(state, null);
+            string url = _accounts.AuthorizeUrl(state, new[]
+            {
+                "user-modify-playback-state",
+                "user-read-playback-state",
+                "playlist-read-collaborative",
+                "playlist-modify-public",
+                "playlist-modify-private",
+                "playlist-read-private",
+                "user-read-email"
+            });
 
             // controller redirects to URL
         }
@@ -43,7 +53,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
         public async Task ControllerAuthorize2()
         {
             // spotify calls back to localhost /authorize/spotify
-            const string codeParam = "AQAiwTkH_Awh4L4LH7sb9B5sK2OpfhxSoRlpjIUgciObsb3qip6OeLVSYOXmbbidVHXPZyWJOMYnUDOdKG2iWJqK9xkrZ-MSW0WF32jw40IZ9JgPF74ZIzPa0Og5eB1cKL80pJq9jVXjOi3aPDe-JNz0q9a3M_5pioD6ErRyZW-9mm-mf1uS_GeRHTIxgmdZo5Aio5tSMoZrf-_ajg";
+            const string codeParam = "AQCe0Z2XeJBVenMgu11ujAiUTNFk9r2ksjXgd6y4mQRuyMlxvS9qrHjFbugf-M2g91YZXi6a-ZfOWxqFVIg03wYp7LTTspDZqdm9QMelvJYe0jQHEJYwNM3BQ-BEityqruHeOGSAfE7hQcrZSFYFJyJQBMO7awDVem5ha00tkx6OfOBs6k9HKRbaROTKFSO4raowBWOFG9CLQPl6hS1o49DeJsh7mm54PFOgRF2SDZoa_IyGhDrfFvpStu6588N3MAyZ0Bqg-TEJM0M74vlBdbZtxqYqolM2TpHU_Eh6njfN0-u4xzi15rlyvuCGdQPcqLZLvwVRsZqMc_1w5t28jqP2tjv2yBmM0Znknc4A3Y5hSSrbF0hxW_JuzUU544hqQAUrDfDDPRkpk992UAf00E53rR1-4lE";
 
             // decodes state, gets hash, checks state
             //Assert.AreEqual(_userHashstate.UserHash, decoded.userHash);
@@ -51,7 +61,8 @@ namespace SpotifyApi.NetCore.Tests.Integration
 
             // controller calls Accounts Service to get access and refresh tokens
             // account service updates store
-            await _accounts.RequestAccessRefreshToken(codeParam);
+            var token = await _accounts.RequestAccessRefreshToken(codeParam);
+            Trace.WriteLine(token.RefreshToken);
         }
     }
 }
