@@ -4,7 +4,7 @@
     <PackageId>SpotifyApi.NetCore</PackageId>
     <Title>Spotify Web API .NET Core</Title>
     <Description>Lightweight .NET Core client wrapper for the Spotify Web API</Description>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <Authors>Daniel Larsen and contributors</Authors>
     <Company>Ringobot</Company>
     <Copyright>Copyright 2020 Daniel Larsen and contributors</Copyright>

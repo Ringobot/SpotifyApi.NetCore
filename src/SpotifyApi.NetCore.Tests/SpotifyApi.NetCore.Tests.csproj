@@ -21,4 +21,10 @@
     <ProjectReference Include="..\SpotifyApi.NetCore\SpotifyApi.NetCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.local.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

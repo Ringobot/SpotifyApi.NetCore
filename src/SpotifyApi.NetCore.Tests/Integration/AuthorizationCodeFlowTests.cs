@@ -37,14 +37,17 @@ namespace SpotifyApi.NetCore.Tests.Integration
             // controller calls Helper to get Auth URL (userHash, state)
             string url = _accounts.AuthorizeUrl(state, new[]
             {
-                "user-modify-playback-state",
-                "user-read-playback-state",
-                "playlist-read-collaborative",
-                "playlist-modify-public",
-                "playlist-modify-private",
-                "playlist-read-private",
-                "user-read-email"
+                //"user-modify-playback-state",
+                //"user-read-playback-state",
+                //"playlist-read-collaborative",
+                //"playlist-modify-public",
+                //"playlist-modify-private",
+                //"playlist-read-private",
+                //"user-read-email",
+                "user-read-private"
             });
+
+            Trace.WriteLine(url);
 
             // controller redirects to URL
         }
@@ -53,7 +56,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
         public async Task ControllerAuthorize2()
         {
             // spotify calls back to localhost /authorize/spotify
-            const string codeParam = "AQCe0Z2XeJBVenMgu11ujAiUTNFk9r2ksjXgd6y4mQRuyMlxvS9qrHjFbugf-M2g91YZXi6a-ZfOWxqFVIg03wYp7LTTspDZqdm9QMelvJYe0jQHEJYwNM3BQ-BEityqruHeOGSAfE7hQcrZSFYFJyJQBMO7awDVem5ha00tkx6OfOBs6k9HKRbaROTKFSO4raowBWOFG9CLQPl6hS1o49DeJsh7mm54PFOgRF2SDZoa_IyGhDrfFvpStu6588N3MAyZ0Bqg-TEJM0M74vlBdbZtxqYqolM2TpHU_Eh6njfN0-u4xzi15rlyvuCGdQPcqLZLvwVRsZqMc_1w5t28jqP2tjv2yBmM0Znknc4A3Y5hSSrbF0hxW_JuzUU544hqQAUrDfDDPRkpk992UAf00E53rR1-4lE";
+            const string codeParam = "AQAV2EQJ1D87ZMpPe7xE5yTIkuzI7FgX5rNMpCKjwJu2wgdPc8tXJh9l7LdKDwvG99S3bxXvE6yde3-oMpBWZWsaD_sN4xHqxCqmsns6A3Kv_Elj_TsdHDIPJjhmmYNN99VFvTXbb83_miw8ZQKPnwAV_R1Rq-eVhr6DXDHwZuMckC719NaC3vX9VVsilcqBfUZx76EJwGINGwUudeBlaaJLn9LJz8aLbIYNbraGu0B2hQNF3IyO9clWIlx1r5ApUyETnLaRdeE6QbjNw4oaPoI98hqkE4zO_LYf1osEQH8F1yupHoQTysTpLl9zu4zTYC2msnQ-lP0-_4IT5ILBuzCSTdqdPoaPinArG9PBGtA21Qnvg14yjK5M6ak_wqxVvtCEbgRedBB6XjjT2eRWonc5Vw9dLFGr38-PajKWzyoMCzzb1BFPYcni";
 
             // decodes state, gets hash, checks state
             //Assert.AreEqual(_userHashstate.UserHash, decoded.userHash);
@@ -62,7 +65,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
             // controller calls Accounts Service to get access and refresh tokens
             // account service updates store
             var token = await _accounts.RequestAccessRefreshToken(codeParam);
-            Trace.WriteLine(token.RefreshToken);
+            Trace.WriteLine(token.AccessToken);
         }
     }
 }
