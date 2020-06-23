@@ -18,16 +18,6 @@ namespace SpotifyApi.NetCore
             User
         }
 
-        protected internal string GetCommaSeperateString(List<string> ids)
-        {
-            string idsCommaSeparatedList = "";
-            foreach (string id in ids)
-            {
-                idsCommaSeparatedList += id + ",";
-            }
-            return idsCommaSeparatedList.Substring(0, idsCommaSeparatedList.Length - 1);
-        }
-
         #region constructors
 
         public FollowApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
@@ -71,11 +61,10 @@ namespace SpotifyApi.NetCore
             
             if (ids?.Count < 1 || ids?.Count > 50) throw new ArgumentNullException("ids");
 
-            string url = $"{BaseUrl}/me/following/contains?" + 
-                $"type={(type == ContainsTypes.Artist ? "artist" : "user")}&" +
-                $"ids={GetCommaSeperateString(ids)}";
-
-            return await GetModel<List<bool>>(url, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
+            builder.AppendToQueryAsCsv("type", new string[] { (type == ContainsTypes.Artist ? "artist" : "user") });
+            builder.AppendToQueryAsCsv("ids", ids.ToArray());
+            return await GetModel<List<bool>>(builder.Uri, accessToken);
         }
 
         #endregion
