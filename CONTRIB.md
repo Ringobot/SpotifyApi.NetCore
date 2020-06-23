@@ -6,7 +6,7 @@
 
 ## Pull requests
 
-Please open a Pull Request early so that we collaborate on the code as you write it. The PR won't be merged until all contributors are happy with style and tests.
+Please open a Pull Request early so that we can collaborate on the code as you write it. The PR won't be merged until all contributors are happy with style and tests.
 
 ## Publishing
 
