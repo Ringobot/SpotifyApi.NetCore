@@ -152,8 +152,8 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Search | 1 | 1 | 100% | ✅ |
 | Shows | 3 | 0 | 0% | |
 | Tracks | 5 | 5 | 100% | ✅ |
-| Users Profile | 2 | 0 | 0% |
-| **Total** | **67** | **33** | **49%** |
+| Users Profile | 2 | 2 | 1000% | ✅ |
+| **Total** | **67** | **35** | **52%** |
 
 Feature requests welcomed! (create an issue)
 

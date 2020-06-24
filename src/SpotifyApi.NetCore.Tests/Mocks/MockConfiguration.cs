@@ -11,7 +11,6 @@ namespace SpotifyApi.NetCore.Tests.Mocks
             SetupGet(c=>c["SpotifyApiClientId"]).Returns("(SpotifyApiClientId)");
             SetupGet(c=>c["SpotifyApiClientSecret"]).Returns("(SpotifyApiClientSecret)");
             SetupGet(c=>c["SpotifyAuthRedirectUri"]).Returns("(SpotifyAuthRedirectUri)");
-            SetupGet(c=>c["SpotifyAuthRefreshToken"]).Returns("(SpotifyAuthRefreshToken)");
         }
     }
 }

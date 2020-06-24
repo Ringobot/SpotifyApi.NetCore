@@ -10,6 +10,7 @@ namespace SpotifyApi.NetCore.Tests
     {
         [TestMethod]
         [TestCategory("Integration")]
+        [TestCategory("User")]
         public async Task GetUsersProfile_NoUserId_DeserializedResponse()
         {
             // arrange
