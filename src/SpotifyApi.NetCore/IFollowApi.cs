@@ -11,19 +11,62 @@ namespace SpotifyApi.NetCore
         #region GetFollowingContains
 
         /// <summary>
-        /// Check if current user follows artists or users.
+        /// Check if Current User Follows Artists
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="type">The type, either artist or user, the current user follows.</param>
-        /// <param name="ids">A comma-separated list of the artist or the user Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
-        /// <returns>List<bool></returns>
+        /// <param name="ids">Required. A comma-separated list of the artists Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        Task<List<bool>> GetFollowingContains(
+        Task<bool[]> CheckCurrentUserFollowsArtists(
             string username,
-            FollowApi.ContainsTypes type,
-            List<string> ids,
+            string[] ids,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Check if Current User Follows Artists
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="ids">Required. A comma-separated list of the artists Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
+        /// </remarks>
+        Task<T> CheckCurrentUserFollowsArtists<T>(
+            string username,
+            string[] ids,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Check if Current User Follows Users
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="ids">Required. A comma-separated list of the users Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
+        /// </remarks>
+        Task<bool[]> CheckCurrentUserFollowsUsers(
+            string username,
+            string[] ids,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Check if Current User Follows Users
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="ids">Required. A comma-separated list of the users Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
+        /// </remarks>
+        Task<T> CheckCurrentUserFollowsUsers<T>(
+            string username,
+            string[] ids,
             string accessToken = null
             );
 

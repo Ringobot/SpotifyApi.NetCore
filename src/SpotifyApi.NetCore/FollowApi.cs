@@ -12,12 +12,6 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public class FollowApi : SpotifyWebApi, IFollowApi
     {
-        public enum ContainsTypes
-        {
-            Artist,
-            User
-        }
-
         #region constructors
 
         public FollowApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
@@ -41,32 +35,84 @@ namespace SpotifyApi.NetCore
         #region GetFollowingContains
 
         /// <summary>
-        /// Check if current user follows artists or users.
+        /// Check if Current User Follows Artists
         /// </summary>
         /// <param name="username"></param>
-        /// <param name="type">The type, either artist or user, the current user follows.</param>
-        /// <param name="ids">A comma-separated list of the artist or the user Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
-        /// <returns>List<bool></returns>
+        /// <param name="ids">	Required. A comma-separated list of the artist or the user Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        public async Task<List<bool>> GetFollowingContains(
+        public async Task<bool[]> CheckCurrentUserFollowsArtists(
             string username,
-            FollowApi.ContainsTypes type,
-            List<string> ids,
+            string[] ids,
+            string accessToken = null
+            ) => await CheckCurrentUserFollowsArtists<bool[]>(username, ids, accessToken);
+
+        /// <summary>
+        /// Check if Current User Follows Artists
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="ids">	Required. A comma-separated list of the artist or the user Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
+        /// </remarks>
+        public async Task<T> CheckCurrentUserFollowsArtists<T>(
+            string username,
+            string[] ids,
             string accessToken = null
             )
         {
             if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
-            
-            if (ids?.Count < 1 || ids?.Count > 50) throw new ArgumentNullException("ids");
+
+            if (ids?.Length < 1 || ids?.Length > 50) throw new ArgumentNullException("ids");
 
             var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
-            builder.AppendToQueryAsCsv("type", new string[] { (type == ContainsTypes.Artist ? "artist" : "user") });
-            builder.AppendToQueryAsCsv("ids", ids.ToArray());
-            return await GetModel<List<bool>>(builder.Uri, accessToken);
+            builder.AppendToQueryAsCsv("type", new string[] { "artist" });
+            builder.AppendToQueryAsCsv("ids", ids);
+            return await GetModel<T>(builder.Uri, accessToken);
         }
 
+        /// <summary>
+        /// Check if Current User Follows Users
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="ids">	Required. A comma-separated list of the artist or the user Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
+        /// </remarks>
+        public async Task<bool[]> CheckCurrentUserFollowsUsers(
+            string username,
+            string[] ids,
+            string accessToken = null
+            ) => await CheckCurrentUserFollowsUsers<bool[]>(username, ids, accessToken);
+
+        /// <summary>
+        /// Check if Current User Follows Users
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="ids">	Required. A comma-separated list of the artist or the user Spotify IDs to check. For example: ids=74ASZWbe4lXaubB36ztrGX,08td7MxkoHQkXnWAYD8d6Q. A maximum of 50 IDs can be sent in one request.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
+        /// </remarks>
+        public async Task<T> CheckCurrentUserFollowsUsers<T>(
+            string username,
+            string[] ids,
+            string accessToken = null
+            )
+        {
+            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
+
+            if (ids?.Length < 1 || ids?.Length > 50) throw new ArgumentNullException("ids");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
+            builder.AppendToQueryAsCsv("type", new string[] { "user" });
+            builder.AppendToQueryAsCsv("ids", ids);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
         #endregion
 
     }
