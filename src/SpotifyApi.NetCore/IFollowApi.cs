@@ -13,7 +13,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Check if Current User Follows Artists
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="username">The Spotify UserName which is an alpha numeric ID.</param>
         /// <param name="ids">Required. A comma-separated list of the artists Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Check if Current User Follows Artists
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="username">The Spotify UserName which is an alpha numeric ID.</param>
         /// <param name="ids">Required. A comma-separated list of the artists Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
@@ -43,7 +43,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Check if Current User Follows Users
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="username">The Spotify UserName which is an alpha numeric ID.</param>
         /// <param name="ids">Required. A comma-separated list of the users Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
@@ -58,7 +58,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Check if Current User Follows Users
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="username">The Spotify UserName which is an alpha numeric ID.</param>
         /// <param name="ids">Required. A comma-separated list of the users Spotify IDs to check. A maximum of 50 IDs can be sent in one request.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
