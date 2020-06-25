@@ -19,6 +19,7 @@ namespace SpotifyApi.NetCore.Tests
          * bearer token then it will fail with authentication errors. */
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsArtists_ArtistID_AnyItems()
         {
@@ -38,6 +39,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsUsers_UserID_AnyItems()
         {

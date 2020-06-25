@@ -144,7 +144,7 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Artists | 5 | 5 | 100% | ✅ |
 | Browse | 7 | 7 | 100% | ✅ |
 | Episodes | 2 | 0 | 100% | |
-| Follow | 7 | 0 | 0% |
+| Follow | 7 | 1 | 14% |
 | Library | 8 | 0 | 0% |
 | Personalization | 1 | 0 | 0% |
 | Player | 13 | 10 | 77% |
@@ -153,7 +153,7 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Shows | 3 | 0 | 0% | |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 2 | 1000% | ✅ |
-| **Total** | **67** | **35** | **52%** |
+| **Total** | **69** | **36** | **52%** |
 
 Feature requests welcomed! (create an issue)
 
@@ -163,7 +163,7 @@ This project is actively maintained by @DanielLarsenNZ. The easiest way to get i
 
 ## Contributors
 
-Thanks to @aevansme and @brandongregoryscott for their contributions!
+Huge thanks to **@aevansme**, **@brandongregoryscott** and **@akshays2112** for their contributions!
 
 Contributions welcomed. Read [CONTRIB.md](./CONTRIB.md)
 
