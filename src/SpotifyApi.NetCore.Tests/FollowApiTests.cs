@@ -1,14 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SpotifyApi.NetCore.Authorization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
-using SpotifyApi.NetCore.Authorization;
-using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -31,7 +26,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new FollowApi(http, accounts);
 
             // act
-            var response = await api.CheckCurrentUserFollowsArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" }, 
+            var response = await api.CheckCurrentUserFollowsArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -59,6 +54,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsPlaylist_PlaylistID_AnyItems()
         {
