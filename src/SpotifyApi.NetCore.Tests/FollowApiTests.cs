@@ -68,7 +68,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new FollowApi(http, accounts);
 
             // act
-            var response = await api.CheckCurrentUserFollowsPlaylist("3cEYpjA9oz9GiPac4AsH4n",
+            var response = await api.CheckUsersFollowPlaylist("3cEYpjA9oz9GiPac4AsH4n",
                 new string[] { "jkdesxdxvu6uetjdnaro2yrfc" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 

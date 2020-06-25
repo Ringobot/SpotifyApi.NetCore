@@ -65,7 +65,7 @@ namespace SpotifyApi.NetCore
 
         #region CheckCurrentUserFollowsPlaylist
         /// <summary>
-        /// Check if Current User Follows Playlist
+        /// Check to see if one or more Spotify users are following a specified playlist.
         /// </summary>
         /// <param name="playlistId">Required. The Spotify ID of the playlist.</param>
         /// <param name="ids">Required. A comma-separated list of Spotify User IDs ; the ids of the users that you want to check to see if they follow the playlist. Maximum: 5 ids.</param>
@@ -73,14 +73,14 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/
         /// </remarks>
-        Task<bool[]> CheckCurrentUserFollowsPlaylist(
+        Task<bool[]> CheckUsersFollowPlaylist(
             string playlistId,
-            string[] ids,
+            string[] userIds,
             string accessToken = null
             );
 
         /// <summary>
-        /// Check if Current User Follows Playlist
+        /// Check to see if one or more Spotify users are following a specified playlist.
         /// </summary>
         /// <param name="playlistId">Required. The Spotify ID of the playlist.</param>
         /// <param name="ids">Required. A comma-separated list of Spotify User IDs ; the ids of the users that you want to check to see if they follow the playlist. Maximum: 5 ids.</param>
@@ -88,7 +88,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/
         /// </remarks>
-        Task<T> CheckCurrentUserFollowsPlaylist<T>(
+        Task<T> CheckUsersFollowPlaylist<T>(
             string playlistId,
             string[] ids,
             string accessToken = null
