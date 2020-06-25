@@ -55,5 +55,25 @@ namespace SpotifyApi.NetCore.Tests
             // assert
             Assert.IsTrue(response.Any<bool>());
         }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task CheckCurrentUserFollowsPlaylist_PlaylistID_AnyItems()
+        {
+            // arrange
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            var accounts = new AccountsService(http, testConfig);
+
+            var api = new FollowApi(http, accounts);
+
+            // act
+            var response = await api.CheckCurrentUserFollowsPlaylist("3cEYpjA9oz9GiPac4AsH4n",
+                new string[] { "jkdesxdxvu6uetjdnaro2yrfc" },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // assert
+            Assert.IsTrue(response.Any<bool>());
+        }
     }
 }

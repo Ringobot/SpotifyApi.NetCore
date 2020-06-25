@@ -32,7 +32,7 @@ namespace SpotifyApi.NetCore
         #endregion
         protected internal virtual ISearchApi SearchApi { get; set; }
 
-        #region GetFollowingContains
+        #region CheckCurrentUserFollowsArtistsOrUsers
 
         /// <summary>
         /// Check if Current User Follows Artists
@@ -98,6 +98,45 @@ namespace SpotifyApi.NetCore
 
             var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
             builder.AppendToQuery("type", "user");
+            builder.AppendToQueryAsCsv("ids", ids);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
+        #endregion
+
+        #region CheckCurrentUserFollowsPlaylist
+        /// <summary>
+        /// Check if Current User Follows Playlist
+        /// </summary>
+        /// <param name="playlistId">Required. The Spotify ID of the playlist.</param>
+        /// <param name="ids">Required. A comma-separated list of Spotify User IDs ; the ids of the users that you want to check to see if they follow the playlist. Maximum: 5 ids.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/
+        /// </remarks>
+        public async Task<bool[]> CheckCurrentUserFollowsPlaylist(
+            string playlistId,
+            string[] ids,
+            string accessToken = null
+            ) => await CheckCurrentUserFollowsPlaylist<bool[]>(playlistId, ids, accessToken);
+
+        /// <summary>
+        /// Check if Current User Follows Playlist
+        /// </summary>
+        /// <param name="playlistId">Required. The Spotify ID of the playlist.</param>
+        /// <param name="ids">Required. A comma-separated list of Spotify User IDs ; the ids of the users that you want to check to see if they follow the playlist. Maximum: 5 ids.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/
+        /// </remarks>
+        public async Task<T> CheckCurrentUserFollowsPlaylist<T>(
+            string playlistId,
+            string[] ids,
+            string accessToken = null
+            )
+        {
+            if (ids?.Length < 1 || ids?.Length > 5) throw new ArgumentNullException("ids");
+
+            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers/contains");
             builder.AppendToQueryAsCsv("ids", ids);
             return await GetModel<T>(builder.Uri, accessToken);
         }
