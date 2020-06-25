@@ -134,7 +134,7 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             )
         {
-            if (playlistId == null || playlistId.Length < 1) throw new ArgumentNullException("playlistId");
+            if (playlistId?.Length < 1) throw new ArgumentNullException("playlistId");
 
             if (userIds?.Length < 1 || userIds?.Length > 5) throw new ArgumentNullException("ids");
 
