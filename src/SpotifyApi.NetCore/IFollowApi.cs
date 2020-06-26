@@ -120,5 +120,21 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             );
         #endregion
+
+        #region FollowPlaylist
+        /// <summary>
+        /// Add the current user as a follower of a playlist.
+        /// </summary>
+        /// <param name="playlistId">Required. The Spotify ID of the playlist. Any playlist can be followed, regardless of its public/private status, as long as you know its playlist ID.</param>
+        /// <param name="isPublic">Optional. Defaults to true. If true the playlist will be included in user’s public playlists, if false it will remain private.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-playlist/
+        /// </remarks>
+        Task FollowPlaylist(
+            string playlistId,
+            bool isPublic = true,
+            string accessToken = null
+            );
+        #endregion
     }
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
 using SpotifyApi.NetCore.Authorization;
-using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -123,6 +118,38 @@ namespace SpotifyApi.NetCore.Tests
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
+            Assert.IsTrue(response.FirstOrDefault<bool>());
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task FollowPlaylist_PlaylistId_IsPublic_IsTrue()
+        {
+            // arrange
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            var accounts = new AccountsService(http, testConfig);
+
+            var api = new FollowApi(http, accounts);
+
+            // act
+            await api.FollowPlaylist(
+                "2v3iNvBX8Ay1Gt2uXtUKUT",
+                true,
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // getting usersApi to get user.Id to avoid hardcoding
+            var usersApi = new UsersProfileApi(http, accounts);
+
+            // getting current users profile for user.Id
+            var user = await usersApi.GetCurrentUsersProfile(
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // checking to see if user is following the playlist
+            var response = await api.CheckUsersFollowPlaylist("2v3iNvBX8Ay1Gt2uXtUKUT",
+                new string[] { user.Id },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
             Assert.IsTrue(response.FirstOrDefault<bool>());
         }
     }

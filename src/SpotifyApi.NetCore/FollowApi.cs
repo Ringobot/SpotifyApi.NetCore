@@ -189,5 +189,28 @@ namespace SpotifyApi.NetCore
             await Put(builder.Uri, null, accessToken);
         }
         #endregion
+
+        #region FollowPlaylist
+        /// <summary>
+        /// Add the current user as a follower of a playlist.
+        /// </summary>
+        /// <param name="playlistId">Required. The Spotify ID of the playlist. Any playlist can be followed, regardless of its public/private status, as long as you know its playlist ID.</param>
+        /// <param name="isPublic">Optional. Defaults to true. If true the playlist will be included in user’s public playlists, if false it will remain private.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-playlist/
+        /// </remarks>
+        public async Task FollowPlaylist(
+            string playlistId,
+            bool isPublic = true,
+            string accessToken = null
+            )
+        {
+            if (playlistId == null) throw new
+                    ArgumentException("A valid playlist id has to be provided.");
+
+            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
+            await Put(builder.Uri, isPublic, accessToken);
+        }
+        #endregion
     }
 }
