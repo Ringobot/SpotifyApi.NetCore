@@ -162,7 +162,7 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "artist");
             builder.AppendToQueryAsCsv("ids", artistIds);
-            await GetModel(builder.Uri, accessToken);
+            await PutModel(builder.Uri, accessToken);
         }
 
         /// <summary>
@@ -177,12 +177,12 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             )
         {
-            if (userIds?.Length < 1 && userIds.Length > 50) throw new ArgumentNullException("artistIds");
+            if (userIds?.Length < 1 && userIds.Length > 50) throw new ArgumentNullException("userIds");
 
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "user");
             builder.AppendToQueryAsCsv("ids", userIds);
-            await GetModel(builder.Uri, accessToken);
+            await PutModel(builder.Uri, accessToken);
         }
         #endregion
     }
