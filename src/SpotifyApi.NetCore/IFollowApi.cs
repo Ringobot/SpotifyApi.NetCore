@@ -136,5 +136,35 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             );
         #endregion
+
+        #region GetUsersFollowedArtists
+        /// <summary>
+        /// Get User's Followed Artists
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
+        /// </remarks>
+        Task<object> GetUsersFollowedArtists(
+            int limit = 20,
+            string after = "",
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Get User's Followed Artists
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
+        /// <returns></returns>
+        /// <remarks>
+        Task<T> GetUsersFollowedArtists<T>(
+            int limit = 20,
+            string after = null,
+            string accessToken = null
+            );
+        #endregion
     }
 }

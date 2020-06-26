@@ -212,5 +212,47 @@ namespace SpotifyApi.NetCore
             await Put(builder.Uri, isPublic, accessToken);
         }
         #endregion
+
+        #region GetUsersFollowedArtists
+        /// <summary>
+        /// Get User's Followed Artists
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
+        /// </remarks>
+        public async Task<object> GetUsersFollowedArtists(
+            int limit = 20,
+            string after = "",
+            string accessToken = null
+            ) => await GetUsersFollowedArtists<object>(limit, after, accessToken);
+
+        /// <summary>
+        /// Get User's Followed Artists
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
+        /// <returns></returns>
+        /// <remarks>
+        public async Task<T> GetUsersFollowedArtists<T>(
+            int limit = 20,
+            string after = null,
+            string accessToken = null
+            )
+        {
+            if (limit < 1 || limit > 50) throw new
+                    ArgumentException("The limit can be a minimum of 1 and a maximum of 50.");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following/?type=artist");
+            builder.AppendToQuery("limit", limit);
+            if (after?.Length > 0)
+            {
+                builder.AppendToQuery("after", after);
+            }
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
+        #endregion
     }
 }

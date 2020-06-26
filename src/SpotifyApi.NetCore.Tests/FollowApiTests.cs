@@ -10,9 +10,6 @@ namespace SpotifyApi.NetCore.Tests
     [TestClass]
     public class FollowApiTests
     {
-        /* For new users:: You need to provide the scope "user-follow-read". If you dont have this in your
-         * bearer token then it will fail with authentication errors. */
-
         [TestCategory("Integration")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsArtists_ArtistId_AnyItems()
@@ -151,6 +148,25 @@ namespace SpotifyApi.NetCore.Tests
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             Assert.IsTrue(response.FirstOrDefault<bool>());
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetUsersFollowedArtists_AnyItems()
+        {
+            // arrange
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            var accounts = new AccountsService(http, testConfig);
+
+            var api = new FollowApi(http, accounts);
+
+            // act
+            var response = await api.GetUsersFollowedArtists(
+                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // assert
+            Assert.IsNotNull(response);
         }
     }
 }
