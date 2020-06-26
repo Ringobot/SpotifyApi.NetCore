@@ -262,7 +262,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Unfollow Artists
         /// </summary>
-        /// <param name="artistIds">A comma-separated list of the artist Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 artist id is required. </param>
+        /// <param name="artistIds">A comma-separated list of the artist Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 artist id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
         /// </remarks>
@@ -298,6 +298,27 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "user");
             builder.AppendToQueryAsCsv("ids", userIds);
+            await Delete(builder.Uri, accessToken);
+        }
+        #endregion
+
+        #region UnfollowPlaylist
+        /// <summary>
+        /// Unfollow a Playlist
+        /// </summary>
+        /// <param name="playlistId">The Spotify ID of the playlist that is to be no longer followed.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-playlist/
+        /// </remarks>
+        public async Task UnfollowPlaylist(
+            string playlistId,
+            string accessToken = null
+            )
+        {
+            if (playlistId?.Length < 1) throw new
+                    ArgumentException("A valid playlist id has to be supplied.");
+
+            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
             await Delete(builder.Uri, accessToken);
         }
         #endregion

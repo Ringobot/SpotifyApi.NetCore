@@ -214,5 +214,36 @@ namespace SpotifyApi.NetCore.Tests
             // assert
             Assert.IsFalse(response.FirstOrDefault<bool>());
         }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task UnfollowPlaylist_PlaylistId_IsFalse()
+        {
+            // arrange
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            var accounts = new AccountsService(http, testConfig);
+
+            var api = new FollowApi(http, accounts);
+
+            // act
+            await api.UnfollowPlaylist("2v3iNvBX8Ay1Gt2uXtUKUT",
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // getting usersApi to get user.Id to avoid hardcoding
+            var usersApi = new UsersProfileApi(http, accounts);
+
+            // getting current users profile for user.Id
+            var user = await usersApi.GetCurrentUsersProfile(
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // checking if user unfollowed artist id
+            var response = await api.CheckUsersFollowPlaylist("2v3iNvBX8Ay1Gt2uXtUKUT",
+                new string[] { user.Id },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // assert
+            Assert.IsFalse(response.FirstOrDefault<bool>());
+        }
     }
 }

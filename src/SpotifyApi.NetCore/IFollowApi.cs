@@ -194,5 +194,19 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             );
         #endregion
+
+        #region UnfollowPlaylist
+        /// <summary>
+        /// Unfollow a Playlist
+        /// </summary>
+        /// <param name="playlistId">The Spotify ID of the playlist that is to be no longer followed.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-playlist/
+        /// </remarks>
+        Task UnfollowPlaylist(
+            string playlistId,
+            string accessToken = null
+            );
+        #endregion
     }
 }
