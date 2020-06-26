@@ -136,18 +136,32 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Helper to PUT an object as JSON body
         /// </summary>
+        [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
         protected internal virtual async Task<HttpResponseMessage> Put(string url, object data, string accessToken = null)
-            => await PostOrPut("PUT", url, data, accessToken);
+            => await PostOrPut("PUT", new Uri(url), data, accessToken);
 
         /// <summary>
         /// Helper to POST an object as JSON body
         /// </summary>
+        [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
         protected internal virtual async Task<HttpResponseMessage> Post(string url, object data, string accessToken = null)
-            => await PostOrPut("POST", url, data, accessToken);
+            => await PostOrPut("POST", new Uri(url), data, accessToken);
 
-        private async Task<HttpResponseMessage> PostOrPut(string verb, string url, object data, string accessToken = null)
+        /// <summary>
+        /// Helper to PUT an object as JSON body
+        /// </summary>
+        protected internal virtual async Task<HttpResponseMessage> Put(Uri uri, object data, string accessToken = null)
+            => await PostOrPut("PUT", uri, data, accessToken);
+
+        /// <summary>
+        /// Helper to POST an object as JSON body
+        /// </summary>
+        protected internal virtual async Task<HttpResponseMessage> Post(Uri uri, object data, string accessToken = null)
+            => await PostOrPut("POST", uri, data, accessToken);
+
+        private async Task<HttpResponseMessage> PostOrPut(string verb, Uri uri, object data, string accessToken = null)
         {
-            Logger.Debug($"{verb} {url}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
+            Logger.Debug($"{verb} {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
 
             _http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()));
@@ -159,16 +173,16 @@ namespace SpotifyApi.NetCore
             switch (verb)
             {
                 case "PUT":
-                    response = await _http.PutAsync(url, content);
+                    response = await _http.PutAsync(uri, content);
                     break;
                 case "POST":
-                    response = await _http.PostAsync(url, content);
+                    response = await _http.PostAsync(uri, content);
                     break;
                 default:
                     throw new NotSupportedException($"{verb} is not a supported verb");
             }
 
-            Logger.Information($"{verb} {url} {response.StatusCode}", nameof(RestHttpClient));
+            Logger.Information($"{verb} {uri} {response.StatusCode}", nameof(RestHttpClient));
 
             await RestHttpClient.CheckForErrors(response);
 
