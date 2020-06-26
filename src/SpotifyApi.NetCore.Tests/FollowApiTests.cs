@@ -42,7 +42,7 @@ namespace SpotifyApi.NetCore.Tests
 
             // act
             var response = await api.CheckCurrentUserFollowsUsers(
-                new string[] { "jmperezperez", "thelinmichael", "wizzler" },
+                new string[] { "exampleuser01" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -167,6 +167,52 @@ namespace SpotifyApi.NetCore.Tests
 
             // assert
             Assert.IsNotNull(response);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task UnfollowArtists_ArtistIds_IsFalse()
+        {
+            // arrange
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            var accounts = new AccountsService(http, testConfig);
+
+            var api = new FollowApi(http, accounts);
+
+            // act
+            await api.UnfollowArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // checking if user unfollowed artist id
+            var response = await api.CheckCurrentUserFollowsArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // assert
+            Assert.IsFalse(response.FirstOrDefault<bool>());
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task UnfollowUsers_UserIds_IsFalse()
+        {
+            // arrange
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            var accounts = new AccountsService(http, testConfig);
+
+            var api = new FollowApi(http, accounts);
+
+            // act
+            await api.UnfollowUsers(new string[] { "exampleuser01" },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // checking if user unfollowed artist id
+            var response = await api.CheckCurrentUserFollowsUsers(new string[] { "exampleuser01" },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // assert
+            Assert.IsFalse(response.FirstOrDefault<bool>());
         }
     }
 }

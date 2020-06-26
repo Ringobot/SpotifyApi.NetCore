@@ -236,6 +236,8 @@ namespace SpotifyApi.NetCore
         /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
         /// <returns>A json string containing an artists object. The artists object in turn contains a cursor-based paging object of Artists.</returns>
         /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
+        /// </remarks>
         public async Task<T> GetUsersFollowedArtists<T>(
             int limit = 20,
             string after = null,
@@ -245,13 +247,58 @@ namespace SpotifyApi.NetCore
             if (limit < 1 || limit > 50) throw new
                     ArgumentException("The limit can be a minimum of 1 and a maximum of 50.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following/?type=artist");
+            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            builder.AppendToQuery("type", "artist");
             builder.AppendToQuery("limit", limit);
             if (after?.Length > 0)
             {
                 builder.AppendToQuery("after", after);
             }
             return await GetModel<T>(builder.Uri, accessToken);
+        }
+        #endregion
+
+        #region UnfollowArtistsOrUsers
+        /// <summary>
+        /// Unfollow Artists
+        /// </summary>
+        /// <param name="artistIds">A comma-separated list of the artist Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 artist id is required. </param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
+        /// </remarks>
+        public async Task UnfollowArtists(
+            string[] artistIds = null,
+            string accessToken = null
+            )
+        {
+            if (artistIds?.Length < 1 || artistIds?.Length > 50) throw new
+                    ArgumentException("The artist ids can be a minimum of 1 and a maximum of 50.");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            builder.AppendToQuery("type", "artist");
+            builder.AppendToQueryAsCsv("ids", artistIds);
+            await Delete(builder.Uri, accessToken);
+        }
+
+        /// <summary>
+        /// Unfollow Users
+        /// </summary>
+        /// <param name="userIds">A comma-separated list of the user Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 user id is required. </param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
+        /// </remarks>
+        public async Task UnfollowUsers(
+            string[] userIds = null,
+            string accessToken = null
+            )
+        {
+            if (userIds?.Length < 1 || userIds?.Length > 50) throw new
+                    ArgumentException("The user ids can be a minimum of 1 and a maximum of 50.");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            builder.AppendToQuery("type", "user");
+            builder.AppendToQueryAsCsv("ids", userIds);
+            await Delete(builder.Uri, accessToken);
         }
         #endregion
     }

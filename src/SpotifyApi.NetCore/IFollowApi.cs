@@ -160,9 +160,37 @@ namespace SpotifyApi.NetCore
         /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
         /// <returns>A json string containing an artists object. The artists object in turn contains a cursor-based paging object of Artists.</returns>
         /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
+        /// </remarks>
         Task<T> GetUsersFollowedArtists<T>(
             int limit = 20,
             string after = null,
+            string accessToken = null
+            );
+        #endregion
+
+        #region UnfollowArtistsOrUsers
+        /// <summary>
+        /// Unfollow Artists
+        /// </summary>
+        /// <param name="artistIds">A comma-separated list of the artist Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 artist id is required. </param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
+        /// </remarks>
+        Task UnfollowArtists(
+            string[] artistIds = null,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Unfollow Users
+        /// </summary>
+        /// <param name="userIds">A comma-separated list of the user Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 user id is required. </param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
+        /// </remarks>
+        Task UnfollowUsers(
+            string[] userIds = null,
             string accessToken = null
             );
         #endregion
