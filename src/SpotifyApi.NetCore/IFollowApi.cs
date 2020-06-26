@@ -143,7 +143,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
-        /// <returns></returns>
+        /// <returns>A json string containing an artists object. The artists object in turn contains a cursor-based paging object of Artists.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
         /// </remarks>
@@ -158,7 +158,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
-        /// <returns></returns>
+        /// <returns>A json string containing an artists object. The artists object in turn contains a cursor-based paging object of Artists.</returns>
         /// <remarks>
         Task<T> GetUsersFollowedArtists<T>(
             int limit = 20,
