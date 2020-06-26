@@ -173,10 +173,10 @@ namespace SpotifyApi.NetCore
             switch (verb)
             {
                 case "PUT":
-                    response = await _http.PutAsync(uri, data == null ? null : content);
+                    response = await _http.PutAsync(uri, content);
                     break;
                 case "POST":
-                    response = await _http.PostAsync(uri, data == null ? null :content);
+                    response = await _http.PostAsync(uri, content);
                     break;
                 default:
                     throw new NotSupportedException($"{verb} is not a supported verb");
