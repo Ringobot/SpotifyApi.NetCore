@@ -104,47 +104,6 @@ namespace SpotifyApi.NetCore.Http
         }
 
         /// <summary>
-        /// Makes an HTTP(S) PUT request to <seealso cref="requestUrl"/> and returns the result as (awaitable Task of) <seealso cref="string"/>.
-        /// </summary>
-        /// <param name="requestUri">The entire request URL as <see cref="Uri"/>.</param>
-        /// <returns>An (awaitable Task of) <seealso cref="string"/></returns>
-        /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
-        /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public static async Task<string> Put(this HttpClient http, Uri requestUri)
-            => await Put(http, requestUri, null);
-
-        /// <summary>
-        /// Makes an HTTP(S) PUT request to <seealso cref="requestUrl"/> and returns the result as (awaitable Task of) <seealso cref="string"/>.
-        /// </summary>
-        /// <param name="requestUri">The entire request URL as <see cref="Uri"/>.</param>
-        /// <param name="authenticationHeader"></param>
-        /// <returns>An (awaitable Task of) <seealso cref="string"/></returns>
-        /// <remarks>Will Authorise using the values of the SpotifyApiClientId and SpotifyApiClientSecret appSettings. See 
-        /// https://developer.spotify.com/web-api/authorization-guide/#client-credentials-flow </remarks>
-        public static async Task<string> Put(
-            this HttpClient http,
-            Uri requestUri,
-            AuthenticationHeaderValue authenticationHeader)
-        {
-            //TODO: Implement if-modified-since support, serving from cache if response = 304
-
-            if (requestUri == null) throw new ArgumentNullException(nameof(requestUri));
-
-            Logger.Debug(
-                $"PUT {requestUri}. Token = {authenticationHeader?.ToString()?.Substring(0, 11)}...",
-                nameof(RestHttpClient));
-
-            http.DefaultRequestHeaders.Authorization = authenticationHeader;
-            var response = await http.PutAsync(requestUri, null);
-
-            Logger.Information($"Got {requestUri} {response.StatusCode}", nameof(RestHttpClient));
-
-            await CheckForErrors(response);
-
-            return await response.Content.ReadAsStringAsync();
-        }
-
-        /// <summary>
         /// Checks the reponse from the Spotify Server for an error.
         /// </summary>
         /// <param name="response"></param>

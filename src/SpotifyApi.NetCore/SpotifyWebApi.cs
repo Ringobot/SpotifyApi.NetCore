@@ -97,19 +97,6 @@ namespace SpotifyApi.NetCore
         }
 
         /// <summary>
-        /// Invoke a PUT request
-        /// </summary>
-        /// <param name="url">The URL to PUT</param>
-        protected internal virtual async Task PutModel(Uri uri, string accessToken = null)
-        {
-            await _http.Put
-            (
-                uri,
-                new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
-            );
-        }
-
-        /// <summary>
         /// Invoke a GET request and deserialise the result to JSON from a root property of the Spotify Response
         /// </summary>
         /// <param name="url">The URL to GET</param>
