@@ -143,5 +143,47 @@ namespace SpotifyApi.NetCore
             return await GetModel<T>(builder.Uri, accessToken);
         }
         #endregion
+
+        #region FollowArtistsOrUsers
+        /// <summary>
+        /// Add the current user as a follower of one or more artists Spotify IDs.
+        /// </summary>
+        /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
+        /// </remarks>
+        public async Task FollowArtists(
+            string[] artistIds,
+            string accessToken = null
+            )
+        {
+            if (artistIds?.Length < 1 && artistIds.Length > 50) throw new ArgumentNullException("artistIds");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            builder.AppendToQuery("type", "artist");
+            builder.AppendToQueryAsCsv("ids", artistIds);
+            await GetModel(builder.Uri, accessToken);
+        }
+
+        /// <summary>
+        /// Add the current user as a follower of one or more users Spotify IDs.
+        /// </summary>
+        /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
+        /// </remarks>
+        public async Task FollowUsers(
+            string[] userIds,
+            string accessToken = null
+            )
+        {
+            if (userIds?.Length < 1 && userIds.Length > 50) throw new ArgumentNullException("artistIds");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            builder.AppendToQuery("type", "user");
+            builder.AppendToQueryAsCsv("ids", userIds);
+            await GetModel(builder.Uri, accessToken);
+        }
+        #endregion
     }
 }

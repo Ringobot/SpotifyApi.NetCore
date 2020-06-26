@@ -94,5 +94,31 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             );
         #endregion
+
+        #region FollowArtistsOrUsers
+        /// <summary>
+        /// Add the current user as a follower of one or more artists Spotify IDs.
+        /// </summary>
+        /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
+        /// </remarks>
+        Task FollowArtists(
+            string[] artistIds,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Add the current user as a follower of one or more users Spotify IDs.
+        /// </summary>
+        /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
+        /// </remarks>
+        Task FollowUsers(
+            string[] userIds,
+            string accessToken = null
+            );
+        #endregion
     }
 }

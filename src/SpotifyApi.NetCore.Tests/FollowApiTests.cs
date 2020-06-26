@@ -58,7 +58,7 @@ namespace SpotifyApi.NetCore.Tests
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task CheckCurrentUserFollowsPlaylist_PlaylistID_AnyItems()
+        public async Task FollowArtists_ArtistIDs_IsTrue()
         {
             // arrange
             var http = new HttpClient();
@@ -68,12 +68,16 @@ namespace SpotifyApi.NetCore.Tests
             var api = new FollowApi(http, accounts);
 
             // act
-            var response = await api.CheckUsersFollowPlaylist("3cEYpjA9oz9GiPac4AsH4n",
-                new string[] { "jkdesxdxvu6uetjdnaro2yrfc" },
+            await api.FollowArtists(
+                new string[] { "74ASZWbe4lXaubB36ztrGX" },
+                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+
+            // checking if artist was followed successfully
+            var response = await api.CheckCurrentUserFollowsArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
-            Assert.IsTrue(response.Any<bool>());
+            Assert.IsTrue(response.FirstOrDefault<bool>());
         }
     }
 }
