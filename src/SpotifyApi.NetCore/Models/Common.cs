@@ -146,4 +146,13 @@ namespace SpotifyApi.NetCore
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
     }
+
+    public partial class ResumePoint
+    {
+        [JsonProperty("fully_played")]
+        public bool FullyPlayed { get; set; }
+
+        [JsonProperty("resume_position_ms")]
+        public long ResumePositionMs { get; set; }
+    }
 }

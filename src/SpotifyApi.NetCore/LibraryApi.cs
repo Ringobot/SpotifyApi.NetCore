@@ -191,11 +191,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
         /// </remarks>
-        public async Task<PagedAlbums> GetUserSavedShows(
+        public async Task<PagedShows> GetUserSavedShows(
             int limit = 20,
             int offset = 0,
             string accessToken = null
-            ) => await GetUserSavedShows<PagedAlbums>(limit, offset, accessToken);
+            ) => await GetUserSavedShows<PagedShows>(limit, offset, accessToken);
 
         /// <summary>
         /// Get User's Saved Shows
