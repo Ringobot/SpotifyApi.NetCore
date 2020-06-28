@@ -172,7 +172,7 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/me/albums");
             builder.AppendToQuery("limit", limit);
             builder.AppendToQuery("offset", offset);
-            if (string.IsNullOrWhiteSpace(market))
+            if (!string.IsNullOrWhiteSpace(market))
             {
                 builder.AppendToQuery("market", market);
             }
@@ -266,7 +266,7 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/me/albums");
             builder.AppendToQuery("limit", limit);
             builder.AppendToQuery("offset", offset);
-            if (string.IsNullOrWhiteSpace(market))
+            if (!string.IsNullOrWhiteSpace(market))
             {
                 builder.AppendToQuery("market", market);
             }

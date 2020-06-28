@@ -79,7 +79,7 @@ namespace SpotifyApi.NetCore.Tests
             var api = new LibraryApi(http, accounts);
 
             // act
-            var response = await api.GetUserSavedAlbums(
+            var response = await api.GetUserSavedAlbums(market: "",
                 accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
