@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -15,14 +16,14 @@ namespace SpotifyApi.NetCore.Tests
         public async Task CheckUserSavedAlbums_AlbumIds_AnyItems()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
-            var response = await api.CheckUserSavedAlbums(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
+            bool[] response = await api.CheckUserSavedAlbums(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -34,14 +35,14 @@ namespace SpotifyApi.NetCore.Tests
         public async Task CheckUserSavedShows_ShowIds_AnyItems()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
-            var response = await api.CheckUserSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" },
+            bool[] response = await api.CheckUserSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -53,14 +54,14 @@ namespace SpotifyApi.NetCore.Tests
         public async Task CheckUserSavedTracks_TrackIds_AnyItems()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
-            var response = await api.CheckUserSavedTracks(new string[] { "0udZHhCi7p1YzMlvI4fXoK" },
+            bool[] response = await api.CheckUserSavedTracks(new string[] { "0udZHhCi7p1YzMlvI4fXoK" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -72,14 +73,14 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetUserSavedAlbums_IsNotNull()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
-            var response = await api.GetUserSavedAlbums(market: "",
+            PagedAlbums response = await api.GetUserSavedAlbums(market: "",
                 accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -91,14 +92,14 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetUserSavedShows_IsNotNull()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
-            var response = await api.GetUserSavedShows(
+            PagedShows response = await api.GetUserSavedShows(
                 accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -110,14 +111,14 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetUserSavedTracks_IsNotNull()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
-            var response = await api.GetUserSavedTracks(
+            PagedTracks response = await api.GetUserSavedTracks(
                 accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -129,18 +130,18 @@ namespace SpotifyApi.NetCore.Tests
         public async Task RemoveAlbumsForCurrentUser_AlbumIds_IsFalse()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
             await api.RemoveAlbumsForCurrentUser(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // checking if user unfollowed artist id
-            var response = await api.CheckUserSavedAlbums(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
+            bool[] response = await api.CheckUserSavedAlbums(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -152,18 +153,18 @@ namespace SpotifyApi.NetCore.Tests
         public async Task RemoveUserSavedShows_ShowIds_IsFalse()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
             await api.RemoveUserSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" }, "ES",
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // checking if user unfollowed artist id
-            var response = await api.CheckUserSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" },
+            bool[] response = await api.CheckUserSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -175,18 +176,18 @@ namespace SpotifyApi.NetCore.Tests
         public async Task RemoveUserSavedTracks_TrackIds_IsFalse()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
             await api.RemoveUserSavedTracks(new string[] { "4iV5W9uYEdYUVa79Axb7Rh" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // checking if user unfollowed artist id
-            var response = await api.CheckUserSavedTracks(new string[] { "4iV5W9uYEdYUVa79Axb7Rh" },
+            bool[] response = await api.CheckUserSavedTracks(new string[] { "4iV5W9uYEdYUVa79Axb7Rh" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -198,11 +199,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task SaveAlbumsForCurrentUser_AlbumIds_IsTrue()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
             await api.SaveAlbumsForCurrentUser(
@@ -210,7 +211,7 @@ namespace SpotifyApi.NetCore.Tests
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // checking if users were followed successfully
-            var response = await api.CheckUserSavedAlbums(
+            bool[] response = await api.CheckUserSavedAlbums(
                 new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
@@ -223,11 +224,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task SaveShowsForCurrentUser_ShowIds_IsTrue()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
             await api.SaveShowsForCurrentUser(
@@ -235,7 +236,7 @@ namespace SpotifyApi.NetCore.Tests
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // checking if users were followed successfully
-            var response = await api.CheckUserSavedShows(
+            bool[] response = await api.CheckUserSavedShows(
                 new string[] { "5AvwZVawapvyhJUIx71pdJ" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
@@ -248,11 +249,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task SaveTracksForCurrentUser_TrackIds_IsTrue()
         {
             // arrange
-            var http = new HttpClient();
+            HttpClient http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
+            AccountsService accounts = new AccountsService(http, testConfig);
 
-            var api = new LibraryApi(http, accounts);
+            LibraryApi api = new LibraryApi(http, accounts);
 
             // act
             await api.SaveTracksForCurrentUser(
@@ -260,7 +261,7 @@ namespace SpotifyApi.NetCore.Tests
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // checking if users were followed successfully
-            var response = await api.CheckUserSavedTracks(
+            bool[] response = await api.CheckUserSavedTracks(
                 new string[] { "7ouMYWpwJ422jRcDASZB7P" },
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// An API Wrapper for the Spotify Web API Follow endpoints.
+    /// </summary>
     public class LibraryApi : SpotifyWebApi, ILibraryApi
     {
         #region constructors

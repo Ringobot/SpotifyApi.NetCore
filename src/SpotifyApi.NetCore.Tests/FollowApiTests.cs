@@ -4,6 +4,7 @@ using SpotifyApi.NetCore.Authorization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -22,7 +23,7 @@ namespace SpotifyApi.NetCore.Tests
             FollowApi api = new FollowApi(http, accounts);
 
             // act
-            var response = await api.CheckCurrentUserFollowsArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" }, 
+            bool[] response = await api.CheckCurrentUserFollowsArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" }, 
                 testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
@@ -162,7 +163,7 @@ namespace SpotifyApi.NetCore.Tests
             FollowApi api = new FollowApi(http, accounts);
 
             // act
-            object response = await api.GetUsersFollowedArtists(
+            PagedArtists response = await api.GetUsersFollowedArtists(
                 accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
 
             // assert
