@@ -11,27 +11,20 @@ namespace SpotifyApi.NetCore
     public class FollowApi : SpotifyWebApi, IFollowApi
     {
         #region constructors
-
         public FollowApi(HttpClient httpClient, IAccessTokenProvider accessTokenProvider) : base(httpClient, accessTokenProvider)
         {
-            SearchApi = new SearchApi(httpClient, accessTokenProvider);
         }
 
         public FollowApi(HttpClient httpClient, string accessToken) : base(httpClient, accessToken)
         {
-            SearchApi = new SearchApi(httpClient, accessToken);
         }
 
         public FollowApi(HttpClient httpClient) : base(httpClient)
         {
-            SearchApi = new SearchApi(httpClient);
         }
-
         #endregion
-        protected internal virtual ISearchApi SearchApi { get; set; }
 
         #region CheckCurrentUserFollowsArtistsOrUsers
-
         /// <summary>
         /// Check if Current User Follows Artists
         /// </summary>

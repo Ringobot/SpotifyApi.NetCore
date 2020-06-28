@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpotifyApi.NetCore.Authorization;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -152,7 +152,7 @@ namespace SpotifyApi.NetCore.Tests
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task GetUsersFollowedArtists_AnyItems()
+        public async Task GetUsersFollowedArtists_IsNotNull()
         {
             // arrange
             var http = new HttpClient();
