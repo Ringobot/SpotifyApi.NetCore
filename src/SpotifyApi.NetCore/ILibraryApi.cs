@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// Defines a wrapper for the Spotify Web Library API.
+    /// </summary>
     public interface ILibraryApi
     {
         #region CheckUserSavedAlbums

@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
+    /// <summary>
+    /// Defines a wrapper for the Spotify Web Episodes API.
+    /// </summary>
     public interface IEpisodesApi
     {
         #region GetEpisode
