@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using SpotifyApi.NetCore.Models;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
@@ -146,7 +147,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
         /// </remarks>
-        Task<object> GetUsersFollowedArtists(
+        Task<PagedArtists> GetUsersFollowedArtists(
             int limit = 20,
             string after = "",
             string accessToken = null

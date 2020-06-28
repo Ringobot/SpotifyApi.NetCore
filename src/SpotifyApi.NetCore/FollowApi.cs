@@ -1,4 +1,5 @@
 ﻿using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -54,7 +55,7 @@ namespace SpotifyApi.NetCore
             if (artistIds?.Length < 1 || artistIds?.Length > 50) throw new
                     ArgumentException("A minimum of 1 and a maximum of 50 artist ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/me/following/contains");
             builder.AppendToQuery("type", "artist");
             builder.AppendToQueryAsCsv("ids", artistIds);
             return await GetModel<T>(builder.Uri, accessToken);
@@ -89,7 +90,7 @@ namespace SpotifyApi.NetCore
             if (userIds?.Length < 1 || userIds?.Length > 50) throw new
                     ArgumentException("A minimum of 1 and a maximum of 50 user ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/me/following/contains");
             builder.AppendToQuery("type", "user");
             builder.AppendToQueryAsCsv("ids", userIds);
             return await GetModel<T>(builder.Uri, accessToken);
@@ -133,7 +134,7 @@ namespace SpotifyApi.NetCore
             if (userIds?.Length < 1 || userIds?.Length > 5) throw new
                     ArgumentException("A minimum of 1 and a maximum of 5 user ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers/contains");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers/contains");
             builder.AppendToQueryAsCsv("ids", userIds);
             return await GetModel<T>(builder.Uri, accessToken);
         }
@@ -155,7 +156,7 @@ namespace SpotifyApi.NetCore
             if (artistIds?.Length < 1 || artistIds?.Length > 50) throw new
                     ArgumentException("A minimum of 1 and a maximum of 50 artist ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "artist");
             builder.AppendToQueryAsCsv("ids", artistIds);
             await Put(builder.Uri, null, accessToken);
@@ -176,7 +177,7 @@ namespace SpotifyApi.NetCore
             if (userIds?.Length < 1 || userIds.Length > 50) throw new 
                     ArgumentException("A minimum of 1 and a maximum of 50 user ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "user");
             builder.AppendToQueryAsCsv("ids", userIds);
             await Put(builder.Uri, null, accessToken);
@@ -201,7 +202,7 @@ namespace SpotifyApi.NetCore
             if (string.IsNullOrWhiteSpace(playlistId)) throw new
                     ArgumentNullException("playlistId");
 
-            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
             await Put(builder.Uri, isPublic, accessToken);
         }
         #endregion
@@ -216,11 +217,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
         /// </remarks>
-        public async Task<object> GetUsersFollowedArtists(
+        public async Task<PagedArtists> GetUsersFollowedArtists(
             int limit = 20,
             string after = null,
             string accessToken = null
-            ) => await GetUsersFollowedArtists<object>(limit, after, accessToken);
+            ) => await GetUsersFollowedArtists<PagedArtists>(limit, after, accessToken);
 
         /// <summary>
         /// Get User's Followed Artists
@@ -240,7 +241,7 @@ namespace SpotifyApi.NetCore
             if (limit < 1 || limit > 50) throw new
                     ArgumentException("A minimum of 1 and a maximum of 50 artist ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "artist");
             builder.AppendToQuery("limit", limit);
             if (!string.IsNullOrWhiteSpace(after))
@@ -267,7 +268,7 @@ namespace SpotifyApi.NetCore
             if (artistIds?.Length < 1 || artistIds?.Length > 50) throw new
                     ArgumentException("A minimum of 1 and a maximum of 50 artist ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "artist");
             builder.AppendToQueryAsCsv("ids", artistIds);
             await Delete(builder.Uri, accessToken);
@@ -288,7 +289,7 @@ namespace SpotifyApi.NetCore
             if (userIds?.Length < 1 || userIds?.Length > 50) throw new
                     ArgumentException("A minimum of 1 and a maximum of 50 user ids can be sent.");
 
-            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "user");
             builder.AppendToQueryAsCsv("ids", userIds);
             await Delete(builder.Uri, accessToken);
@@ -311,7 +312,7 @@ namespace SpotifyApi.NetCore
             if (string.IsNullOrWhiteSpace(playlistId)) throw new
                     ArgumentNullException("playlistId");
 
-            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
             await Delete(builder.Uri, accessToken);
         }
         #endregion

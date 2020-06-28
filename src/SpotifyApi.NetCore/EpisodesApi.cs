@@ -20,5 +20,22 @@ namespace SpotifyApi.NetCore
         {
         }
         #endregion
+
+        #region GetEpisode
+        /// <summary>
+        /// Get an Episode
+        /// </summary>
+        /// <param name="episodeId">The Spotify ID for the episode.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="Album"/> object.</returns>
+        /// <remarks>https://developer.spotify.com/documentation/web-api/reference/episodes/get-an-episode/</remarks>
+        public async Task<object> GetEpisode(string episodeId, string accessToken = null)
+            => await GetEpisode<object>(episodeId, accessToken: accessToken);
+
+        public async Task<T> GetEpisode<T>(string episodeId, string accessToken = null)
+        {
+            UriBuilder builder = new UriBuilder($"{BaseUrl}/episodes/{episodeId}");
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
+        #endregion
     }
 }

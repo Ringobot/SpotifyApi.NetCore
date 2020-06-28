@@ -1,4 +1,5 @@
 ﻿using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -140,12 +141,12 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/
         /// </remarks>
-        public async Task<object> GetUserSavedAlbums(
+        public async Task<PagedAlbums> GetUserSavedAlbums(
             int limit = 20,
             int offset = 0,
             string market = null,
             string accessToken = null
-            ) => await GetUserSavedAlbums<object>(limit, offset, market, accessToken);
+            ) => await GetUserSavedAlbums<PagedAlbums>(limit, offset, market, accessToken);
 
         /// <summary>
         /// Get Current User's Saved Albums
@@ -190,11 +191,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
         /// </remarks>
-        public async Task<object> GetUserSavedShows(
+        public async Task<PagedAlbums> GetUserSavedShows(
             int limit = 20,
             int offset = 0,
             string accessToken = null
-            ) => await GetUserSavedShows<object>(limit, offset, accessToken);
+            ) => await GetUserSavedShows<PagedAlbums>(limit, offset, accessToken);
 
         /// <summary>
         /// Get User's Saved Shows
@@ -234,12 +235,12 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
         /// </remarks>
-        public async Task<object> GetUserSavedTracks(
+        public async Task<PagedTracks> GetUserSavedTracks(
             int limit = 20,
             int offset = 0,
             string market = null,
             string accessToken = null
-            ) => await GetUserSavedTracks<object>(limit, offset, market, accessToken);
+            ) => await GetUserSavedTracks<PagedTracks>(limit, offset, market, accessToken);
 
         /// <summary>
         /// Get User's Saved Tracks

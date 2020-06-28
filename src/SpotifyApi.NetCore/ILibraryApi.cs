@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using SpotifyApi.NetCore.Models;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
@@ -99,7 +100,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/
         /// </remarks>
-        Task<object> GetUserSavedAlbums(
+        Task<PagedAlbums> GetUserSavedAlbums(
             int limit = 20,
             int offset = 0,
             string market = null,
@@ -134,7 +135,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
         /// </remarks>
-        Task<object> GetUserSavedShows(
+        Task<PagedAlbums> GetUserSavedShows(
             int limit = 20,
             int offset = 0,
             string accessToken = null
@@ -167,7 +168,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
         /// </remarks>
-        Task<object> GetUserSavedTracks(
+        Task<PagedTracks> GetUserSavedTracks(
             int limit = 20,
             int offset = 0,
             string market = null,
