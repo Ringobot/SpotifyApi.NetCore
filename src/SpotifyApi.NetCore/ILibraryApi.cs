@@ -130,7 +130,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A json string containing  an array of saved show objects (wrapped in a paging object) in JSON format. If the current user has no shows saved, the response will be an empty array. If a show is unavailable in the given market it is filtered out. The total field in the paging object represents the number of all items, filtered or not, and thus might be larger than the actual total number of observable items.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
@@ -146,7 +145,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A json string containing  an array of saved show objects (wrapped in a paging object) in JSON format. If the current user has no shows saved, the response will be an empty array. If a show is unavailable in the given market it is filtered out. The total field in the paging object represents the number of all items, filtered or not, and thus might be larger than the actual total number of observable items.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
@@ -198,7 +196,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Remove Albums for Current User
         /// </summary>
-        /// <param name="albumIds">A comma-separated list of the album Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 user id is required. </param>
+        /// <param name="albumIds">A comma-separated list of the album Spotify IDs. A maximum of 50 album IDs can be sent in one request. A minimum of 1 album id is required. </param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/remove-albums-user/
         /// </remarks>
@@ -228,7 +226,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Remove User's Saved Tracks
         /// </summary>
-        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 user id is required.</param>
+        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 track IDs can be sent in one request. A minimum of 1 track id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/remove-tracks-user/
         /// </remarks>
@@ -242,7 +240,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Save Albums for Current User
         /// </summary>
-        /// <param name="albumIds">Required. A comma-separated list of the album Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 album id is required.</param>
+        /// <param name="albumIds">Required. A comma-separated list of the album Spotify IDs. A maximum of 50 album IDs can be sent in one request. A minimum of 1 album id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/save-albums-user/
         /// </remarks>
@@ -256,7 +254,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Save Shows for Current User
         /// </summary>
-        /// <param name="showIds">Required. A comma-separated list of the show Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 show id is required.</param>
+        /// <param name="showIds">Required. A comma-separated list of the show Spotify IDs. A maximum of 50 show IDs can be sent in one request. A minimum of 1 show id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/save-shows-user/
         /// </remarks>
@@ -270,7 +268,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Save Shows for Current User
         /// </summary>
-        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 track id is required.</param>
+        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 track IDs can be sent in one request. A minimum of 1 track id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/save-tracks-user/
         /// </remarks>

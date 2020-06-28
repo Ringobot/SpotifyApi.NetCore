@@ -49,7 +49,7 @@ namespace SpotifyApi.NetCore
             )
         {
             if (albumIds?.Length < 1 || albumIds?.Length > 50) throw new
-                    ArgumentException("A minimum of 1 and a maximum of 50 ids can be sent.");
+                    ArgumentException("A minimum of 1 and a maximum of 50 album ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/albums/contains");
             builder.AppendToQueryAsCsv("ids", albumIds);
@@ -85,7 +85,7 @@ namespace SpotifyApi.NetCore
             )
         {
             if (showIds?.Length < 1 || showIds?.Length > 50) throw new
-                    ArgumentException("A minimum of 1 and a maximum of 50 ids can be sent.");
+                    ArgumentException("A minimum of 1 and a maximum of 50 show ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/shows/contains");
             builder.AppendToQueryAsCsv("ids", showIds);
@@ -121,7 +121,7 @@ namespace SpotifyApi.NetCore
             )
         {
             if (trackIds?.Length < 1 || trackIds?.Length > 50) throw new
-                    ArgumentException("A minimum of 1 and a maximum of 50 ids can be sent.");
+                    ArgumentException("A minimum of 1 and a maximum of 50 track ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/tracks/contains");
             builder.AppendToQueryAsCsv("ids", trackIds);
@@ -165,14 +165,14 @@ namespace SpotifyApi.NetCore
             )
         {
             if (limit < 1 || limit > 50) throw new
-                    ArgumentException("The limit can be a minimum of 1 and a maximum of 50.");
+                    ArgumentException("The limit can be a minimum of 1 and a maximum of 50 album IDs.");
             if(offset < 0) throw new
                     ArgumentException("The offset must be an integer value greater than 0.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/albums");
             builder.AppendToQuery("limit", limit);
             builder.AppendToQuery("offset", offset);
-            if (market?.Length > 0)
+            if (string.IsNullOrWhiteSpace(market))
             {
                 builder.AppendToQuery("market", market);
             }
@@ -186,7 +186,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A json string containing an array of saved show objects (wrapped in a paging object) in JSON format. If the current user has no shows saved, the response will be an empty array. If a show is unavailable in the given market it is filtered out. The total field in the paging object represents the number of all items, filtered or not, and thus might be larger than the actual total number of observable items.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
@@ -202,7 +201,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A json string containing an array of saved show objects (wrapped in a paging object) in JSON format. If the current user has no shows saved, the response will be an empty array. If a show is unavailable in the given market it is filtered out. The total field in the paging object represents the number of all items, filtered or not, and thus might be larger than the actual total number of observable items.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
@@ -268,7 +266,7 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/me/albums");
             builder.AppendToQuery("limit", limit);
             builder.AppendToQuery("offset", offset);
-            if (market?.Length > 0)
+            if (string.IsNullOrWhiteSpace(market))
             {
                 builder.AppendToQuery("market", market);
             }
@@ -280,12 +278,12 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Remove Albums for Current User
         /// </summary>
-        /// <param name="albumIds">A comma-separated list of the album Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 user id is required. </param>
+        /// <param name="albumIds">A comma-separated list of the album Spotify IDs. A maximum of 50 album IDs can be sent in one request. A minimum of 1 album id is required. </param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/remove-albums-user/
         /// </remarks>
         public async Task RemoveAlbumsForCurrentUser(
-            string[] albumIds = null,
+            string[] albumIds,
             string accessToken = null
             )
         {
@@ -302,7 +300,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Remove User's Saved Shows
         /// </summary>
-        /// <param name="showIds">Required. A comma-separated list of the show Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 user id is required.</param>
+        /// <param name="showIds">Required. A comma-separated list of the show Spotify IDs. A maximum of 50 show IDs can be sent in one request. A minimum of 1 show id is required.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code. If a country code is specified, only shows that are available in that market will be removed. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter. Note: If neither market or user country are provided, the content is considered unavailable for the client. Users can view the country that is associated with their account in the account settings.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/remove-shows-user/
@@ -318,7 +316,7 @@ namespace SpotifyApi.NetCore
 
             var builder = new UriBuilder($"{BaseUrl}/me/shows");
             builder.AppendToQueryAsCsv("ids", showIds);
-            if (market?.Length > 0)
+            if (string.IsNullOrWhiteSpace(market))
             {
                 builder.AppendToQuery("market", market);
             }
@@ -330,7 +328,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Remove User's Saved Tracks
         /// </summary>
-        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 track id is required.</param>
+        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 track IDs can be sent in one request. A minimum of 1 track id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/remove-tracks-user/
         /// </remarks>
@@ -352,7 +350,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Save Albums for Current User
         /// </summary>
-        /// <param name="albumIds">Required. A comma-separated list of the album Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 album id is required.</param>
+        /// <param name="albumIds">Required. A comma-separated list of the album Spotify IDs. A maximum of 50 album IDs can be sent in one request. A minimum of 1 album id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/save-albums-user/
         /// </remarks>
@@ -374,7 +372,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Save Shows for Current User
         /// </summary>
-        /// <param name="showIds">Required. A comma-separated list of the show Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 show id is required.</param>
+        /// <param name="showIds">Required. A comma-separated list of the show Spotify IDs. A maximum of 50 show IDs can be sent in one request. A minimum of 1 show id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/save-shows-user/
         /// </remarks>
@@ -396,7 +394,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Save Shows for Current User
         /// </summary>
-        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 IDs can be sent in one request. A minimum of 1 track id is required.</param>
+        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 track IDs can be sent in one request. A minimum of 1 track id is required.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/save-tracks-user/
         /// </remarks>
@@ -406,7 +404,7 @@ namespace SpotifyApi.NetCore
             )
         {
             if (trackIds?.Length < 1 && trackIds.Length > 50) throw new
-                    ArgumentException("A minimum of 1 and a maximum of 50 show ids can be sent.");
+                    ArgumentException("A minimum of 1 and a maximum of 50 track ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/tracks");
             builder.AppendToQueryAsCsv("ids", trackIds);
