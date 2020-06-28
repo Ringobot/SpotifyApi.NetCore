@@ -21,10 +21,24 @@
 * Copy and paste text from Spotify Api Reference documentation for all methods and params so that docs
   match as closely as possible
 * Include a link to the original Spotify docs in the `<remarks>` XML comment tag
-* This library prefers simple types wherever possible. For example, use `string[]` instead of `List<string>`
-  unless the implementation could truly benefit from a List.
 * Provide generic versions of all API Methods so that users can provide their own types for deserialization
 * Name API methods to closely match the name of the Spotify endpoint.
+* In public methods, required params should be validated, e.g. 
+
+```csharp
+if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
+```
+
+* The convention in this project is to use `var` whenever the type is obvious, e.g. 
+
+```csharp
+var http = new HttpClient();
+```
+
+* This library prefers simple types wherever possible. For example, use `string[]` instead of `List<string>`
+  unless the implementation could truly benefit from a List.
+* Currently, `null` is meaningful and is used to indicate when a param has not been set. This may change
+  (at least internally) in a future major version.
 * We have opted to not use DI to resolve `SearchApi` which is proxied by several API classes. This is
   purely for simplicity; SearchApi can still be tested on its own. This may be reviewed and changed
   in a future release. 
