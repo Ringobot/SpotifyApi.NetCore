@@ -6,14 +6,17 @@
 
 ## Pull requests
 
-Please open a Pull Request early so that we can collaborate on the code as you write it. The PR won't 
-be merged until contributors are happy with style and tests.
+* Open a separate Pull Request (PR) for each family of endpoints (Artists, Users, Player, etc), or for 
+  each bug
+* Open a Pull Request early so that we can collaborate on the code as you write it. 
+* The PR won't be merged until contributors are happy with style and tests, reviews are completed and merge conflicts are resolved
 
 > See [Proposing changes to your work with pull requests](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/proposing-changes-to-your-work-with-pull-requests)
 > to learn about Pull Requests.
 
 ## Coding guide, style and conventions
 
+* Study existing code for guidance on style and conventions
 * All public methods must be fully documented with XML Comments
 * Copy and paste text from Spotify Api Reference documentation for all methods and params so that docs
   match as closely as possible
