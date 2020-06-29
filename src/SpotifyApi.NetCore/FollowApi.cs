@@ -245,10 +245,7 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "artist");
             builder.AppendToQuery("limit", limit);
-            if (!string.IsNullOrWhiteSpace(after))
-            {
-                builder.AppendToQuery("after", after);
-            }
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("after", after);
             return await GetModel<T>(builder.Uri, accessToken);
         }
         #endregion
