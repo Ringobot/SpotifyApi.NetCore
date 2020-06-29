@@ -138,34 +138,34 @@ namespace SpotifyApi.NetCore
         /// </summary>
         [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
         protected internal virtual async Task<HttpResponseMessage> Put(string url, object data, string accessToken = null)
-            => await PostOrPutOrDelete("PUT", new Uri(url), data, accessToken);
+            => await PostOrPut("PUT", new Uri(url), data, accessToken);
 
         /// <summary>
         /// Helper to POST an object as JSON body
         /// </summary>
         [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
         protected internal virtual async Task<HttpResponseMessage> Post(string url, object data, string accessToken = null)
-            => await PostOrPutOrDelete("POST", new Uri(url), data, accessToken);
+            => await PostOrPut("POST", new Uri(url), data, accessToken);
 
         /// <summary>
         /// Helper to PUT an object as JSON body
         /// </summary>
         protected internal virtual async Task<HttpResponseMessage> Put(Uri uri, object data, string accessToken = null)
-            => await PostOrPutOrDelete("PUT", uri, data, accessToken);
+            => await PostOrPut("PUT", uri, data, accessToken);
 
         /// <summary>
         /// Helper to POST an object as JSON body
         /// </summary>
         protected internal virtual async Task<HttpResponseMessage> Post(Uri uri, object data, string accessToken = null)
-            => await PostOrPutOrDelete("POST", uri, data, accessToken);
+            => await PostOrPut("POST", uri, data, accessToken);
 
         /// <summary>
         /// Helper to DELETE an object
         /// </summary>
         protected internal virtual async Task<HttpResponseMessage> Delete(Uri uri, string accessToken = null)
-            => await PostOrPutOrDelete("DELETE", uri, null, accessToken);
+            => await PostOrPut("DELETE", uri, null, accessToken);
 
-        private async Task<HttpResponseMessage> PostOrPutOrDelete(string verb, Uri uri, object data, string accessToken = null)
+        private async Task<HttpResponseMessage> PostOrPut(string verb, Uri uri, object data, string accessToken = null)
         {
             Logger.Debug($"{verb} {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
 
@@ -179,10 +179,10 @@ namespace SpotifyApi.NetCore
             switch (verb)
             {
                 case "PUT":
-                    response = await _http.PutAsync(uri, data == null ? null : content);
+                    response = await _http.PutAsync(uri, content);
                     break;
                 case "POST":
-                    response = await _http.PostAsync(uri, data == null ? null : content);
+                    response = await _http.PostAsync(uri, content);
                     break;
                 case "DELETE":
                     response = await _http.DeleteAsync(uri);
