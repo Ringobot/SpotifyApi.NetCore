@@ -27,7 +27,7 @@ namespace SpotifyApi.NetCore
 
         #region CheckCurrentUserFollowsArtistsOrUsers
         /// <summary>
-        /// Check if Current User Follows Artists
+        /// Check if Current User Follows Artists or Users
         /// </summary>
         /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs to check. A maximum of artist 50 IDs can be sent in one request.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
@@ -40,7 +40,7 @@ namespace SpotifyApi.NetCore
             ) => await CheckCurrentUserFollowsArtists<bool[]>(artistIds, accessToken);
 
         /// <summary>
-        /// Check if Current User Follows Artists
+        /// Check if Current User Follows Artists or Users
         /// </summary>
         /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs. A maximum of 50 artist IDs can be sent in one request. A minimum of 1 artist id is required.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
@@ -62,7 +62,7 @@ namespace SpotifyApi.NetCore
         }
 
         /// <summary>
-        /// Check if Current User Follows Users
+        /// Check if Current User Follows Artists or Users
         /// </summary>
         /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
@@ -75,7 +75,7 @@ namespace SpotifyApi.NetCore
             ) => await CheckCurrentUserFollowsUsers<bool[]>(userIds, accessToken);
 
         /// <summary>
-        /// Check if Current User Follows Users
+        /// Check if Current User Follows Artists or Users
         /// </summary>
         /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
@@ -142,7 +142,7 @@ namespace SpotifyApi.NetCore
 
         #region FollowArtistsOrUsers
         /// <summary>
-        /// Follow Artists
+        /// Follow Artists or Users
         /// </summary>
         /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs. A maximum of 50 artist IDs can be sent in one request. A minimum of 1 artist id is required.</param>
         /// <remarks>
@@ -163,7 +163,7 @@ namespace SpotifyApi.NetCore
         }
 
         /// <summary>
-        /// Follow Users
+        /// Follow Artists or Users
         /// </summary>
         /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
         /// <remarks>
@@ -254,7 +254,7 @@ namespace SpotifyApi.NetCore
 
         #region UnfollowArtistsOrUsers
         /// <summary>
-        /// Unfollow Artists
+        /// Unfollow Artists or Users
         /// </summary>
         /// <param name="artistIds">A comma-separated list of the artist Spotify IDs. A maximum of 50 artist IDs can be sent in one request. A minimum of 1 artist id is required.</param>
         /// <remarks>
@@ -275,7 +275,7 @@ namespace SpotifyApi.NetCore
         }
 
         /// <summary>
-        /// Unfollow Users
+        /// Unfollow Artists or Users
         /// </summary>
         /// <param name="userIds">A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required. </param>
         /// <remarks>
