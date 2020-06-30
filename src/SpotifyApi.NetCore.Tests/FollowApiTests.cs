@@ -12,6 +12,7 @@ namespace SpotifyApi.NetCore.Tests
     public class FollowApiTests
     {
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsArtists_ArtistId_AnyItems()
         {
@@ -31,6 +32,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsUsers_UserId_AnyItems()
         {
@@ -51,6 +53,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckUsersFollowPlaylist_PlaylistId_UserIds_AnyItems()
         {
@@ -71,6 +74,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task FollowArtists_ArtistIds_IsTrue()
         {
@@ -165,6 +169,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task FollowUsers_UserIds_IsTrue()
         {
@@ -190,6 +195,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task FollowPlaylist_PlaylistId_IsPublic_IsTrue()
         {
@@ -222,6 +228,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUsersFollowedArtists_IsNotNull()
         {
@@ -241,6 +248,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task UnfollowArtists_ArtistIds_IsFalse()
         {
@@ -264,6 +272,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task UnfollowUsers_UserIds_IsFalse()
         {
@@ -287,6 +296,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task UnfollowPlaylist_PlaylistId_IsFalse()
         {
