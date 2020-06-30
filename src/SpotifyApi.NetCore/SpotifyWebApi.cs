@@ -159,6 +159,12 @@ namespace SpotifyApi.NetCore
         protected internal virtual async Task<HttpResponseMessage> Post(Uri uri, object data, string accessToken = null)
             => await PostOrPut("POST", uri, data, accessToken);
 
+        /// <summary>
+        /// Helper to DELETE an object
+        /// </summary>
+        protected internal virtual async Task<HttpResponseMessage> Delete(Uri uri, string accessToken = null)
+            => await PostOrPut("DELETE", uri, null, accessToken);
+
         private async Task<HttpResponseMessage> PostOrPut(string verb, Uri uri, object data, string accessToken = null)
         {
             Logger.Debug($"{verb} {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
@@ -177,6 +183,9 @@ namespace SpotifyApi.NetCore
                     break;
                 case "POST":
                     response = await _http.PostAsync(uri, content);
+                    break;
+                case "DELETE":
+                    response = await _http.DeleteAsync(uri);
                     break;
                 default:
                     throw new NotSupportedException($"{verb} is not a supported verb");
