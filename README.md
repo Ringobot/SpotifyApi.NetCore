@@ -144,7 +144,7 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Artists | 5 | 5 | 100% | ✅ |
 | Browse | 7 | 7 | 100% | ✅ |
 | Episodes | 2 | 0 | 0% | |
-| Follow | 7 | 1 | 14% |
+| Follow | 7 | 7 | 100% | ✅ |
 | Library | 8 | 0 | 0% |
 | Personalization | 1 | 0 | 0% |
 | Player | 13 | 10 | 77% |
@@ -152,8 +152,8 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Search | 1 | 1 | 100% | ✅ |
 | Shows | 3 | 0 | 0% | |
 | Tracks | 5 | 5 | 100% | ✅ |
-| Users Profile | 2 | 2 | 1000% | ✅ |
-| **Total** | **69** | **36** | **52%** |
+| Users Profile | 2 | 2 | 100% | ✅ |
+| **Total** | **69** | **42** | **61%** |
 
 Feature requests welcomed! (create an issue)
 
