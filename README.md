@@ -143,7 +143,7 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Albums | 3 | 3 | 100% | ✅ |
 | Artists | 5 | 5 | 100% | ✅ |
 | Browse | 7 | 7 | 100% | ✅ |
-| Episodes | 2 | 0 | 100% | |
+| Episodes | 2 | 0 | 0% | |
 | Follow | 7 | 1 | 14% |
 | Library | 8 | 0 | 0% |
 | Personalization | 1 | 0 | 0% |
