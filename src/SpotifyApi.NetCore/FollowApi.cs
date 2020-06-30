@@ -8,7 +8,7 @@ using SpotifyApi.NetCore.Helpers;
 namespace SpotifyApi.NetCore
 {
     /// <summary>
-    /// An API Wrapper for the Spotify Web API Follow endpoints.
+    /// An implementation of the API Wrapper for the Spotify Web API Follow endpoints.
     /// </summary>
     public class FollowApi : SpotifyWebApi, IFollowApi
     {
