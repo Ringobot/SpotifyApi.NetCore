@@ -159,7 +159,7 @@ namespace SpotifyApi.NetCore
 
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "artist");
-            var data = new SpotifyRequestDataWrappersHelper.PassStringArrayIdsRequestDataJsonWrapperClass(artistIds);
+            var data = new { ids = artistIds };
             await Put(builder.Uri, data, accessToken);
         }
 
@@ -180,7 +180,7 @@ namespace SpotifyApi.NetCore
 
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", "user");
-            var data = new SpotifyRequestDataWrappersHelper.PassStringArrayIdsRequestDataJsonWrapperClass(userIds);
+            var data = new { ids = userIds };
             await Put(builder.Uri, data, accessToken);
         }
         #endregion

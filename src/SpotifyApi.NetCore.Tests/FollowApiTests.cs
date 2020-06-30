@@ -95,6 +95,76 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
+        [TestMethod]
+        public async Task FollowArtists_Unfollowed_CheckUserFollowsTrue()
+        {
+            // arrange
+            string[] artistIds = new string[] { "74ASZWbe4lXaubB36ztrGX" };
+
+            var http = new HttpClient();
+            var config = TestsHelper.GetLocalConfig();
+            string accessToken = config["SpotifyUserBearerAccessToken"];
+            var accounts = new AccountsService(http, config);
+
+            var api = new FollowApi(http, accounts);
+
+            // unfollow
+            await api.UnfollowArtists(artistIds, accessToken: accessToken);
+
+            // checking if artists were unfollowed successfully
+            Assert.IsFalse((await api.CheckCurrentUserFollowsArtists(
+                artistIds,
+                accessToken: accessToken)).First(), 
+                "Artist should have been unfollowed at this point");
+
+            // act
+            await api.FollowArtists(artistIds, accessToken: accessToken);
+
+            // assert
+            // checking if artists were followed successfully
+            Assert.IsTrue((await api.CheckCurrentUserFollowsArtists(
+                artistIds,
+                accessToken: accessToken)).First(),
+                "Artist should have been followed at this point");
+        }
+
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        [TestMethod]
+        public async Task FollowUsers_Unfollowed_CheckUserFollowsTrue()
+        {
+            // arrange
+            string[] userIds = new string[] { "exampleuser01" };
+
+            var http = new HttpClient();
+            var config = TestsHelper.GetLocalConfig();
+            string accessToken = config["SpotifyUserBearerAccessToken"];
+            var accounts = new AccountsService(http, config);
+
+            var api = new FollowApi(http, accounts);
+
+            // unfollow
+            await api.UnfollowUsers(userIds, accessToken: accessToken);
+
+            // checking if artists were unfollowed successfully
+            Assert.IsFalse((await api.CheckCurrentUserFollowsUsers(
+                userIds,
+                accessToken: accessToken)).First(),
+                "User should have been unfollowed at this point");
+
+            // act
+            await api.FollowUsers(userIds, accessToken: accessToken);
+
+            // assert
+            // checking if artists were followed successfully
+            Assert.IsTrue((await api.CheckCurrentUserFollowsUsers(
+                userIds,
+                accessToken: accessToken)).First(),
+                "User should have been followed at this point");
+        }
+
+        [TestCategory("Integration")]
         [TestMethod]
         public async Task FollowUsers_UserIds_IsTrue()
         {
