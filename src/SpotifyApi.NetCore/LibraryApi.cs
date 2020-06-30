@@ -25,7 +25,7 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region CheckUserSavedAlbums
+        #region CheckUsersSavedAlbums
         /// <summary>
         /// Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
@@ -34,10 +34,10 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-albums/
         /// </remarks>
-        public async Task<bool[]> CheckUserSavedAlbums(
+        public Task<bool[]> CheckUsersSavedAlbums(
             string[] albumIds,
             string accessToken = null
-            ) => await CheckUserSavedAlbums<bool[]>(albumIds, accessToken);
+            ) => CheckUsersSavedAlbums<bool[]>(albumIds, accessToken);
 
         /// <summary>
         /// Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library.
@@ -47,7 +47,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-albums/
         /// </remarks>
-        public async Task<T> CheckUserSavedAlbums<T>(
+        public async Task<T> CheckUsersSavedAlbums<T>(
             string[] albumIds,
             string accessToken = null
             )
@@ -61,7 +61,7 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region CheckUserSavedShows
+        #region CheckUsersSavedShows
         /// <summary>
         /// Check if one or more shows is already saved in the current Spotify user’s library.
         /// </summary>
@@ -70,10 +70,10 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-shows/
         /// </remarks>
-        public async Task<bool[]> CheckUserSavedShows(
+        public Task<bool[]> CheckUsersSavedShows(
             string[] showIds,
             string accessToken = null
-            ) => await CheckUserSavedShows<bool[]>(showIds, accessToken);
+            ) => CheckUsersSavedShows<bool[]>(showIds, accessToken);
 
         /// <summary>
         /// Check if one or more shows is already saved in the current Spotify user’s library.
@@ -83,7 +83,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-shows/
         /// </remarks>
-        public async Task<T> CheckUserSavedShows<T>(
+        public async Task<T> CheckUsersSavedShows<T>(
             string[] showIds,
             string accessToken = null
             )
@@ -97,7 +97,7 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region CheckUserSavedTracks
+        #region CheckUsersSavedTracks
         /// <summary>
         /// Check if one or more tracks is already saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
@@ -106,10 +106,10 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-tracks/
         /// </remarks>
-        public async Task<bool[]> CheckUserSavedTracks(
+        public Task<bool[]> CheckUsersSavedTracks(
             string[] trackIds,
             string accessToken = null
-            ) => await CheckUserSavedTracks<bool[]>(trackIds, accessToken);
+            ) => CheckUsersSavedTracks<bool[]>(trackIds, accessToken);
 
         /// <summary>
         /// Check if one or more tracks is already saved in the current Spotify user’s ‘Your Music’ library.
@@ -119,7 +119,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-tracks/
         /// </remarks>
-        public async Task<T> CheckUserSavedTracks<T>(
+        public async Task<T> CheckUsersSavedTracks<T>(
             string[] trackIds,
             string accessToken = null
             )
@@ -133,35 +133,35 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region GetUserSavedAlbums
+        #region GetCurrentUsersSavedAlbums
         /// <summary>
         /// Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedAlbums"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/
         /// </remarks>
-        public async Task<PagedAlbums> GetUserSavedAlbums(
+        public Task<PagedAlbums> GetCurrentUsersSavedAlbums(
             int limit = 20,
             int offset = 0,
             string market = null,
             string accessToken = null
-            ) => await GetUserSavedAlbums<PagedAlbums>(limit, offset, market, accessToken);
+            ) => GetCurrentUsersSavedAlbums<PagedAlbums>(limit, offset, market, accessToken);
 
         /// <summary>
         /// Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedAlbums"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/
         /// </remarks>
-        public async Task<T> GetUserSavedAlbums<T>(
+        public async Task<T> GetCurrentUsersSavedAlbums<T>(
             int limit = 20,
             int offset = 0,
             string market = null,
@@ -181,7 +181,7 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region GetUserSavedShows
+        #region GetUsersSavedShows
         /// <summary>
         /// Get a list of shows saved in the current Spotify user’s library. Optional parameters can be used to limit the number of shows returned.
         /// </summary>
@@ -191,14 +191,14 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
         /// </remarks>
-        public async Task<PagedShows> GetUserSavedShows(
+        public Task<PagedShows> GetUsersSavedShows(
             int limit = 20,
             int offset = 0,
             string accessToken = null
-            ) => await GetUserSavedShows<PagedShows>(limit, offset, accessToken);
+            ) => GetUsersSavedShows<PagedShows>(limit, offset, accessToken);
 
         /// <summary>
-        /// Get User's Saved Shows
+        /// Get a list of shows saved in the current Spotify user’s library. Optional parameters can be used to limit the number of shows returned.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
@@ -206,7 +206,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-shows/
         /// </remarks>
-        public async Task<T> GetUserSavedShows<T>(
+        public async Task<T> GetUsersSavedShows<T>(
             int limit = 20,
             int offset = 0,
             string accessToken = null
@@ -224,35 +224,35 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region GetUserSavedTracks
+        #region GetUsersSavedTracks
         /// <summary>
         /// Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedTracks"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
         /// </remarks>
-        public async Task<PagedTracks> GetUserSavedTracks(
+        public Task<PagedTracks> GetUsersSavedTracks(
             int limit = 20,
             int offset = 0,
             string market = null,
             string accessToken = null
-            ) => await GetUserSavedTracks<PagedTracks>(limit, offset, market, accessToken);
+            ) => GetUsersSavedTracks<PagedTracks>(limit, offset, market, accessToken);
 
         /// <summary>
         /// Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedTracks"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
         /// </remarks>
-        public async Task<T> GetUserSavedTracks<T>(
+        public async Task<T> GetUsersSavedTracks<T>(
             int limit = 20,
             int offset = 0,
             string market = null,
@@ -294,16 +294,16 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region RemoveUserSavedShows
+        #region RemoveUsersSavedShows
         /// <summary>
         /// Delete one or more shows from current Spotify user’s library.
         /// </summary>
         /// <param name="showIds">Required. A comma-separated list of the show Spotify IDs. A maximum of 50 show IDs can be sent in one request. A minimum of 1 show id is required.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code. If a country code is specified, only shows that are available in that market will be removed. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter. Note: If neither market or user country are provided, the content is considered unavailable for the client. Users can view the country that is associated with their account in the account settings.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token <see cref="SpotifyCountryCodes" />. If a country code is specified, only shows that are available in that market will be removed. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter. Note: If neither market or user country are provided, the content is considered unavailable for the client. Users can view the country that is associated with their account in the account settings.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/remove-shows-user/
         /// </remarks>
-        public async Task RemoveUserSavedShows(
+        public async Task RemoveUsersSavedShows(
             string[] showIds,
             string market = null,
             string accessToken = null
@@ -319,7 +319,7 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region RemoveUserSavedTracks
+        #region RemoveUsersSavedTracks
         /// <summary>
         /// Remove one or more tracks from the current user’s ‘Your Music’ library.
         /// </summary>
@@ -327,7 +327,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/remove-tracks-user/
         /// </remarks>
-        public async Task RemoveUserSavedTracks(
+        public async Task RemoveUsersSavedTracks(
             string[] trackIds,
             string accessToken = null
             )
@@ -385,7 +385,7 @@ namespace SpotifyApi.NetCore
         }
         #endregion
 
-        #region SaveTracksForCurrentUser
+        #region SaveTracksForUser
         /// <summary>
         /// Save one or more tracks to the current user’s ‘Your Music’ library.
         /// </summary>
@@ -393,7 +393,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/save-tracks-user/
         /// </remarks>
-        public async Task SaveTracksForCurrentUser(
+        public async Task SaveTracksForUser(
             string[] trackIds,
             string accessToken = null
             )
