@@ -146,4 +146,25 @@ namespace SpotifyApi.NetCore
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
     }
+
+    /// <summary>
+    /// Resume Point object (public)
+    /// </summary>
+    /// <remarks>
+    /// https://developer.spotify.com/documentation/web-api/reference/object-model/#resume-point-object
+    /// </remarks>
+    public partial class ResumePoint
+    {
+        /// <summary>
+        /// Whether or not the episode has been fully played by the user.
+        /// </summary>
+        [JsonProperty("fully_played")]
+        public bool FullyPlayed { get; set; }
+
+        /// <summary>
+        /// The user’s most recent position in the episode in milliseconds.
+        /// </summary>
+        [JsonProperty("resume_position_ms")]
+        public long ResumePositionMs { get; set; }
+    }
 }

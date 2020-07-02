@@ -17,11 +17,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task CheckUserSavedAlbums_AlbumIds_AnyItems()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             bool[] response = await api.CheckUsersSavedAlbums(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
@@ -36,11 +36,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task CheckUserSavedShows_ShowIds_AnyItems()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             bool[] response = await api.CheckUsersSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" },
@@ -55,11 +55,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task CheckUserSavedTracks_TrackIds_AnyItems()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             bool[] response = await api.CheckUsersSavedTracks(new string[] { "0udZHhCi7p1YzMlvI4fXoK" },
@@ -74,11 +74,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetUserSavedAlbums_IsNotNull()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             PagedAlbums response = await api.GetCurrentUsersSavedAlbums(market: "",
@@ -93,11 +93,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetUserSavedShows_IsNotNull()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             PagedShows response = await api.GetUsersSavedShows(
@@ -112,11 +112,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetUserSavedTracks_IsNotNull()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             PagedTracks response = await api.GetUsersSavedTracks(
@@ -131,11 +131,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task RemoveAlbumsForCurrentUser_AlbumIds_IsFalse()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             await api.RemoveAlbumsForCurrentUser(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
@@ -154,11 +154,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task RemoveUserSavedShows_ShowIds_IsFalse()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             await api.RemoveUsersSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" }, "ES",
@@ -177,11 +177,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task RemoveUserSavedTracks_TrackIds_IsFalse()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             await api.RemoveUsersSavedTracks(new string[] { "4iV5W9uYEdYUVa79Axb7Rh" },
@@ -200,11 +200,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task SaveAlbumsForCurrentUser_AlbumIds_IsTrue()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             await api.SaveAlbumsForCurrentUser(
@@ -225,11 +225,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task SaveShowsForCurrentUser_ShowIds_IsTrue()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             await api.SaveShowsForCurrentUser(
@@ -250,11 +250,11 @@ namespace SpotifyApi.NetCore.Tests
         public async Task SaveTracksForCurrentUser_TrackIds_IsTrue()
         {
             // arrange
-            HttpClient http = new HttpClient();
+            var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            AccountsService accounts = new AccountsService(http, testConfig);
+            var accounts = new AccountsService(http, testConfig);
 
-            LibraryApi api = new LibraryApi(http, accounts);
+            var api = new LibraryApi(http, accounts);
 
             // act
             await api.SaveTracksForUser(
