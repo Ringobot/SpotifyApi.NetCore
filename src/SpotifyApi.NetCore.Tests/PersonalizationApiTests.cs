@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Models;
+using SpotifyApi.NetCore.Helpers;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -46,6 +47,30 @@ namespace SpotifyApi.NetCore.Tests
 
             // assert
             Assert.IsNotNull(value: response);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public void TimeRangeString_LongTerm_IsTrue()
+        {
+            // assert
+            Assert.IsTrue(condition: TimeRangeHelper.TimeRangeString(TimeRange.LongTerm) == "long_term");
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public void TimeRangeString_MediumTerm_IsTrue()
+        {
+            // assert
+            Assert.IsTrue(condition: TimeRangeHelper.TimeRangeString(TimeRange.MediumTerm) == "medium_term");
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public void TimeRangeString_ShortTerm_IsTrue()
+        {
+            // assert
+            Assert.IsTrue(condition: TimeRangeHelper.TimeRangeString(TimeRange.ShortTerm) == "short_term");
         }
     }
 }
