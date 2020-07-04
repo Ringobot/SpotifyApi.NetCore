@@ -71,6 +71,8 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             )
         {
+            if (type != "artist" && type != "user") throw new
+                     ArgumentException("The type value can be one of either artist or user.");
             if (userOrArtistIds?.Length < 1 || userOrArtistIds?.Length > 50) throw new
                 ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
 
@@ -168,6 +170,8 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             )
         {
+            if (type != "artist" && type != "user") throw new
+                     ArgumentException("The type value can be one of either artist or user.");
             if (userOrArtistIds?.Length < 1 || userOrArtistIds.Length > 50) throw new
                     ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
 
@@ -287,6 +291,8 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             )
         {
+            if (type != "artist" && type != "user") throw new
+                     ArgumentException("The type value can be one of either artist or user.");
             if (userOrArtistIds?.Length < 1 || userOrArtistIds?.Length > 50) throw new
                     ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
 
