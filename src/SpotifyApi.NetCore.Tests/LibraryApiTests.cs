@@ -11,263 +11,170 @@ namespace SpotifyApi.NetCore.Tests
     [TestClass]
     public class LibraryApiTests
     {
+        LibraryApi api;
+        string bearerAccessToken;
+
+        public LibraryApiTests()
+        {
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            bearerAccessToken = testConfig.GetValue(typeof(string),
+                "SpotifyUserBearerAccessToken").ToString();
+            var accounts = new AccountsService(http, testConfig);
+            api = new LibraryApi(http, accounts);
+        }
+
         [TestCategory("Integration")]
         [TestCategory("User")]
         [TestMethod]
         public async Task CheckUserSavedAlbums_AlbumIds_AnyItems()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
-            // act
-            bool[] response = await api.CheckUsersSavedAlbums(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsTrue(response.Any<bool>());
+            Assert.IsTrue((await api.CheckUsersSavedAlbums(
+                new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
+                bearerAccessToken)).Any<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task CheckUserSavedShows_ShowIds_AnyItems()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
-            // act
-            bool[] response = await api.CheckUsersSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsTrue(response.Any<bool>());
+            Assert.IsTrue((await api.CheckUsersSavedShows(
+                new string[] { "5AvwZVawapvyhJUIx71pdJ" },
+                bearerAccessToken)).Any<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task CheckUserSavedTracks_TrackIds_AnyItems()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
-            // act
-            bool[] response = await api.CheckUsersSavedTracks(new string[] { "0udZHhCi7p1YzMlvI4fXoK" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsTrue(response.Any<bool>());
+            Assert.IsTrue((await api.CheckUsersSavedTracks(
+                new string[] { "0udZHhCi7p1YzMlvI4fXoK" },
+                bearerAccessToken)).Any<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserSavedAlbums_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
-            // act
-            PagedAlbums response = await api.GetCurrentUsersSavedAlbums(market: "",
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(response);
+            Assert.IsNotNull(await api.GetCurrentUsersSavedAlbums(market: "",
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserSavedShows_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
-            // act
-            PagedShows response = await api.GetUsersSavedShows(
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(response);
+            Assert.IsNotNull(await api.GetUsersSavedShows(
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserSavedTracks_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
-            // act
-            PagedTracks response = await api.GetUsersSavedTracks(
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(response);
+            Assert.IsNotNull(await api.GetUsersSavedTracks(
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task RemoveAlbumsForCurrentUser_AlbumIds_IsFalse()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
             // act
-            await api.RemoveAlbumsForCurrentUser(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
-            // checking if user unfollowed artist id
-            bool[] response = await api.CheckUsersSavedAlbums(new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+            await api.RemoveAlbumsForCurrentUser(
+                new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
+                bearerAccessToken);
 
             // assert
-            Assert.IsFalse(response.FirstOrDefault<bool>());
+            // checking if album was removed for the current user.
+            Assert.IsFalse((await api.CheckUsersSavedAlbums(
+                new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
+                bearerAccessToken)).FirstOrDefault<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task RemoveUserSavedShows_ShowIds_IsFalse()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
             // act
-            await api.RemoveUsersSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" }, "ES",
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
-            // checking if user unfollowed artist id
-            bool[] response = await api.CheckUsersSavedShows(new string[] { "5AvwZVawapvyhJUIx71pdJ" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+            await api.RemoveUsersSavedShows(
+                new string[] { "5AvwZVawapvyhJUIx71pdJ" }, "ES",
+                bearerAccessToken);
 
             // assert
-            Assert.IsFalse(response.FirstOrDefault<bool>());
+            // checking if show was removed for the current user
+            Assert.IsFalse((await api.CheckUsersSavedShows(
+                new string[] { "5AvwZVawapvyhJUIx71pdJ" },
+                bearerAccessToken)).FirstOrDefault<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task RemoveUserSavedTracks_TrackIds_IsFalse()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
             // act
             await api.RemoveUsersSavedTracks(new string[] { "4iV5W9uYEdYUVa79Axb7Rh" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
-            // checking if user unfollowed artist id
-            bool[] response = await api.CheckUsersSavedTracks(new string[] { "4iV5W9uYEdYUVa79Axb7Rh" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+                bearerAccessToken);
 
             // assert
-            Assert.IsFalse(response.FirstOrDefault<bool>());
+            // checking if track was removed for the current user
+            Assert.IsFalse((await api.CheckUsersSavedTracks(
+                new string[] { "4iV5W9uYEdYUVa79Axb7Rh" },
+                bearerAccessToken)).FirstOrDefault<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task SaveAlbumsForCurrentUser_AlbumIds_IsTrue()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
             // act
             await api.SaveAlbumsForCurrentUser(
                 new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
-            // checking if users were followed successfully
-            bool[] response = await api.CheckUsersSavedAlbums(
-                new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+                bearerAccessToken);
 
             // assert
-            Assert.IsTrue(response.FirstOrDefault<bool>());
+            // checking if album was saved for the current user
+            Assert.IsTrue((await api.CheckUsersSavedAlbums(
+                new string[] { "07bYtmE3bPsLB6ZbmmFi8d" },
+                bearerAccessToken)).FirstOrDefault<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task SaveShowsForCurrentUser_ShowIds_IsTrue()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
             // act
             await api.SaveShowsForCurrentUser(
                 new string[] { "5AvwZVawapvyhJUIx71pdJ" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
-            // checking if users were followed successfully
-            bool[] response = await api.CheckUsersSavedShows(
-                new string[] { "5AvwZVawapvyhJUIx71pdJ" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+                bearerAccessToken);
 
             // assert
-            Assert.IsTrue(response.FirstOrDefault<bool>());
+            // checking if show was saved for the current user
+            Assert.IsTrue((await api.CheckUsersSavedShows(
+                new string[] { "5AvwZVawapvyhJUIx71pdJ" },
+                bearerAccessToken)).FirstOrDefault<bool>());
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task SaveTracksForCurrentUser_TrackIds_IsTrue()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new LibraryApi(http, accounts);
-
             // act
             await api.SaveTracksForUser(
                 new string[] { "7ouMYWpwJ422jRcDASZB7P" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
-            // checking if users were followed successfully
-            bool[] response = await api.CheckUsersSavedTracks(
-                new string[] { "7ouMYWpwJ422jRcDASZB7P" },
-                testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
+                bearerAccessToken);
 
             // assert
-            Assert.IsTrue(response.FirstOrDefault<bool>());
+            // checking if track was saved for the current user
+            Assert.IsTrue((await api.CheckUsersSavedTracks(
+                new string[] { "7ouMYWpwJ422jRcDASZB7P" },
+                bearerAccessToken)).FirstOrDefault<bool>());
         }
     }
 }

@@ -11,121 +11,77 @@ namespace SpotifyApi.NetCore.Tests
     [TestClass]
     public class PersonalizationApiTests
     {
+        PersonalizationApi api;
+        string bearerAccessToken;
+
+        public PersonalizationApiTests()
+        {
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            bearerAccessToken = testConfig.GetValue(typeof(string),
+                "SpotifyUserBearerAccessToken").ToString();
+            var accounts = new AccountsService(http, testConfig);
+            api = new PersonalizationApi(http, accounts);
+        }
+
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserTopArtists_TimeRange_LongTerm_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new PersonalizationApi(http, accounts);
-
-            // act
-            PagedArtists response = await api.GetUsersTopArtists(timeRange: TimeRange.LongTerm,
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(value: response);
+            Assert.IsNotNull(value: await api.GetUsersTopArtists(
+                timeRange: TimeRange.LongTerm,
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserTopArtists_TimeRange_MediumTerm_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new PersonalizationApi(http, accounts);
-
-            // act
-            PagedArtists response = await api.GetUsersTopArtists(timeRange: TimeRange.MediumTerm,
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(value: response);
+            Assert.IsNotNull(value: await api.GetUsersTopArtists(
+                timeRange: TimeRange.MediumTerm,
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserTopArtists_TimeRange_ShortTerm_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new PersonalizationApi(http, accounts);
-
-            // act
-            PagedArtists response = await api.GetUsersTopArtists(timeRange: TimeRange.ShortTerm,
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(value: response);
+            Assert.IsNotNull(value: await api.GetUsersTopArtists(
+                timeRange: TimeRange.ShortTerm,
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserTopTracks_TimeRange_LongTerm_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new PersonalizationApi(http, accounts);
-
-            // act
-            PagedTracks response = await api.GetUsersTopTracks(
-                timeRange: TimeRange.LongTerm,
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(value: response);
+            Assert.IsNotNull(value: await api.GetUsersTopTracks(
+                timeRange: TimeRange.LongTerm,
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserTopTracks_TimeRange_MediumTerm_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new PersonalizationApi(http, accounts);
-
-            // act
-            PagedTracks response = await api.GetUsersTopTracks(
-                timeRange: TimeRange.MediumTerm,
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(value: response);
+            Assert.IsNotNull(value: await api.GetUsersTopTracks(
+                timeRange: TimeRange.MediumTerm,
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task GetUserTopTracks_TimeRange_ShortTerm_IsNotNull()
         {
-            // arrange
-            var http = new HttpClient();
-            IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            var accounts = new AccountsService(http, testConfig);
-
-            var api = new PersonalizationApi(http, accounts);
-
-            // act
-            PagedTracks response = await api.GetUsersTopTracks(
-                timeRange: TimeRange.ShortTerm,
-                accessToken: testConfig.GetValue(typeof(string), "SpotifyUserBearerAccessToken").ToString());
-
             // assert
-            Assert.IsNotNull(value: response);
+            Assert.IsNotNull(value: await api.GetUsersTopTracks(
+                timeRange: TimeRange.ShortTerm,
+                accessToken: bearerAccessToken));
         }
     }
 }
