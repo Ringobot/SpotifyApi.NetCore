@@ -162,18 +162,18 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
         /// </remarks>
-        public async Task FollowArtistsOrUsers(
+        internal async Task FollowArtistsOrUsers(
             string type,
-            string[] userIds,
+            string[] userOrArtistIds,
             string accessToken = null
             )
         {
-            if (userIds?.Length < 1 || userIds.Length > 50) throw new
+            if (userOrArtistIds?.Length < 1 || userOrArtistIds.Length > 50) throw new
                     ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", type);
-            var data = new { ids = userIds };
+            var data = new { ids = userOrArtistIds };
             await Put(builder.Uri, data, accessToken);
         }
         #endregion
@@ -282,7 +282,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
         /// </remarks>
-        public async Task UnfollowArtistsOrUsers(
+        internal async Task UnfollowArtistsOrUsers(
             string type,
             string[] userOrArtistIds = null,
             string accessToken = null

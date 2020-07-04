@@ -113,21 +113,6 @@ namespace SpotifyApi.NetCore
             string[] userIds,
             string accessToken = null
             );
-
-        /// <summary>
-        /// Add the current user as a follower of one or more Spotify users or artists.
-        /// </summary>
-        /// <param name="type">Required. Spotify user or artist.</param>
-        /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
-        /// </remarks>
-        Task FollowArtistsOrUsers(
-            string type,
-            string[] userIds,
-            string accessToken = null
-            );
         #endregion
 
         #region FollowPlaylist
@@ -205,21 +190,6 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         Task UnfollowUsers(
             string[] userIds = null,
-            string accessToken = null
-            );
-
-        /// <summary>
-        /// Remove the current user as a follower of one or more Spotify users or artists.
-        /// </summary>
-        /// <param name="type">Required. Spotify user or artist.</param>
-        /// <param name="userIds">A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required. </param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
-        /// </remarks>
-        Task UnfollowArtistsOrUsers(
-            string type,
-            string[] userOrArtistIds = null,
             string accessToken = null
             );
         #endregion

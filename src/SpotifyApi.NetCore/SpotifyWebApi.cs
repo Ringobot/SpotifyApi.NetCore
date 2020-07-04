@@ -172,12 +172,8 @@ namespace SpotifyApi.NetCore
             _http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()));
 
-            StringContent content = null;
-            if (data != null)
-            {
-                content = new StringContent(JsonConvert.SerializeObject(data));
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            }
+            var content = data == null ? new StringContent("null") : new StringContent(JsonConvert.SerializeObject(data));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = null;
 
             switch (verb)
