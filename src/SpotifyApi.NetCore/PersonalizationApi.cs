@@ -71,7 +71,7 @@ namespace SpotifyApi.NetCore
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
         /// <param name="timeRange">Optional. Over what time frame the affinities are computed. Valid values: long_term (calculated from several years of data and including all new data as it becomes available), medium_term (approximately last 6 months), short_term (approximately last 4 weeks). Default: medium_term.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedTracks"/> object.</returns>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedArtists"/> or <see cref="PagedTracks"/> object depending on the type param value.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
         /// </remarks>
