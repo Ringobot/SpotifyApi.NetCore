@@ -66,6 +66,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Get the current user’s top tracks or artists based on calculated affinity.
         /// </summary>
+        /// <param name="type">Required. Value is either artist or track.</param>
         /// <param name="limit">Required. Artist or Track.</param>
         /// <param name="limit">Optional. The maximum number of entities to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
@@ -83,6 +84,8 @@ namespace SpotifyApi.NetCore
             string accessToken = null
             )
         {
+            if (type != "artist" && type != "track") throw new
+                     ArgumentException("The type value can be one of either artist or track.");
             if (limit < 1 || limit > 50) throw new
                 ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
             if (offset < 0) throw new
