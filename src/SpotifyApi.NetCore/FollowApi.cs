@@ -173,8 +173,7 @@ namespace SpotifyApi.NetCore
 
             var builder = new UriBuilder($"{BaseUrl}/me/following");
             builder.AppendToQuery("type", type);
-            var data = new { ids = userOrArtistIds };
-            await Put(builder.Uri, data, accessToken);
+            await Put(builder.Uri, new { ids = userOrArtistIds }, accessToken);
         }
         #endregion
 
@@ -198,7 +197,7 @@ namespace SpotifyApi.NetCore
                     ArgumentNullException("playlistId");
 
             var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
-            await Put(builder.Uri, isPublic, accessToken);
+            await Put(builder.Uri, new { @public = isPublic }, accessToken);
         }
         #endregion
 
