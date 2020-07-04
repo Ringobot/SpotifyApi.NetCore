@@ -46,6 +46,24 @@ namespace SpotifyApi.NetCore
             ) => GetUsersTopArtistsOrTracks<PagedArtists>("artist", limit, offset, timeRange, accessToken);
 
         /// <summary>
+        /// Get the current user’s top artists based on calculated affinity.
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of entities to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
+        /// <param name="timeRange">Optional. Over what time frame the affinities are computed. Valid values: long_term (calculated from several years of data and including all new data as it becomes available), medium_term (approximately last 6 months), short_term (approximately last 4 weeks). Default: medium_term.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a istance of `T`.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
+        /// </remarks>
+        public Task<T> GetUsersTopArtists<T>(
+            int limit = 20,
+            int offset = 0,
+            TimeRange timeRange = TimeRange.MediumTerm,
+            string accessToken = null
+            ) => GetUsersTopArtistsOrTracks<T>("artist", limit, offset, timeRange, accessToken);
+
+        /// <summary>
         /// Get the current user’s top tracks based on calculated affinity.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of entities to return. Default: 20. Minimum: 1. Maximum: 50.</param>
@@ -64,19 +82,24 @@ namespace SpotifyApi.NetCore
             ) => GetUsersTopArtistsOrTracks<PagedTracks>("track", limit, offset, timeRange, accessToken);
 
         /// <summary>
-        /// Get the current user’s top tracks or artists based on calculated affinity.
+        /// Get the current user’s top tracks based on calculated affinity.
         /// </summary>
-        /// <param name="type">Required. Value is either artist or track.</param>
-        /// <param name="limit">Required. Artist or Track.</param>
         /// <param name="limit">Optional. The maximum number of entities to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
         /// <param name="timeRange">Optional. Over what time frame the affinities are computed. Valid values: long_term (calculated from several years of data and including all new data as it becomes available), medium_term (approximately last 6 months), short_term (approximately last 4 weeks). Default: medium_term.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedArtists"/> or <see cref="PagedTracks"/> object depending on the type param value.</returns>
+        /// <returns>A Task that, once successfully completed, returns a istance of `T`.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
         /// </remarks>
-        public async Task<T> GetUsersTopArtistsOrTracks<T>(
+        public Task<T> GetUsersTopTracks<T>(
+            int limit = 20,
+            int offset = 0,
+            TimeRange timeRange = TimeRange.MediumTerm,
+            string accessToken = null
+            ) => GetUsersTopArtistsOrTracks<T>("track", limit, offset, timeRange, accessToken);
+
+        internal async Task<T> GetUsersTopArtistsOrTracks<T>(
             string type,
             int limit = 20,
             int offset = 0,
