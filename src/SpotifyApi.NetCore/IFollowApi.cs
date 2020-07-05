@@ -28,7 +28,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs to check. A maximum of artist 50 IDs can be sent in one request.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a istance of `T`.</returns>
+        /// <returns>A Task that, once successfully completed, returns a instance of `T`.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
@@ -56,7 +56,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a istance of `T`.</returns>
+        /// <returns>A Task that, once successfully completed, returns a instance of `T`.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
