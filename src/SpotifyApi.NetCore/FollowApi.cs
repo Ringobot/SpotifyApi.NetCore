@@ -219,7 +219,7 @@ namespace SpotifyApi.NetCore
                     ArgumentNullException("playlistId");
 
             var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/followers");
-            await Put(builder.Uri, new { @public = isPublic }, accessToken);
+            await Put(builder.Uri, isPublic, accessToken);
         }
         #endregion
 
