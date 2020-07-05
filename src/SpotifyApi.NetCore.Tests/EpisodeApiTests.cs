@@ -13,7 +13,8 @@ namespace SpotifyApi.NetCore.Tests
         EpisodesApi api;
         string bearerAccessToken;
 
-        public EpisodeApiTests()
+        [TestInitialize]
+        public void Initialize()
         {
             var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();

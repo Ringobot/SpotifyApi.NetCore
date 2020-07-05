@@ -15,7 +15,8 @@ namespace SpotifyApi.NetCore.Tests
         UsersProfileApi usersApi;
         string bearerAccessToken;
 
-        public FollowApiTests()
+        [TestInitialize]
+        public void Initialize()
         {
             var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
@@ -67,7 +68,8 @@ namespace SpotifyApi.NetCore.Tests
 
             // assert. 
             // checking if artists were successfully followed.
-            Assert.IsTrue(condition: (await api.CheckCurrentUserFollowsArtists(new string[] { "74ASZWbe4lXaubB36ztrGX" },
+            Assert.IsTrue(condition: (await api.CheckCurrentUserFollowsArtists(
+                new string[] { "74ASZWbe4lXaubB36ztrGX" },
                 bearerAccessToken)).FirstOrDefault());
         }
 
@@ -85,8 +87,8 @@ namespace SpotifyApi.NetCore.Tests
             // checking if artists are already followed
             Assert.IsFalse((await api.CheckCurrentUserFollowsArtists(
                 artistIds,
-                bearerAccessToken)).First(), 
-                "Artist is already followed.");
+                bearerAccessToken)).First(),
+                "Artist should have been unfollowed at this point.");
 
             // act
             await api.FollowArtists(artistIds, bearerAccessToken);

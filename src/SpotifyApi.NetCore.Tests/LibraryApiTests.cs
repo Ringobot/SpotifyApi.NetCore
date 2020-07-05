@@ -14,7 +14,8 @@ namespace SpotifyApi.NetCore.Tests
         LibraryApi api;
         string bearerAccessToken;
 
-        public LibraryApiTests()
+        [TestInitialize]
+        public void Initialize()
         {
             var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();

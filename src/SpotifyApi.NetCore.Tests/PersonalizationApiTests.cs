@@ -14,7 +14,8 @@ namespace SpotifyApi.NetCore.Tests
         PersonalizationApi api;
         string bearerAccessToken;
 
-        public PersonalizationApiTests()
+        [TestInitialize]
+        public void Initialize()
         {
             var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
@@ -25,6 +26,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUserTopArtists_TimeRange_LongTerm_IsNotNull()
         {
@@ -35,6 +37,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUserTopArtists_TimeRange_MediumTerm_IsNotNull()
         {
@@ -45,6 +48,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUserTopArtists_TimeRange_ShortTerm_IsNotNull()
         {
@@ -55,6 +59,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUserTopTracks_TimeRange_LongTerm_IsNotNull()
         {
@@ -65,6 +70,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUserTopTracks_TimeRange_MediumTerm_IsNotNull()
         {
@@ -75,6 +81,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUserTopTracks_TimeRange_ShortTerm_IsNotNull()
         {
