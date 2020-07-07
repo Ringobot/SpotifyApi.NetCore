@@ -6,10 +6,14 @@
 
 ## Pull requests
 
-* Open a separate Pull Request (PR) for each family of endpoints (Artists, Users, Player, etc), or for 
-  each bug
-* Open a Pull Request early so that we can collaborate on the code as you write it. 
-* The PR won't be merged until contributors are happy with style and tests, reviews are completed and merge conflicts are resolved
+* Open a separate branch _and_ Pull Request (PR) for each family of endpoints (Artists, Users, Player, etc), or for 
+  each bug. Follow [GitHub Flow](https://guides.github.com/introduction/flow/) and don't PR from `master`.
+* Keep PR's small and confined to only the files that are related to the API / Bug / Change you are
+  working on. Don't be tempted to refactor the whole library while you are at it, this is production
+  code used by thousands of users; changes need to be small.
+* Open a Pull Request early so that we can collaborate on the code as you write it. The PR won't be 
+  merged until reviews are completed and merge conflicts are resolved. Consider the reviewer (who is
+  a volunteer too) by keeping changes small and relevant.
 
 > See [Proposing changes to your work with pull requests](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/proposing-changes-to-your-work-with-pull-requests)
 > to learn about Pull Requests.
