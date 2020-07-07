@@ -8,7 +8,7 @@ using SpotifyApi.NetCore.Helpers;
 namespace SpotifyApi.NetCore
 {
     /// <summary>
-    /// An implementation of the API Wrapper for the Spotify Web API Follow endpoints.
+    /// An API Wrapper for the Spotify Web API Follow endpoints.
     /// </summary>
     public class FollowApi : SpotifyWebApi, IFollowApi
     {
@@ -31,52 +31,69 @@ namespace SpotifyApi.NetCore
         /// Check to see if the current user is following one or more artists.
         /// </summary>
         /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs to check. A maximum of artist 50 IDs can be sent in one request.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        public Task<bool[]> CheckCurrentUserFollowsArtists(
+        public async Task<bool[]> CheckCurrentUserFollowsArtists(
             string[] artistIds,
             string accessToken = null
-            ) => CheckCurrentUserFollowsArtistsOrUsers<bool[]>("artist", artistIds, accessToken);
+            ) => await CheckCurrentUserFollowsArtists<bool[]>(artistIds, accessToken);
+
+        /// <summary>
+        /// Check to see if the current user is following one or more artists.
+        /// </summary>
+        /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs. A maximum of 50 artist IDs can be sent in one request. A minimum of 1 artist id is required.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
+        /// </remarks>
+        public async Task<T> CheckCurrentUserFollowsArtists<T>(
+            string[] artistIds,
+            string accessToken = null
+            )
+        {
+            if (artistIds?.Length < 1 || artistIds?.Length > 50) throw new
+                ArgumentException("A minimum of 1 and a maximum of 50 artist ids can be sent.");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
+            builder.AppendToQuery("type", "artist");
+            builder.AppendToQueryAsCsv("ids", artistIds);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
 
         /// <summary>
         /// Check to see if the current user is following one or more Spotify users.
         /// </summary>
         /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        public Task<bool[]> CheckCurrentUserFollowsUsers(
+        public async Task<bool[]> CheckCurrentUserFollowsUsers(
             string[] userIds,
             string accessToken = null
-            ) => CheckCurrentUserFollowsArtistsOrUsers<bool[]>("user", userIds, accessToken);
+            ) => await CheckCurrentUserFollowsUsers<bool[]>(userIds, accessToken);
 
         /// <summary>
-        /// Check to see if the current user is following one or more Spotify users or artists.
+        /// Check to see if the current user is following one or more Spotify users.
         /// </summary>
-        /// <param name="type">Required. Spotify user or artist.</param>
-        /// <param name="userOrArtistIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        public async Task<T> CheckCurrentUserFollowsArtistsOrUsers<T>(
-            string type,
-            string[] userOrArtistIds,
+        public async Task<T> CheckCurrentUserFollowsUsers<T>(
+            string[] userIds,
             string accessToken = null
             )
         {
-            if (userOrArtistIds?.Length < 1 || userOrArtistIds?.Length > 50) throw new
-                ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
+            if (userIds?.Length < 1 || userIds?.Length > 50) throw new
+                ArgumentException("A minimum of 1 and a maximum of 50 user ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/following/contains");
-            builder.AppendToQuery("type", type);
-            builder.AppendToQueryAsCsv("ids", userOrArtistIds);
+            builder.AppendToQuery("type", "user");
+            builder.AppendToQueryAsCsv("ids", userIds);
             return await GetModel<T>(builder.Uri, accessToken);
         }
         #endregion
@@ -87,7 +104,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="playlistId">Required. The Spotify ID of the playlist.</param>
         /// <param name="userIds">Required. A comma-separated list of Spotify User IDs ; the ids of the users that you want to check to see if they follow the playlist. Minimum: 1 id. Maximum: 5 ids.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/
@@ -103,7 +119,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="playlistId">Required. The Spotify ID of the playlist.</param>
         /// <param name="userIds">Required. A comma-separated list of Spotify User IDs ; the ids of the users that you want to check to see if they follow the playlist. Minimum: 1 id. Maximum: 5 ids.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-user-following-playlist/
@@ -131,48 +146,40 @@ namespace SpotifyApi.NetCore
         /// Add the current user as a follower of one or more artists.
         /// </summary>
         /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs. A maximum of 50 artist IDs can be sent in one request. A minimum of 1 artist id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
         /// </remarks>
-        public Task FollowArtists(
+        public async Task FollowArtists(
             string[] artistIds,
             string accessToken = null
-            ) => FollowArtistsOrUsers("artist", artistIds, accessToken);
+            )
+        {
+            if (artistIds?.Length < 1 || artistIds?.Length > 50) throw new
+                    ArgumentException("A minimum of 1 and a maximum of 50 artist ids can be sent.");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            builder.AppendToQuery("type", "artist");
+            var data = new { ids = artistIds };
+            await Put(builder.Uri, data, accessToken);
+        }
 
         /// <summary>
         /// Add the current user as a follower of one or more Spotify users.
         /// </summary>
         /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
         /// </remarks>
-        public Task FollowUsers(
-            string[] userIds,
-            string accessToken = null
-            ) => FollowArtistsOrUsers("user", userIds, accessToken);
-
-        /// <summary>
-        /// Add the current user as a follower of one or more Spotify users or artists.
-        /// </summary>
-        /// <param name="type">Required. Spotify user or artist.</param>
-        /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
-        /// </remarks>
-        public async Task FollowArtistsOrUsers(
-            string type,
+        public async Task FollowUsers(
             string[] userIds,
             string accessToken = null
             )
         {
             if (userIds?.Length < 1 || userIds.Length > 50) throw new
-                    ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
+                    ArgumentException("A minimum of 1 and a maximum of 50 user ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/following");
-            builder.AppendToQuery("type", type);
+            builder.AppendToQuery("type", "user");
             var data = new { ids = userIds };
             await Put(builder.Uri, data, accessToken);
         }
@@ -184,7 +191,6 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="playlistId">Required. The Spotify ID of the playlist. Any playlist can be followed, regardless of its public/private status, as long as you know its playlist ID.</param>
         /// <param name="isPublic">Optional. Defaults to true. If true the playlist will be included in user’s public playlists, if false it will remain private.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-playlist/
         /// </remarks>
@@ -208,23 +214,21 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedArtists"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
         /// </remarks>
-        public Task<PagedArtists> GetUsersFollowedArtists(
+        public async Task<PagedArtists> GetUsersFollowedArtists(
             int limit = 20,
             string after = null,
             string accessToken = null
-            ) => GetUsersFollowedArtists<PagedArtists>(limit, after, accessToken);
+            ) => await GetUsersFollowedArtists<PagedArtists>(limit, after, accessToken);
 
         /// <summary>
         /// Get the current user’s followed artists.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="after">Optional. The last artist ID retrieved from the previous request.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedArtists"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
@@ -251,49 +255,41 @@ namespace SpotifyApi.NetCore
         /// Remove the current user as a follower of one or more artists.
         /// </summary>
         /// <param name="artistIds">A comma-separated list of the artist Spotify IDs. A maximum of 50 artist IDs can be sent in one request. A minimum of 1 artist id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
         /// </remarks>
-        public Task UnfollowArtists(
+        public async Task UnfollowArtists(
             string[] artistIds,
             string accessToken = null
-            ) => UnfollowArtistsOrUsers("artist", artistIds, accessToken);
+            )
+        {
+            if (artistIds?.Length < 1 || artistIds?.Length > 50) throw new
+                    ArgumentException("A minimum of 1 and a maximum of 50 artist ids can be sent.");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/following");
+            builder.AppendToQuery("type", "artist");
+            builder.AppendToQueryAsCsv("ids", artistIds);
+            await Delete(builder.Uri, accessToken);
+        }
 
         /// <summary>
         /// Remove the current user as a follower of one or more Spotify users.
         /// </summary>
         /// <param name="userIds">A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required. </param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
         /// </remarks>
-        public Task UnfollowUsers(
+        public async Task UnfollowUsers(
             string[] userIds = null,
-            string accessToken = null
-            ) => UnfollowArtistsOrUsers("user", userIds, accessToken);
-
-        /// <summary>
-        /// Remove the current user as a follower of one or more Spotify users or artists.
-        /// </summary>
-        /// <param name="type">Required. Spotify user or artist.</param>
-        /// <param name="userIds">A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required. </param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
-        /// </remarks>
-        public async Task UnfollowArtistsOrUsers(
-            string type,
-            string[] userOrArtistIds = null,
             string accessToken = null
             )
         {
-            if (userOrArtistIds?.Length < 1 || userOrArtistIds?.Length > 50) throw new
-                    ArgumentException($"A minimum of 1 and a maximum of 50 {type} ids can be sent.");
+            if (userIds?.Length < 1 || userIds?.Length > 50) throw new
+                    ArgumentException("A minimum of 1 and a maximum of 50 user ids can be sent.");
 
             var builder = new UriBuilder($"{BaseUrl}/me/following");
-            builder.AppendToQuery("type", type);
-            builder.AppendToQueryAsCsv("ids", userOrArtistIds);
+            builder.AppendToQuery("type", "user");
+            builder.AppendToQueryAsCsv("ids", userIds);
             await Delete(builder.Uri, accessToken);
         }
         #endregion
@@ -303,7 +299,6 @@ namespace SpotifyApi.NetCore
         /// Remove the current user as a follower of a playlist.
         /// </summary>
         /// <param name="playlistId">The Spotify ID of the playlist that is to be no longer followed.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-playlist/
         /// </remarks>
