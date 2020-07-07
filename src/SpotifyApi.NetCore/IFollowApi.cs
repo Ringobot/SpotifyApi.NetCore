@@ -24,20 +24,6 @@ namespace SpotifyApi.NetCore
             );
 
         /// <summary>
-        /// Check to see if the current user is following one or more artists.
-        /// </summary>
-        /// <param name="artistIds">Required. A comma-separated list of the artist Spotify IDs to check. A maximum of artist 50 IDs can be sent in one request.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a instance of `T`.</returns>
-        /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
-        /// </remarks>
-        Task<T> CheckCurrentUserFollowsArtists<T>(
-            string[] artistIds,
-            string accessToken = null
-            );
-
-        /// <summary>
         /// Check to see if the current user is following one or more Spotify users.
         /// </summary>
         /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
@@ -52,19 +38,20 @@ namespace SpotifyApi.NetCore
             );
 
         /// <summary>
-        /// Check to see if the current user is following one or more Spotify users.
+        /// Check to see if the current user is following one or more Spotify users or artists.
         /// </summary>
-        /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
+        /// <param name="type">Required. Spotify user or artist.</param>
+        /// <param name="userOrArtistIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a instance of `T`.</returns>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        Task<T> CheckCurrentUserFollowsUsers<T>(
-            string[] userIds,
+        Task<T> CheckCurrentUserFollowsArtistsOrUsers<T>(
+            string type,
+            string[] userOrArtistIds,
             string accessToken = null
             );
-
         #endregion
 
         #region CheckCurrentUserFollowsPlaylist
@@ -123,6 +110,21 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
         /// </remarks>
         Task FollowUsers(
+            string[] userIds,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Add the current user as a follower of one or more Spotify users or artists.
+        /// </summary>
+        /// <param name="type">Required. Spotify user or artist.</param>
+        /// <param name="userIds">Required. A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
+        /// </remarks>
+        Task FollowArtistsOrUsers(
+            string type,
             string[] userIds,
             string accessToken = null
             );
@@ -203,6 +205,21 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         Task UnfollowUsers(
             string[] userIds = null,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Remove the current user as a follower of one or more Spotify users or artists.
+        /// </summary>
+        /// <param name="type">Required. Spotify user or artist.</param>
+        /// <param name="userIds">A comma-separated list of the user Spotify IDs. A maximum of 50 user IDs can be sent in one request. A minimum of 1 user id is required. </param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
+        /// </remarks>
+        Task UnfollowArtistsOrUsers(
+            string type,
+            string[] userOrArtistIds = null,
             string accessToken = null
             );
         #endregion
