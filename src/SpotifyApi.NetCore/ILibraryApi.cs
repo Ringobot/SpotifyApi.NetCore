@@ -8,7 +8,6 @@ namespace SpotifyApi.NetCore
     /// </summary>
     public interface ILibraryApi
     {
-        #region CheckUsersSavedAlbumsOrShowsOrTracks
         #region CheckUsersSavedAlbums
         /// <summary>
         /// Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library.
@@ -20,6 +19,20 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-albums/
         /// </remarks>
         Task<bool[]> CheckUsersSavedAlbums(
+            string[] albumIds,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library.
+        /// </summary>
+        /// <param name="albumIds">Required. A comma-separated list of the Spotify IDs for the albums. Minimum: 1 ID. Maximum: 50 IDs.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-albums/
+        /// </remarks>
+        Task<T> CheckUsersSavedAlbums<T>(
             string[] albumIds,
             string accessToken = null
             );
@@ -39,6 +52,20 @@ namespace SpotifyApi.NetCore
             string[] showIds,
             string accessToken = null
             );
+
+        /// <summary>
+        /// Check if one or more shows is already saved in the current Spotify user’s library.
+        /// </summary>
+        /// <param name="showIds">Required. A comma-separated list of the Spotify IDs for the shows. Minimum: 1 ID. Maximum: 50 IDs.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-shows/
+        /// </remarks>
+        Task<T> CheckUsersSavedShows<T>(
+            string[] showIds,
+            string accessToken = null
+            );
         #endregion
 
         #region CheckUsersSavedTracks
@@ -55,35 +82,29 @@ namespace SpotifyApi.NetCore
             string[] trackIds,
             string accessToken = null
             );
-        #endregion
 
         /// <summary>
-        /// Check if one or more albums or shows or tracks is already saved in the current Spotify user’s ‘Your Music’ library.
+        /// Check if one or more tracks is already saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
-        /// <param name="type">Required. Value is either album or show or track.</param>
-        /// <param name="albumOrShowOrTrackIds">Required. A comma-separated list of the Spotify IDs for the albums or shows or tracks. Minimum: 1 ID. Maximum: 50 IDs.</param>
+        /// <param name="trackIds">Required. A comma-separated list of the Spotify IDs for the tracks. Minimum: 1 ID. Maximum: 50 IDs.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>bool[] an array of true or false values, in the same order in which the ids were specified.</returns>
         /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-albums/
-        /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-shows/
         /// https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-tracks/
         /// </remarks>
-        Task<T> CheckUsersSavedAlbumsOrShowsOrTracks<T>(
-            string type,
-            string[] albumOrShowOrTrackIds,
+        Task<T> CheckUsersSavedTracks<T>(
+            string[] trackIds,
             string accessToken = null
             );
         #endregion
 
-        #region GetCurrentUsersSavedAlbumsOrTracks
         #region GetCurrentUsersSavedAlbums
         /// <summary>
         /// Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedAlbums"/> object.</returns>
         /// <remarks>
@@ -95,43 +116,19 @@ namespace SpotifyApi.NetCore
             string market = null,
             string accessToken = null
             );
-        #endregion
-
-        #region GetUsersSavedTracks
-        /// <summary>
-        /// Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
-        /// </summary>
-        /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
-        /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
-        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedTracks"/> object.</returns>
-        /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
-        /// </remarks>
-        Task<PagedTracks> GetUsersSavedTracks(
-            int limit = 20,
-            int offset = 0,
-            string market = null,
-            string accessToken = null
-            );
-        #endregion
 
         /// <summary>
         /// Get a list of the albums saved in the current Spotify user’s ‘Your Music’ library.
         /// </summary>
-        /// <param name="type">Required. Value is either album or track.</param>
         /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedAlbums"/> or <see cref="PagedTracks"/> object depending on the param type value.</returns>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedAlbums"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-albums/
-        /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
         /// </remarks>
-        Task<T> GetCurrentUsersSavedAlbumsOrTracks<T>(
-            string type,
+        Task<T> GetCurrentUsersSavedAlbums<T>(
             int limit = 20,
             int offset = 0,
             string market = null,
@@ -173,6 +170,44 @@ namespace SpotifyApi.NetCore
             );
         #endregion
 
+        #region GetUsersSavedTracks
+        /// <summary>
+        /// Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedTracks"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
+        /// </remarks>
+        Task<PagedTracks> GetUsersSavedTracks(
+            int limit = 20,
+            int offset = 0,
+            string market = null,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of objects to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
+        /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedTracks"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/library/get-users-saved-tracks/
+        /// </remarks>
+        Task<T> GetUsersSavedTracks<T>(
+            int limit = 20,
+            int offset = 0,
+            string market = null,
+            string accessToken = null
+            );
+        #endregion
+
         #region RemoveAlbumsForCurrentUser
         /// <summary>
         /// Remove one or more albums from the current user’s ‘Your Music’ library.
@@ -184,21 +219,6 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         Task RemoveAlbumsForCurrentUser(
             string[] albumIds,
-            string accessToken = null
-            );
-        #endregion
-
-        #region RemoveUsersSavedTracks
-        /// <summary>
-        /// Remove one or more tracks from the current user’s ‘Your Music’ library.
-        /// </summary>
-        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 track IDs can be sent in one request. A minimum of 1 track id is required.</param>
-        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <remarks>
-        /// https://developer.spotify.com/documentation/web-api/reference/library/remove-tracks-user/
-        /// </remarks>
-        Task RemoveUsersSavedTracks(
-            string[] trackIds,
             string accessToken = null
             );
         #endregion
@@ -216,6 +236,21 @@ namespace SpotifyApi.NetCore
         Task RemoveUsersSavedShows(
             string[] showIds,
             string market = null,
+            string accessToken = null
+            );
+        #endregion
+
+        #region RemoveUsersSavedTracks
+        /// <summary>
+        /// Remove one or more tracks from the current user’s ‘Your Music’ library.
+        /// </summary>
+        /// <param name="trackIds">Required. A comma-separated list of the track Spotify IDs. A maximum of 50 track IDs can be sent in one request. A minimum of 1 track id is required.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/library/remove-tracks-user/
+        /// </remarks>
+        Task RemoveUsersSavedTracks(
+            string[] trackIds,
             string accessToken = null
             );
         #endregion
