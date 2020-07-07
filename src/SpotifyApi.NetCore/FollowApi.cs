@@ -35,10 +35,10 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        public async Task<bool[]> CheckCurrentUserFollowsArtists(
+        public Task<bool[]> CheckCurrentUserFollowsArtists(
             string[] artistIds,
             string accessToken = null
-            ) => await CheckCurrentUserFollowsArtists<bool[]>(artistIds, accessToken);
+            ) => CheckCurrentUserFollowsArtists<bool[]>(artistIds, accessToken);
 
         /// <summary>
         /// Check to see if the current user is following one or more artists.
@@ -70,10 +70,10 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
         /// </remarks>
-        public async Task<bool[]> CheckCurrentUserFollowsUsers(
+        public Task<bool[]> CheckCurrentUserFollowsUsers(
             string[] userIds,
             string accessToken = null
-            ) => await CheckCurrentUserFollowsUsers<bool[]>(userIds, accessToken);
+            ) => CheckCurrentUserFollowsUsers<bool[]>(userIds, accessToken);
 
         /// <summary>
         /// Check to see if the current user is following one or more Spotify users.
@@ -218,11 +218,11 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/follow/get-followed/
         /// </remarks>
-        public async Task<PagedArtists> GetUsersFollowedArtists(
+        public Task<PagedArtists> GetUsersFollowedArtists(
             int limit = 20,
             string after = null,
             string accessToken = null
-            ) => await GetUsersFollowedArtists<PagedArtists>(limit, after, accessToken);
+            ) => GetUsersFollowedArtists<PagedArtists>(limit, after, accessToken);
 
         /// <summary>
         /// Get the current user’s followed artists.
