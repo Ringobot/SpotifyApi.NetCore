@@ -28,6 +28,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsArtists_ArtistId_AnyItems()
         {
@@ -38,6 +39,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckCurrentUserFollowsUsers_UserId_AnyItems()
         {
@@ -48,6 +50,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task CheckUsersFollowPlaylist_PlaylistId_UserIds_AnyItems()
         {
@@ -58,6 +61,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task FollowArtists_ArtistIds_IsTrue()
         {
@@ -84,7 +88,7 @@ namespace SpotifyApi.NetCore.Tests
             // unfollow
             await api.UnfollowArtists(artistIds, bearerAccessToken);
 
-            // checking if artists are already followed
+            // check if artist has been unfollowed
             Assert.IsFalse((await api.CheckCurrentUserFollowsArtists(
                 artistIds,
                 bearerAccessToken)).First(),
@@ -94,7 +98,7 @@ namespace SpotifyApi.NetCore.Tests
             await api.FollowArtists(artistIds, bearerAccessToken);
 
             // assert
-            // checking if artists were unfollowed successfully
+            // check if artist was followed successfully
             Assert.IsTrue((await api.CheckCurrentUserFollowsArtists(
                 artistIds,
                 bearerAccessToken)).First(),
@@ -112,7 +116,7 @@ namespace SpotifyApi.NetCore.Tests
             // unfollow
             await api.UnfollowUsers(userIds, bearerAccessToken);
 
-            // checking if users were unfollowed successfully
+            // check if user was unfollowed
             Assert.IsFalse((await api.CheckCurrentUserFollowsUsers(
                 userIds,
                 bearerAccessToken)).First(),
@@ -122,7 +126,7 @@ namespace SpotifyApi.NetCore.Tests
             await api.FollowUsers(userIds, bearerAccessToken);
 
             // assert
-            // checking if users were followed successfully
+            // check if user was followed successfully
             Assert.IsTrue((await api.CheckCurrentUserFollowsUsers(
                 userIds,
                 bearerAccessToken)).First(),
@@ -130,6 +134,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task FollowUsers_UserIds_IsTrue()
         {
@@ -146,6 +151,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task FollowPlaylist_PlaylistId_IsPublic_IsTrue()
         {
@@ -166,6 +172,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task GetUsersFollowedArtists_IsNotNull()
         {
@@ -175,6 +182,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task UnfollowArtists_ArtistIds_IsFalse()
         {
@@ -190,6 +198,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task UnfollowUsers_UserIds_IsFalse()
         {
@@ -205,6 +214,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestCategory("Integration")]
+        [TestCategory("User")]
         [TestMethod]
         public async Task UnfollowPlaylist_PlaylistId_IsFalse()
         {

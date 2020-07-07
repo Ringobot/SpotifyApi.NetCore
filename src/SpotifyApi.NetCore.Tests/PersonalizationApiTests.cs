@@ -1,10 +1,9 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpotifyApi.NetCore.Authorization;
 using SpotifyApi.NetCore.Models;
-using SpotifyApi.NetCore.Helpers;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore.Tests
 {
