@@ -153,7 +153,7 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Shows | 3 | 3 | 100% | ✅ |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 2 | 100% | ✅ |
-| **Total** | **69** | **57** | **83%** |
+| **Total** | **69** | **56** | **81%** |
 
 Feature requests welcomed! (create an issue)
 
