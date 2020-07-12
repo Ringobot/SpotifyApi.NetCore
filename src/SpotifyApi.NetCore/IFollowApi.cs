@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace SpotifyApi.NetCore
 {
     /// <summary>
-    /// Defines an interface for a wrapper for the Spotify Web Follow API.
+    /// Defines a wrapper for the Spotify Web Follow API.
     /// </summary>
     public interface IFollowApi
     {

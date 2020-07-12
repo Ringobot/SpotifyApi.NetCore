@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,9 +9,9 @@ using SpotifyApi.NetCore.Models;
 namespace SpotifyApi.NetCore.Tests
 {
     [TestClass]
-    public class EpisodeApiTests
+    public class ShowsApiTests
     {
-        EpisodesApi api;
+        ShowsApi api;
         string bearerAccessToken;
 
         [TestInitialize]
@@ -21,27 +22,34 @@ namespace SpotifyApi.NetCore.Tests
             bearerAccessToken = testConfig.GetValue(typeof(string),
                 "SpotifyUserBearerAccessToken").ToString();
             var accounts = new AccountsService(http, testConfig);
-            api = new EpisodesApi(http, accounts);
+            api = new ShowsApi(http, accounts);
         }
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task GetEpisode_EpisodeId_IsNotNull()
+        public async Task GetShow_ShowId_IsNotNull()
         {
             // assert
-            Assert.IsNotNull(value: await api.GetEpisode("512ojhOuo1ktJprKbVcKyQ", "ES",
-                bearerAccessToken));
+            Assert.IsNotNull(await api.GetShow("38bS44xjbVVZ3No3ByF1dJ",
+                accessToken: bearerAccessToken));
         }
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task GetSeveralEpisodes_EpisodeId_IsNotNull()
+        public async Task GetSeveralShows_ShowIds_IsNotNull()
         {
             // assert
-            Assert.IsNotNull(value: await api.GetSeveralEpisodes(
-                new string[] { "77o6BIVlYM3msb4MMIL1jH" },
-                "ES",
-                bearerAccessToken));
+            Assert.IsNotNull(await api.GetSeveralShows(new string[] { "5CfCWKI5pZ28U0uOzXkDHe" },
+                accessToken: bearerAccessToken));
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetShowEpisodes_ShowId_IsNotNull()
+        {
+            // assert
+            Assert.IsNotNull(await api.GetShowEpisodes("38bS44xjbVVZ3No3ByF1dJ",
+                accessToken: bearerAccessToken));
         }
     }
 }
