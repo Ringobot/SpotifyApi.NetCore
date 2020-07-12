@@ -14,10 +14,8 @@ namespace SpotifyApi.NetCore.Tests
     [TestClass]
     public class PlayerApiTests
     {
-        //public const string UserHash = "E11AC28538A7C0A827A726DD9B30B710FC1FCAFFFE2E86FCA853AB90E7C710D2";
         private static IConfiguration _config = TestsHelper.GetLocalConfig();
         private static HttpClient _http = new HttpClient();
-        private static UserAccountsService _accounts = new UserAccountsService(_http, _config);
 
         [TestMethod]
         public async Task PlayTracks_AccessToken_PutInvokedWithAccessToken()
@@ -155,23 +153,21 @@ namespace SpotifyApi.NetCore.Tests
             await player.GetCurrentPlaybackInfo();
         }
 
-
-        //[TestMethod]
-        public async Task Play_UserToken_HowDoesThisWork()
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task Seek_1ms_NoException()
         {
             // arrange
-            var tokens = new BearerTokenStore();
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
 
             // act
-            var mockPlayerApi = new Mock<IPlayerApi>();
-
-            await mockPlayerApi.Object.PlayAlbum("albumid", accessToken: tokens.GetToken("userId"));
-            await mockPlayerApi.Object.PlayAlbum("albumid", deviceId: "deviceId");
-            await mockPlayerApi.Object.PlayAlbumOffset("albumid", 1);
-            await mockPlayerApi.Object.PlayAlbumOffset("albumid", 1, positionMs: 10000);
-            await mockPlayerApi.Object.PlayAlbumOffset("albumid", "trackId");
-            await mockPlayerApi.Object.PlayAlbumOffset("albumid", "trackId", positionMs: 10000);
+            await player.Seek(1, accessToken: accessToken);
         }
+
+
     }
 
     class BearerTokenStore
