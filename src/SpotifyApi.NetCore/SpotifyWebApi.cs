@@ -163,7 +163,21 @@ namespace SpotifyApi.NetCore
         /// Helper to DELETE an object
         /// </summary>
         protected internal virtual async Task<HttpResponseMessage> Delete(Uri uri, string accessToken = null)
-            => await PostOrPut("DELETE", uri, null, accessToken);
+        {
+            Logger.Debug($"DELETE {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
+
+            _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Bearer", 
+                accessToken ?? (await GetAccessToken()));
+
+            var response = await _http.DeleteAsync(uri);
+
+            Logger.Information($"DELETE {uri} {response.StatusCode}", nameof(RestHttpClient));
+
+            await RestHttpClient.CheckForErrors(response);
+
+            return response;
+        }
 
         private async Task<HttpResponseMessage> PostOrPut(string verb, Uri uri, object data, string accessToken = null)
         {
@@ -172,8 +186,18 @@ namespace SpotifyApi.NetCore
             _http.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()));
 
-            var content = data == null ? new StringContent("null") : new StringContent(JsonConvert.SerializeObject(data));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            StringContent content = null;
+
+            if (data == null)
+            {
+                content = null;
+            }
+            else
+            {
+                content = new StringContent(JsonConvert.SerializeObject(data));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            }
+
             HttpResponseMessage response = null;
 
             switch (verb)
@@ -183,9 +207,6 @@ namespace SpotifyApi.NetCore
                     break;
                 case "POST":
                     response = await _http.PostAsync(uri, content);
-                    break;
-                case "DELETE":
-                    response = await _http.DeleteAsync(uri);
                     break;
                 default:
                     throw new NotSupportedException($"{verb} is not a supported verb");
