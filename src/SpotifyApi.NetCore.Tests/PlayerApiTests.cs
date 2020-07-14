@@ -129,7 +129,7 @@ namespace SpotifyApi.NetCore.Tests
         {
             // arrange
             const string token = "abc123";
-            string json = JsonConvert.SerializeObject(new CurrentPlaybackContext());
+            string json = JsonConvert.SerializeObject(new CurrentTrackPlaybackContext());
             var http = new MockHttpClient();
             http.SetupSendAsync(json);
             var service = new Mock<PlayerApi>(http.HttpClient, token) { CallBase = true };

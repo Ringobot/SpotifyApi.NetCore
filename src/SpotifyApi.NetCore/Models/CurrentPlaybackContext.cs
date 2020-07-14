@@ -9,7 +9,7 @@ namespace SpotifyApi.NetCore
     /// Currently Playing Object
     /// </summary>
     /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
-    public partial class CurrentPlaybackContext
+    public abstract partial class CurrentPlaybackContext
     {
         /// <summary>
         /// Unix Millisecond Timestamp when data was fetched.
@@ -35,16 +35,10 @@ namespace SpotifyApi.NetCore
         [JsonProperty("currently_playing_type")]
         public string CurrentlyPlayingType { get; set; }
 
-        /// <summary>
-        /// The currently playing track. Can be null.
-        /// </summary>
-        [JsonProperty("item")]
-        public Track Item { get; set; }
-
-        [JsonProperty("shuffle_state")]
+        [JsonProperty("shuffle_state", NullValueHandling = NullValueHandling.Ignore)]
         public bool ShuffleState { get; set; }
 
-        [JsonProperty("repeat_state")]
+        [JsonProperty("repeat_state", NullValueHandling = NullValueHandling.Ignore)]
         public string RepeatState { get; set; }
 
         /// <summary>
@@ -52,6 +46,12 @@ namespace SpotifyApi.NetCore
         /// </summary>
         [JsonProperty("context")]
         public Context Context { get; set; }
+
+        /// <summary>
+        /// Allows to update the user interface based on which playback actions are available within the current context.
+        /// </summary>
+        [JsonProperty("actions")]
+        public Actions Actions { get; set; }
     }
 
     public partial class Context

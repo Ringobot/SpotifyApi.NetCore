@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SpotifyApi.NetCore.Models
+namespace SpotifyApi.NetCore
 {
     public class Paged<T>
     {
@@ -16,13 +16,28 @@ namespace SpotifyApi.NetCore.Models
         [JsonProperty("next")]
         public string Next { get; set; }
 
-        [JsonProperty("offset")]
+        [JsonProperty("offset", NullValueHandling = NullValueHandling.Ignore)]
         public int Offset { get; set; }
 
-        [JsonProperty("previous")]
+        [JsonProperty("previous", NullValueHandling = NullValueHandling.Ignore)]
         public string Previous { get; set; }
+
+        /// <summary>
+        /// The cursors used to find the next set of items.
+        /// </summary>
+        [JsonProperty("cursor", NullValueHandling = NullValueHandling.Ignore)]
+        public Cursor Cursor { get; set; }
 
         [JsonProperty("total")]
         public int Total { get; set; }
+    }
+
+    public class Cursor
+    {
+        /// <summary>
+        /// The cursor to use as key to find the next page of items.
+        /// </summary>
+        [JsonProperty("after")]
+        public string After { get; set; }
     }
 }
