@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using SpotifyApi.NetCore.Authorization;
+using SpotifyApi.NetCore.Models;
 using SpotifyApi.NetCore.Tests.Mocks;
 
 namespace SpotifyApi.NetCore.Tests
@@ -162,12 +163,104 @@ namespace SpotifyApi.NetCore.Tests
             var http = new HttpClient();
             var player = new PlayerApi(http);
             string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
             await player.Seek(1, accessToken: accessToken);
         }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task Shuffle_OnOff_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
+            // act
+            await player.Shuffle(true, accessToken: accessToken);
+            await player.Shuffle(false, accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task Volume_100_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
+
+            // act
+            await player.Volume(100, accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task Repeat_ContextOff_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
+
+            // act
+            await player.Repeat(RepeatStates.Context, accessToken: accessToken);
+            await player.Repeat(RepeatStates.Off, accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task Pause_UserAccessToken_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
+
+            // act
+            await player.Pause(accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task SkipNext_UserAccessToken_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
+
+            // act
+            await player.SkipNext(accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task SkipPrevious_AfterSkipNext_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
+            await player.SkipNext(accessToken: accessToken);
+
+            // act
+            await player.SkipPrevious(accessToken: accessToken);
+        }
     }
 
     class BearerTokenStore
