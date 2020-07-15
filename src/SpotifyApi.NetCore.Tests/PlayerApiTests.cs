@@ -123,7 +123,7 @@ namespace SpotifyApi.NetCore.Tests
         }
 
         [TestMethod]
-        public async Task GetCurrentPlaybackInfo_AccessToken_GetModelInvokedWithAccessToken()
+        public async Task GetCurrentPlaybackInfo_AccessToken_GetJObjectInvokedWithAccessToken()
         {
             // arrange
             const string token = "abc123";
@@ -136,7 +136,7 @@ namespace SpotifyApi.NetCore.Tests
             await service.Object.GetCurrentPlaybackInfo(token);
 
             // assert
-            service.Verify(s => s.GetModel<CurrentPlaybackContext>(It.IsAny<string>(), token));
+            service.Verify(s => s.GetJObject(It.IsAny<Uri>(), token));
         }
 
         [TestMethod]

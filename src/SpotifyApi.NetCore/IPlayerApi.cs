@@ -296,11 +296,21 @@ namespace SpotifyApi.NetCore
         /// </param>
         /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
         /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
         /// <returns>Task of <see cref="CurrentPlaybackContext"/></returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// </remarks>
-        Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(string accessToken = null, string market = null);
+        Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(
+            string accessToken = null, 
+            string market = null,
+            string[] additionalTypes = null);
 
         /// <summary>
         /// BETA. Get information about the user’s current playback state, including track, track progress, and active device.
@@ -311,12 +321,22 @@ namespace SpotifyApi.NetCore
         /// </param>
         /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
         /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// </remarks>
-        Task<T> GetCurrentPlaybackInfo<T>(string accessToken = null, string market = null);
+        Task<T> GetCurrentPlaybackInfo<T>(
+            string accessToken = null, 
+            string market = null,
+            string[] additionalTypes = null);
 
         #endregion
 
