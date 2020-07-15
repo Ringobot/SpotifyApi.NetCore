@@ -1,14 +1,12 @@
-using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using SpotifyApi.NetCore.Authorization;
-using SpotifyApi.NetCore.Models;
 using SpotifyApi.NetCore.Tests.Mocks;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -27,7 +25,7 @@ namespace SpotifyApi.NetCore.Tests
 
             var http = new MockHttpClient();
             http.SetupSendAsync();
-            var service = new Mock<PlayerApi>(http.HttpClient, token){CallBase = true};
+            var service = new Mock<PlayerApi>(http.HttpClient, token) { CallBase = true };
 
             // act
             await service.Object.PlayTracks(trackUri, token);
@@ -260,6 +258,60 @@ namespace SpotifyApi.NetCore.Tests
 
             // act
             await player.SkipPrevious(accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task GetRecentlyPlayedTracks_UserAccessToken_NotNull()
+        {
+            // arrange
+            var http = new HttpClient();
+            IPlayerApi player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+
+            // act
+            var history = await player.GetRecentlyPlayedTracks(accessToken: accessToken);
+
+            // assert
+            Assert.IsNotNull(history);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task GetRecentlyPlayedTracks_GetNextPage_ItemsAny()
+        {
+            // arrange
+            var http = new HttpClient();
+            IPlayerApi player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+
+            // act
+            var history = await player.GetRecentlyPlayedTracks(accessToken: accessToken);
+            var moreHistory = await player.GetRecentlyPlayedTracks(before: history.Cursors.Before, accessToken: accessToken);
+
+            // assert
+            Assert.IsTrue(moreHistory.Items.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task GetCurrentlyPlayingTrack_UserAccessToken_NotNull()
+        {
+            // arrange
+            var http = new HttpClient();
+            IPlayerApi player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+
+            // act
+            var context = await player.GetCurrentlyPlayingTrack(
+                additionalTypes: new[] { "episode" },
+                accessToken: accessToken);
+
+            // assert
+            Assert.IsNotNull(context);
         }
     }
 

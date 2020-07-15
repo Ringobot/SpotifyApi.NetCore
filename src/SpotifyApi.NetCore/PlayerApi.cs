@@ -616,9 +616,13 @@ namespace SpotifyApi.NetCore
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
         public Task<PagedPlayHistory> GetRecentlyPlayedTracks(
             int? limit = null,
-            long? after = null,
-            long? before = null,
-            string accessToken = null) => throw new NotImplementedException();
+            string after = null,
+            string before = null,
+            string accessToken = null) => GetRecentlyPlayedTracks<PagedPlayHistory>(
+                limit: limit,
+                after: after,
+                before: before,
+                accessToken: accessToken);
 
         /// <summary>
         /// Get tracks from the current user’s recently played tracks.
@@ -632,11 +636,21 @@ namespace SpotifyApi.NetCore
         /// used for this call only. See constructors for other ways to provide an access token.</param>
         /// <returns>An array of play history objects serialized as T</returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
-        public Task<T> GetRecentlyPlayedTracks<T>(
+        public async Task<T> GetRecentlyPlayedTracks<T>(
             int? limit = null,
-            long? after = null,
-            long? before = null,
-            string accessToken = null) => throw new NotImplementedException();
+            string after = null,
+            string before = null,
+            string accessToken = null)
+        {
+            if (limit.HasValue && (limit.Value < 1 || limit.Value > 50))
+                throw new ArgumentOutOfRangeException("limit", "Limit must be a value from 1 to 50");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/player/recently-played");
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("after", after);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("before", before);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
 
         #endregion
 
@@ -660,10 +674,22 @@ namespace SpotifyApi.NetCore
         /// returned is for the last known state, which means an inactive device could be returned if 
         /// it was the last one to execute playback.</returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
-        public Task<CurrentPlaybackContext> GetCurrentlyPlayingTrack(
-            string market = null, 
-            string[] additionalTypes = null, 
-            string accessToken = null) => throw new NotImplementedException();
+        public async Task<CurrentPlaybackContext> GetCurrentlyPlayingTrack(
+            string market = null,
+            string[] additionalTypes = null,
+            string accessToken = null)
+        {
+            var builder = new UriBuilder($"{BaseUrl}/me/player/currently-playing");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("market", market);
+            builder.AppendToQueryAsCsv("additional_types", additionalTypes);
+            var jObject = await GetJObject(builder.Uri, accessToken: accessToken);
+
+            // Deserialize as Items of Track or Items of Episode
+            if (jObject["currently_playing_type"].ToString() == "episode")
+                return jObject.ToObject<CurrentEpisodePlaybackContext>();
+
+            return jObject.ToObject<CurrentTrackPlaybackContext>();
+        }
 
         /// <summary>
         /// Get the object currently being played on the user’s Spotify account.
@@ -682,10 +708,16 @@ namespace SpotifyApi.NetCore
         /// <returns>Information about the currently playing track or episode and its context serialized
         /// as T.</returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
-        public Task<T> GetCurrentlyPlayingTrack<T>(
-            string market = null,
-            string[] additionalTypes = null,
-            string accessToken = null) => throw new NotImplementedException();
+        public async Task<T> GetCurrentlyPlayingTrack<T>(
+                string market = null,
+                string[] additionalTypes = null,
+                string accessToken = null)
+        {
+            var builder = new UriBuilder($"{BaseUrl}/me/player/currently-playing");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("market", market);
+            builder.AppendToQueryAsCsv("additional_types", additionalTypes);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
 
         #endregion
 

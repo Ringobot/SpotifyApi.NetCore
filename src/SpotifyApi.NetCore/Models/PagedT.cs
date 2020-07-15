@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace SpotifyApi.NetCore
 {
@@ -25,19 +26,10 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// The cursors used to find the next set of items.
         /// </summary>
-        [JsonProperty("cursor", NullValueHandling = NullValueHandling.Ignore)]
-        public Cursor Cursor { get; set; }
+        [JsonProperty("cursors", NullValueHandling = NullValueHandling.Ignore)]
+        public Cursors Cursors { get; set; }
 
-        [JsonProperty("total")]
+        [JsonProperty("total", NullValueHandling = NullValueHandling.Ignore)]
         public int Total { get; set; }
-    }
-
-    public class Cursor
-    {
-        /// <summary>
-        /// The cursor to use as key to find the next page of items.
-        /// </summary>
-        [JsonProperty("after")]
-        public string After { get; set; }
     }
 }

@@ -24,21 +24,18 @@ namespace SpotifyApi.NetCore
         public Context Context { get; set; }
 
         /// <summary>
-        /// The context the track was played from as <see cref="DateTimeOffset"/>.
+        /// Converts the date and time the track was played into <see cref="DateTimeOffset"/>.
         /// </summary>
-        public DateTimeOffset? PlayedAtDateTime 
-        { 
-            get
-            {
-                if (PlayedAt == null) return null;
-                
-                if (DateTimeOffset.TryParse(PlayedAt, out var result))
-                {
-                    return result;
-                }
+        public DateTimeOffset? PlayedAtDateTime()
+        {
+            if (PlayedAt == null) return null;
 
-                return null;
-            } 
+            if (DateTimeOffset.TryParse(PlayedAt, out var result))
+            {
+                return result;
+            }
+
+            return null;
         }
     }
 }

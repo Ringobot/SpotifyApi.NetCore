@@ -475,8 +475,8 @@ namespace SpotifyApi.NetCore
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
         Task<PagedPlayHistory> GetRecentlyPlayedTracks(
             int? limit = null,
-            long? after = null, 
-            long? before = null, 
+            string after = null, 
+            string before = null, 
             string accessToken = null);
 
         /// <summary>
@@ -493,8 +493,8 @@ namespace SpotifyApi.NetCore
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
         Task<T> GetRecentlyPlayedTracks<T>(
             int? limit = null,
-            long? after = null,
-            long? before = null,
+            string after = null,
+            string before = null,
             string accessToken = null);
 
         #endregion

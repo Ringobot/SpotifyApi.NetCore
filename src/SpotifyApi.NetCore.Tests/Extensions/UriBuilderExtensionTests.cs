@@ -157,5 +157,18 @@ namespace SpotifyApi.NetCore.Tests.Extensions
             Assert.AreEqual("?timestamp=2014-10-23T09:00:00", builder.Uri.Query);
         }
 
+        [TestMethod]
+        public void AppendToQueryIfValueGreaterThan0_LongValue_WellFormed()
+        {
+            // arrange
+            var builder = new UriBuilder("https://api.spotify.com/v1/me/player/recently-played");
+            long after = 1484811043508;
+
+            // act
+            builder.AppendToQueryIfValueGreaterThan0("after", after);
+
+            // assert
+            Assert.AreEqual($"?after={after}", builder.Uri.Query);
+        }
     }
 }

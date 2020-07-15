@@ -110,7 +110,6 @@ namespace SpotifyApi.NetCore
             string accessToken = null)
                 => GetModelFromProperty<T>(new Uri(url), rootPropertyName, accessToken: accessToken);
 
-
         /// <summary>
         /// Invoke a GET request and deserialise the result to JSON from a root property of the Spotify Response
         /// </summary>
@@ -121,16 +120,25 @@ namespace SpotifyApi.NetCore
         protected internal virtual async Task<T> GetModelFromProperty<T>(
             Uri uri,
             string rootPropertyName,
-            string accessToken = null)
+            string accessToken = null) 
+            => (await GetJObject(uri, accessToken: accessToken))[rootPropertyName].ToObject<T>();
+
+        /// <summary>
+        /// GET uri and deserialize as <see cref="JObject"/>
+        /// </summary>
+        protected internal virtual async Task<JObject> GetJObject(Uri uri, string accessToken = null)
         {
             string json = await _http.Get
             (
                 uri,
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
             );
-            var deserialized = JsonConvert.DeserializeObject(json) as JObject;
-            if (deserialized == null) throw new InvalidOperationException($"Failed to deserialize response as JSON. Response = {json.Substring(0, Math.Min(json.Length, 256))}");
-            return deserialized[rootPropertyName].ToObject<T>();
+
+            JObject deserialized = JsonConvert.DeserializeObject(json) as JObject;
+            if (deserialized == null) 
+                throw new InvalidOperationException($"Failed to deserialize response as JSON. Response = {json.Substring(0, Math.Min(json.Length, 256))}");
+
+            return deserialized;
         }
 
         /// <summary>
