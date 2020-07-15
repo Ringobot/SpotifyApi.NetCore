@@ -313,6 +313,36 @@ namespace SpotifyApi.NetCore.Tests
             // assert
             Assert.IsNotNull(context);
         }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task TransferPlayback_Device0Id_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            IPlayerApi player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            var devices = await player.GetDevices(accessToken: accessToken);
+
+            // act
+            await player.TransferPlayback(devices[0].Id, accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task TransferPlayback_GetDevice1IdPlayTrue_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            IPlayerApi player = new PlayerApi(http);
+            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            var devices = await player.GetDevices(accessToken: accessToken);
+
+            // act
+            await player.TransferPlayback(devices.Last().Id, play: true, accessToken: accessToken);
+        }
     }
 
     class BearerTokenStore

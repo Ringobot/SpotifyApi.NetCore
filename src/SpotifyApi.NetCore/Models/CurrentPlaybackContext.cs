@@ -17,7 +17,7 @@ namespace SpotifyApi.NetCore
         [JsonProperty("timestamp")]
         public long Timestamp { get; set; }
 
-        [JsonProperty("device", NullValueHandling = NullValueHandling.Ignore))]
+        [JsonProperty("device", NullValueHandling = NullValueHandling.Ignore)]
         public Device Device { get; set; }
 
         /// <summary>

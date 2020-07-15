@@ -733,8 +733,13 @@ namespace SpotifyApi.NetCore
         /// used for this call only. See constructors for other ways to provide an access token.</param>
         /// <returns></returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/transfer-a-users-playback/ </remarks>
-        public Task TransferPlayback(string deviceId, bool? play = null, string accessToken = null)
-            => throw new NotImplementedException();
+        public async Task TransferPlayback(string deviceId, bool? play = null, string accessToken = null)
+        {
+            await Put(
+                new Uri($"{BaseUrl}/me/player"), 
+                new { device_ids = new[] { deviceId }, play }, 
+                accessToken: accessToken);
+        }
 
         #endregion
 
