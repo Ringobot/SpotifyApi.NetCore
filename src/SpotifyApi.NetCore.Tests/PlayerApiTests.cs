@@ -160,7 +160,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = await TestsHelper.GetAccessToken();
+            string accessToken = await TestsHelper.GetUserAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
@@ -175,7 +175,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
@@ -191,7 +191,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
@@ -206,7 +206,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
@@ -222,7 +222,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
@@ -237,7 +237,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
@@ -252,7 +252,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
             await player.SkipNext(accessToken: accessToken);
 
@@ -268,7 +268,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             IPlayerApi player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
 
             // act
             var history = await player.GetRecentlyPlayedTracks(accessToken: accessToken);
@@ -285,7 +285,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             IPlayerApi player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
 
             // act
             var history = await player.GetRecentlyPlayedTracks(accessToken: accessToken);
@@ -303,7 +303,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             IPlayerApi player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
 
             // act
             var context = await player.GetCurrentlyPlayingTrack(
@@ -322,7 +322,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             IPlayerApi player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             var devices = await player.GetDevices(accessToken: accessToken);
 
             // act
@@ -337,7 +337,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             IPlayerApi player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetUserAccessToken();
             var devices = await player.GetDevices(accessToken: accessToken);
 
             // act

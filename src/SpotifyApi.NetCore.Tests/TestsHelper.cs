@@ -30,7 +30,11 @@ namespace SpotifyApi.NetCore.Tests
             return _config;
         }
 
-        internal static async Task<string> GetAccessToken()
+        /// <summary>
+        /// Gets and caches a user access token. App setting "SpotifyUserRefreshToken" must contain a valid 
+        /// user refresh token for this to work. Does not refesh token when expired.
+        /// </summary>
+        internal static async Task<string> GetUserAccessToken()
         {
             // not thread safe (last one wins)
             if (_accessToken == null)
