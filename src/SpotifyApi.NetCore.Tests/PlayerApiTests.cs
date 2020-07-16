@@ -160,7 +160,7 @@ namespace SpotifyApi.NetCore.Tests
             // arrange
             var http = new HttpClient();
             var player = new PlayerApi(http);
-            string accessToken = TestsHelper.GetLocalConfig()["SpotifyUserBearerAccessToken"];
+            string accessToken = await TestsHelper.GetAccessToken();
             await player.PlayAlbum("5mAPk4qeNqVLtNydaWbWlf", accessToken);
 
             // act
