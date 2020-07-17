@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SpotifyApi.NetCore.Models
+namespace SpotifyApi.NetCore
 {
     /// <summary>
     /// Episode object (full) (public)
