@@ -343,6 +343,172 @@ namespace SpotifyApi.NetCore.Tests
             // act
             await player.TransferPlayback(devices.Last().Id, play: true, accessToken: accessToken);
         }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayTracks_2Tracks_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayTracks(
+                    new [] { "1vNNfTgHsrpOXeiaXQBlH7", "48rukEbJkzt2yUxAudbcZw" }, 
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayAlbum_AlbumId_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayAlbum(
+                    "5mAPk4qeNqVLtNydaWbWlf",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayAlbumOffset_Track3_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayAlbumOffset(
+                    "5mAPk4qeNqVLtNydaWbWlf",
+                    2,
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayAlbumOffset_TrackId_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayAlbumOffset(
+                    "5mAPk4qeNqVLtNydaWbWlf",
+                    "48rukEbJkzt2yUxAudbcZw",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayArtist_ArtistId_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayArtist(
+                    "6FXMGgJwohJLUSr5nVlf9X",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayArtistOffset_Track2_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayAlbumOffset(
+                    "6FXMGgJwohJLUSr5nVlf9X",
+                    1,
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayArtistOffset_TrackId_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayAlbumOffset(
+                    "6FXMGgJwohJLUSr5nVlf9X",
+                    "1vNNfTgHsrpOXeiaXQBlH7",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayPlaylist_PlaylistId_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayPlaylist(
+                    "37i9dQZF1DZ06evO3WBS4o",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayPlaylistOffset_Track2_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayAlbumOffset(
+                    "37i9dQZF1DZ06evO3WBS4o",
+                    1,
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task PlayPlaylistOffset_TrackId_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .PlayAlbumOffset(
+                    "37i9dQZF1DZ06evO3WBS4o",
+                    "2BndJYJQ17UcEeUFJP5JmY",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task Play_Paused_NoException()
+        {
+            // arrange
+            var http = new HttpClient();
+            var player = new PlayerApi(http);
+            string accessToken = await TestsHelper.GetUserAccessToken();
+            await player.Pause(accessToken: accessToken);
+
+            // act
+            await player.Play(accessToken: accessToken);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task GetDevices_AccessToken_ResultIsNotNull()
+        {
+            // act
+            var result = await new PlayerApi(new HttpClient())
+                .GetDevices(accessToken: await TestsHelper.GetUserAccessToken());
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task GetCurrentPlaybackInfo_AccessToken_ResultIsNotNull()
+        {
+            // act
+            var result = await new PlayerApi(new HttpClient())
+                .GetCurrentPlaybackInfo(accessToken: await TestsHelper.GetUserAccessToken());
+
+            Assert.IsNotNull(result);
+        }
+
     }
 
     class BearerTokenStore
