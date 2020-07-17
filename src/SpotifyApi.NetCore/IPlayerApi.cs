@@ -1,6 +1,4 @@
-﻿using SpotifyApi.NetCore.Models;
-using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
@@ -308,7 +306,7 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// </remarks>
         Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(
-            string accessToken = null, 
+            string accessToken = null,
             string market = null,
             string[] additionalTypes = null);
 
@@ -334,7 +332,7 @@ namespace SpotifyApi.NetCore
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// </remarks>
         Task<T> GetCurrentPlaybackInfo<T>(
-            string accessToken = null, 
+            string accessToken = null,
             string market = null,
             string[] additionalTypes = null);
 
@@ -495,8 +493,8 @@ namespace SpotifyApi.NetCore
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
         Task<PagedPlayHistory> GetRecentlyPlayedTracks(
             int? limit = null,
-            string after = null, 
-            string before = null, 
+            string after = null,
+            string before = null,
             string accessToken = null);
 
         /// <summary>
@@ -540,8 +538,8 @@ namespace SpotifyApi.NetCore
         /// it was the last one to execute playback.</returns>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
         Task<CurrentPlaybackContext> GetCurrentlyPlayingTrack(
-            string market = null, 
-            string[] additionalTypes = null, 
+            string market = null,
+            string[] additionalTypes = null,
             string accessToken = null);
 
         /// <summary>

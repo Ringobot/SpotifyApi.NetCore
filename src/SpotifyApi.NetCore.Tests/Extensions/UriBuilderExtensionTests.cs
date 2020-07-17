@@ -1,8 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using SpotifyApi.NetCore.Extensions;
 
 namespace SpotifyApi.NetCore.Tests.Extensions
 {
