@@ -52,11 +52,11 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(
+        public Task PlayTracks(
             string trackId,
             string accessToken = null,
             string deviceId = null,
-            long positionMs = 0) => await PlayTracks(
+            long positionMs = 0) => PlayTracks(
                 new[] { trackId },
                 accessToken: accessToken,
                 deviceId: deviceId,
@@ -334,10 +334,8 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/
         /// </remarks>
-        public async Task Play(string accessToken = null, string deviceId = null)
-        {
-            await Play(null, accessToken, deviceId, 0);
-        }
+        public Task Play(string accessToken = null, string deviceId = null) 
+            => Play(null, accessToken, deviceId, 0);
 
         #endregion
 
@@ -354,7 +352,8 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>
-        public async Task<Device[]> GetDevices(string accessToken = null) => await GetDevices<Device[]>(accessToken: accessToken);
+        public Task<Device[]> GetDevices(string accessToken = null) 
+            => GetDevices<Device[]>(accessToken: accessToken);
 
         /// <summary>
         /// BETA. Get information about a user’s available devices.
@@ -368,8 +367,8 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>
-        public async Task<T> GetDevices<T>(string accessToken = null)
-            => await GetModelFromProperty<T>($"{BaseUrl}/me/player/devices", "devices", accessToken);
+        public Task<T> GetDevices<T>(string accessToken = null)
+            => GetModelFromProperty<T>(new Uri($"{BaseUrl}/me/player/devices"), "devices", accessToken: accessToken);
 
         #endregion
 
@@ -450,10 +449,10 @@ namespace SpotifyApi.NetCore
         private async Task Play(dynamic data, string accessToken, string deviceId, long positionMs)
         {
             // url
-            string url = $"{BaseUrl}/me/player/play";
-            if (deviceId != null) url += $"?device_id={deviceId}";
+            var builder = new UriBuilder($"{BaseUrl}/me/player/play");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
             if (positionMs > 0) data.position_ms = positionMs;
-            await Put(url, data, accessToken);
+            await Put(builder.Uri, data, accessToken: accessToken);
         }
 
         #region Seek
@@ -475,9 +474,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Seek(long positionMs, string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/seek?position_ms={positionMs}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/seek?position_ms={positionMs}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -499,9 +498,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Shuffle(bool state, string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/shuffle?state={(state ? "true" : "false")}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/shuffle?state={(state ? "true" : "false")}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -525,9 +524,9 @@ namespace SpotifyApi.NetCore
         {
             if (volumePercent < 0 || volumePercent > 100)
                 throw new ArgumentOutOfRangeException(nameof(volumePercent), "Must be a value from 0 to 100 inclusive.");
-            string url = $"{BaseUrl}/me/player/volume?volume_percent={volumePercent}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/volume?volume_percent={volumePercent}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -551,9 +550,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Repeat(string state, string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/repeat?state={state}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/repeat?state={state}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -574,9 +573,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Pause(string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/pause";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/pause");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -597,9 +596,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task SkipNext(string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/next";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Post(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/next");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Post(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -623,9 +622,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task SkipPrevious(string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/previous";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Post(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/previous");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Post(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -774,6 +773,5 @@ namespace SpotifyApi.NetCore
         }
 
         #endregion
-
     }
 }

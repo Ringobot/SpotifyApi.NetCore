@@ -31,7 +31,7 @@ namespace SpotifyApi.NetCore.Tests
             await service.Object.PlayTracks(trackUri, token);
 
             // assert
-            service.Verify(s => s.Put(It.IsAny<string>(), It.IsAny<object>(), token));
+            service.Verify(s => s.Put(It.IsAny<Uri>(), It.IsAny<object>(), token));
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace SpotifyApi.NetCore.Tests
             await service.Object.PlayAlbum(uri, token);
 
             // assert
-            service.Verify(s => s.Put(It.IsAny<string>(), It.IsAny<object>(), token));
+            service.Verify(s => s.Put(It.IsAny<Uri>(), It.IsAny<object>(), token));
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace SpotifyApi.NetCore.Tests
             await service.Object.PlayArtist(id, token);
 
             // assert
-            service.Verify(s => s.Put(It.IsAny<string>(), It.IsAny<object>(), token));
+            service.Verify(s => s.Put(It.IsAny<Uri>(), It.IsAny<object>(), token));
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace SpotifyApi.NetCore.Tests
             await service.Object.PlayPlaylist(uri, token);
 
             // assert
-            service.Verify(s => s.Put(It.IsAny<string>(), It.IsAny<object>(), token));
+            service.Verify(s => s.Put(It.IsAny<Uri>(), It.IsAny<object>(), token));
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace SpotifyApi.NetCore.Tests
             await service.Object.Play(token);
 
             // assert
-            service.Verify(s => s.Put(It.IsAny<string>(), It.IsAny<object>(), token));
+            service.Verify(s => s.Put(It.IsAny<Uri>(), It.IsAny<object>(), token));
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace SpotifyApi.NetCore.Tests
             await service.Object.GetDevices<dynamic>(token);
 
             // assert
-            service.Verify(s => s.GetModelFromProperty<dynamic>(It.IsAny<string>(), It.IsAny<string>(), token));
+            service.Verify(s => s.GetModelFromProperty<dynamic>(It.IsAny<Uri>(), It.IsAny<string>(), token));
         }
 
         [TestMethod]
