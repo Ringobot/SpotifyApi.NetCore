@@ -120,13 +120,15 @@ namespace SpotifyApi.NetCore
             string fields = null,
             int? limit = null,
             int offset = 0,
-            string market = null) => await GetTracks<PlaylistPaged>(
+            string market = null,
+            string[] additionalTypes = null) => await GetTracks<PlaylistPaged>(
                 playlistId,
                 accessToken,
                 fields,
                 limit,
                 offset,
-                market);
+                market,
+                additionalTypes);
 
         /// <summary>
         /// Get full details of the tracks of a playlist owned by a Spotify user.
@@ -149,7 +151,8 @@ namespace SpotifyApi.NetCore
             string fields = null,
             int? limit = null,
             int offset = 0,
-            string market = null)
+            string market = null,
+            string[] additionalTypes = null)
         {
             if (string.IsNullOrEmpty(playlistId)) throw new ArgumentNullException(nameof(playlistId));
             string url = $"{BaseUrl}/playlists/{SpotifyUriHelper.PlaylistId(playlistId)}/tracks";
@@ -191,6 +194,76 @@ namespace SpotifyApi.NetCore
             => (await SearchApi.Search(
                 query,
                 SpotifySearchTypes.Playlist, limit: limit, offset: offset, accessToken: accessToken)).Playlists;
+
+        public Task<PlaylistSimplified> GetPlaylist(string playlistId, string accessToken = null, string fields = null, string[] additionalTypes = null, string market = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetPlaylist<T>(string playlistId, string accessToken = null, string fields = null, string[] additionalTypes = null, string market = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ModifyPlaylistResponse> AddItems(string playlistId, string[] spotifyUris, int? position = null, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ChangePlaylistDetails(string playlistId, PlaylistDetails details, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Playlist> CreatePlaylist(string userId, PlaylistDetails details, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> CreatePlaylist<T>(string userId, PlaylistDetails details, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedPlaylists> GetCurrentUsersPlaylists(int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetCurrentUsersPlaylists<T>(int? limit = null, int offset = 0, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Image[]> GetPlaylistCoverImage(string playlistId, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetPlaylistCoverImage<T>(string playlistId, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ModifyPlaylistResponse> RemoveItems(string playlistId, string[] spotifyUris, string snapshotId = null, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ModifyPlaylistResponse> RemoveItems(string playlistId, (string uri, int[] positions)[] spotifyUriPositions, string snapshotId = null, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ModifyPlaylistResponse> ReorderItems(string playlistId, int rangeStart, int insertBefore, int rangeLength = 1, string snapshotId = null, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ReplaceItems(string playlistId, string[] spotifyUris, string accessToken = null)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 

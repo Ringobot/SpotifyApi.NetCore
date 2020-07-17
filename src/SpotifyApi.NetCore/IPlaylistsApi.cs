@@ -46,9 +46,19 @@ namespace SpotifyApi.NetCore
 
         #region GetPlaylist
 
-        Task<PlaylistSimplified> GetPlaylist(string playlistId, string accessToken = null);
+        Task<PlaylistSimplified> GetPlaylist(
+            string playlistId, 
+            string accessToken = null, 
+            string fields = null, 
+            string[] additionalTypes = null,
+            string market = null);
 
-        Task<T> GetPlaylist<T>(string playlistId, string accessToken = null);
+        Task<T> GetPlaylist<T>(
+            string playlistId,
+            string accessToken = null,
+            string fields = null,
+            string[] additionalTypes = null,
+            string market = null);
 
         #endregion
 
@@ -74,7 +84,8 @@ namespace SpotifyApi.NetCore
             string fields = null,
             int? limit = null,
             int offset = 0,
-            string market = null);
+            string market = null,
+            string[] additionalTypes = null);
 
         /// <summary>
         /// Get full details of the tracks of a playlist owned by a Spotify user.
@@ -97,7 +108,8 @@ namespace SpotifyApi.NetCore
             string fields = null,
             int? limit = null,
             int offset = 0,
-            string market = null);
+            string market = null,
+            string[] additionalTypes = null);
 
         #endregion
 
@@ -115,8 +127,109 @@ namespace SpotifyApi.NetCore
         /// page of search results.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="PlaylistsSearchResult" /></returns>
-        Task<PlaylistsSearchResult> SearchPlaylists(string query, int? limit = null, int offset = 0, string accessToken = null);
+        Task<PlaylistsSearchResult> SearchPlaylists(
+            string query, 
+            int? limit = null, 
+            int offset = 0, 
+            string accessToken = null);
 
         #endregion
+
+        #region AddItems
+
+        Task<ModifyPlaylistResponse> AddItems(
+            string playlistId,
+            string[] spotifyUris,
+            int? position = null,
+            string accessToken = null);
+
+        #endregion
+
+        #region ChangePlaylistDetails
+
+        Task ChangePlaylistDetails(
+            string playlistId,
+            PlaylistDetails details,
+            string accessToken = null);
+
+        #endregion
+
+        #region CreatePlaylist
+
+        Task<Playlist> CreatePlaylist(
+            string userId,
+            PlaylistDetails details,
+            string accessToken = null);
+
+        Task<T> CreatePlaylist<T>(
+            string userId,
+            PlaylistDetails details,
+            string accessToken = null);
+
+        #endregion
+
+        #region GetCurrentUsersPlaylists
+
+        Task<PagedPlaylists> GetCurrentUsersPlaylists(
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null);
+
+        Task<T> GetCurrentUsersPlaylists<T>(
+            int? limit = null,
+            int offset = 0,
+            string accessToken = null);
+
+        #endregion
+
+        #region GetPlaylistCoverImage
+
+        Task<Image[]> GetPlaylistCoverImage(
+            string playlistId,
+            string accessToken = null);
+
+        Task<T> GetPlaylistCoverImage<T>(
+            string playlistId,
+            string accessToken = null);
+
+        #endregion
+
+        #region RemoveItems
+
+        Task<ModifyPlaylistResponse> RemoveItems(
+            string playlistId,
+            string[] spotifyUris,
+            string snapshotId = null,
+            string accessToken = null);
+
+        Task<ModifyPlaylistResponse> RemoveItems(
+            string playlistId,
+            (string uri, int[] positions)[] spotifyUriPositions,
+            string snapshotId = null, 
+            string accessToken = null);
+
+        #endregion
+
+        #region ReorderItems
+
+        Task<ModifyPlaylistResponse> ReorderItems(
+            string playlistId,
+            int rangeStart,
+            int insertBefore,
+            int rangeLength = 1,
+            string snapshotId = null,
+            string accessToken = null);
+
+        #endregion
+
+        #region ReplaceItems
+
+        Task ReplaceItems(
+            string playlistId,
+            string[] spotifyUris,
+            string accessToken = null);
+
+        #endregion
+
     }
 }
