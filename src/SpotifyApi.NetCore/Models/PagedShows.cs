@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpotifyApi.NetCore.Models
+namespace SpotifyApi.NetCore
 {
     /// <summary>
     /// Paged Full Show Objects.

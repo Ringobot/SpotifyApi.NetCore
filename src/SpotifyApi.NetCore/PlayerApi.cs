@@ -52,11 +52,11 @@ namespace SpotifyApi.NetCore
         /// Passing in a position that is greater than the length of the track will cause the player to start playing the 
         /// next song.</param>
         /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/ </remarks>
-        public async Task PlayTracks(
+        public Task PlayTracks(
             string trackId,
             string accessToken = null,
             string deviceId = null,
-            long positionMs = 0) => await PlayTracks(
+            long positionMs = 0) => PlayTracks(
                 new[] { trackId },
                 accessToken: accessToken,
                 deviceId: deviceId,
@@ -334,10 +334,8 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/start-a-users-playback/
         /// </remarks>
-        public async Task Play(string accessToken = null, string deviceId = null)
-        {
-            await Play(null, accessToken, deviceId, 0);
-        }
+        public Task Play(string accessToken = null, string deviceId = null) 
+            => Play(null, accessToken, deviceId, 0);
 
         #endregion
 
@@ -354,7 +352,8 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>
-        public async Task<Device[]> GetDevices(string accessToken = null) => await GetDevices<Device[]>(accessToken: accessToken);
+        public Task<Device[]> GetDevices(string accessToken = null) 
+            => GetDevices<Device[]>(accessToken: accessToken);
 
         /// <summary>
         /// BETA. Get information about a user’s available devices.
@@ -368,8 +367,8 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>
-        public async Task<T> GetDevices<T>(string accessToken = null)
-            => await GetModelFromProperty<T>($"{BaseUrl}/me/player/devices", "devices", accessToken);
+        public Task<T> GetDevices<T>(string accessToken = null)
+            => GetModelFromProperty<T>(new Uri($"{BaseUrl}/me/player/devices"), "devices", accessToken: accessToken);
 
         #endregion
 
@@ -384,13 +383,34 @@ namespace SpotifyApi.NetCore
         /// </param>
         /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
         /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
         /// <returns>Task of <see cref="CurrentPlaybackContext"/></returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// If no devices are active API may return 204 (No Content) which will be returned as `null`. 
         /// </remarks>
-        public Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(string accessToken = null, string market = null)
-            => GetCurrentPlaybackInfo<CurrentPlaybackContext>(accessToken, market);
+        public async Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(
+            string accessToken = null, 
+            string market = null,
+            string[] additionalTypes = null)
+        {
+            var builder = new UriBuilder($"{BaseUrl}/me/player");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("market", market);
+            builder.AppendToQueryAsCsv("additional_types", additionalTypes);
+            var jObject = await GetJObject(builder.Uri, accessToken: accessToken);
+
+            // Deserialize as Items of Track or Items of Episode
+            if (jObject["currently_playing_type"].ToString() == "episode")
+                return jObject.ToObject<CurrentEpisodePlaybackContext>();
+
+            return jObject.ToObject<CurrentTrackPlaybackContext>();
+        }
 
         /// <summary>
         /// BETA. Get information about the user’s current playback state, including track, track progress, and active device.
@@ -402,15 +422,26 @@ namespace SpotifyApi.NetCore
         /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
         /// Provide this parameter if you want to apply Track Relinking.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
         /// <returns>Task of T</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// </remarks>
-        public async Task<T> GetCurrentPlaybackInfo<T>(string accessToken = null, string market = null)
+        public async Task<T> GetCurrentPlaybackInfo<T>(
+            string accessToken = null, 
+            string market = null,
+            string[] additionalTypes = null)
         {
-            string url = $"{BaseUrl}/me/player";
-            if (!string.IsNullOrEmpty(market)) url += $"?market={market}";
-            return await GetModel<T>(url, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("market", market);
+            builder.AppendToQueryAsCsv("additional_types", additionalTypes);
+            return await GetModel<T>(builder.Uri, accessToken: accessToken);
         }
 
         #endregion
@@ -418,10 +449,10 @@ namespace SpotifyApi.NetCore
         private async Task Play(dynamic data, string accessToken, string deviceId, long positionMs)
         {
             // url
-            string url = $"{BaseUrl}/me/player/play";
-            if (deviceId != null) url += $"?device_id={deviceId}";
+            var builder = new UriBuilder($"{BaseUrl}/me/player/play");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
             if (positionMs > 0) data.position_ms = positionMs;
-            await Put(url, data, accessToken);
+            await Put(builder.Uri, data, accessToken: accessToken);
         }
 
         #region Seek
@@ -443,9 +474,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Seek(long positionMs, string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/seek?position_ms={positionMs}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/seek?position_ms={positionMs}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -467,9 +498,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Shuffle(bool state, string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/shuffle?state={(state ? "true" : "false")}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/shuffle?state={(state ? "true" : "false")}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -493,9 +524,9 @@ namespace SpotifyApi.NetCore
         {
             if (volumePercent < 0 || volumePercent > 100)
                 throw new ArgumentOutOfRangeException(nameof(volumePercent), "Must be a value from 0 to 100 inclusive.");
-            string url = $"{BaseUrl}/me/player/volume?volume_percent={volumePercent}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/volume?volume_percent={volumePercent}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -519,9 +550,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Repeat(string state, string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/repeat?state={state}";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/repeat?state={state}");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -542,9 +573,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task Pause(string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/pause";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Put(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/pause");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Put(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -565,9 +596,9 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task SkipNext(string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/next";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Post(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/next");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Post(builder.Uri, null, accessToken);
         }
 
         #endregion
@@ -591,12 +622,156 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task SkipPrevious(string accessToken = null, string deviceId = null)
         {
-            string url = $"{BaseUrl}/me/player/previous";
-            if (deviceId != null) url += $"&device_id={deviceId}";
-            await Post(url, null, accessToken);
+            var builder = new UriBuilder($"{BaseUrl}/me/player/previous");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            await Post(builder.Uri, null, accessToken);
         }
 
         #endregion
 
+        #region GetRecentlyPlayedTracks
+
+        /// <summary>
+        /// Get tracks from the current user’s recently played tracks.
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. A Unix timestamp in milliseconds. Returns all items after 
+        /// (but not including) this cursor position. If after is specified, before must not be specified.</param>
+        /// <param name="before">Optional. A Unix timestamp in milliseconds. Returns all items before 
+        /// (but not including) this cursor position. If before is specified, after must not be specified.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>An array of play history objects (wrapped in a cursor-based paging object). The 
+        /// play history items each contain the context the track was played from (e.g. playlist, album), 
+        /// the date and time the track was played, and a <see cref="Track"/> object.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
+        public Task<PagedPlayHistory> GetRecentlyPlayedTracks(
+            int? limit = null,
+            string after = null,
+            string before = null,
+            string accessToken = null) => GetRecentlyPlayedTracks<PagedPlayHistory>(
+                limit: limit,
+                after: after,
+                before: before,
+                accessToken: accessToken);
+
+        /// <summary>
+        /// Get tracks from the current user’s recently played tracks.
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. A Unix timestamp in milliseconds. Returns all items after 
+        /// (but not including) this cursor position. If after is specified, before must not be specified.</param>
+        /// <param name="before">Optional. A Unix timestamp in milliseconds. Returns all items before 
+        /// (but not including) this cursor position. If before is specified, after must not be specified.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>An array of play history objects serialized as T</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
+        public async Task<T> GetRecentlyPlayedTracks<T>(
+            int? limit = null,
+            string after = null,
+            string before = null,
+            string accessToken = null)
+        {
+            if (limit.HasValue && (limit.Value < 1 || limit.Value > 50))
+                throw new ArgumentOutOfRangeException("limit", "Limit must be a value from 1 to 50");
+
+            var builder = new UriBuilder($"{BaseUrl}/me/player/recently-played");
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("after", after);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("before", before);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
+
+        #endregion
+
+        #region GetCurrentlyPlayingTrack
+
+        /// <summary>
+        /// Get the object currently being played on the user’s Spotify account.
+        /// </summary>
+        /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
+        /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Information about the currently playing track or episode and its context. The information 
+        /// returned is for the last known state, which means an inactive device could be returned if 
+        /// it was the last one to execute playback.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
+        public async Task<CurrentPlaybackContext> GetCurrentlyPlayingTrack(
+            string market = null,
+            string[] additionalTypes = null,
+            string accessToken = null)
+        {
+            var builder = new UriBuilder($"{BaseUrl}/me/player/currently-playing");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("market", market);
+            builder.AppendToQueryAsCsv("additional_types", additionalTypes);
+            var jObject = await GetJObject(builder.Uri, accessToken: accessToken);
+
+            // Deserialize as Items of Track or Items of Episode
+            if (jObject["currently_playing_type"].ToString() == "episode")
+                return jObject.ToObject<CurrentEpisodePlaybackContext>();
+
+            return jObject.ToObject<CurrentTrackPlaybackContext>();
+        }
+
+        /// <summary>
+        /// Get the object currently being played on the user’s Spotify account.
+        /// </summary>
+        /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
+        /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Information about the currently playing track or episode and its context serialized
+        /// as T.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
+        public async Task<T> GetCurrentlyPlayingTrack<T>(
+                string market = null,
+                string[] additionalTypes = null,
+                string accessToken = null)
+        {
+            var builder = new UriBuilder($"{BaseUrl}/me/player/currently-playing");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("market", market);
+            builder.AppendToQueryAsCsv("additional_types", additionalTypes);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
+
+        #endregion
+
+        #region TransferPlayback
+
+        /// <summary>
+        /// Transfer playback to a new device and determine if it should start playing.
+        /// </summary>
+        /// <param name="deviceId">ID of the device on which playback should be started/transferred.</param>
+        /// <param name="play">Optional. true: ensure playback happens on new device. false or not provided: 
+        /// keep the current playback state.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns></returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/transfer-a-users-playback/ </remarks>
+        public async Task TransferPlayback(string deviceId, bool? play = null, string accessToken = null)
+        {
+            await Put(
+                new Uri($"{BaseUrl}/me/player"), 
+                new { device_ids = new[] { deviceId }, play }, 
+                accessToken: accessToken);
+        }
+
+        #endregion
     }
 }

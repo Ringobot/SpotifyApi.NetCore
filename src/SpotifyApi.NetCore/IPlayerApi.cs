@@ -1,5 +1,4 @@
-﻿using SpotifyApi.NetCore.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SpotifyApi.NetCore
 {
@@ -262,7 +261,7 @@ namespace SpotifyApi.NetCore
         /// The access token must have been issued on behalf of a user. The access token must have the 
         /// `user-read-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
         /// </param>
-        /// <returns>Task of Array of <see cref="Device"/></returns>
+        /// <returns>Task of Array of <see cref="Device"/></returns>-
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-a-users-available-devices/
         /// </remarks>
@@ -295,11 +294,21 @@ namespace SpotifyApi.NetCore
         /// </param>
         /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
         /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
         /// <returns>Task of <see cref="CurrentPlaybackContext"/></returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// </remarks>
-        Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(string accessToken = null, string market = null);
+        Task<CurrentPlaybackContext> GetCurrentPlaybackInfo(
+            string accessToken = null,
+            string market = null,
+            string[] additionalTypes = null);
 
         /// <summary>
         /// BETA. Get information about the user’s current playback state, including track, track progress, and active device.
@@ -310,12 +319,22 @@ namespace SpotifyApi.NetCore
         /// </param>
         /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
         /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
         /// <typeparam name="T">Optionally provide your own type to deserialise Spotify's response to.</typeparam>
         /// <returns>Task of T</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/
         /// </remarks>
-        Task<T> GetCurrentPlaybackInfo<T>(string accessToken = null, string market = null);
+        Task<T> GetCurrentPlaybackInfo<T>(
+            string accessToken = null,
+            string market = null,
+            string[] additionalTypes = null);
 
         #endregion
 
@@ -456,5 +475,111 @@ namespace SpotifyApi.NetCore
 
         #endregion
 
+        #region GetRecentlyPlayedTracks
+
+        /// <summary>
+        /// Get tracks from the current user’s recently played tracks.
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. A Unix timestamp in milliseconds. Returns all items after 
+        /// (but not including) this cursor position. If after is specified, before must not be specified.</param>
+        /// <param name="before">Optional. A Unix timestamp in milliseconds. Returns all items before 
+        /// (but not including) this cursor position. If before is specified, after must not be specified.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>An array of play history objects (wrapped in a cursor-based paging object). The 
+        /// play history items each contain the context the track was played from (e.g. playlist, album), 
+        /// the date and time the track was played, and a <see cref="Track"/> object.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
+        Task<PagedPlayHistory> GetRecentlyPlayedTracks(
+            int? limit = null,
+            string after = null,
+            string before = null,
+            string accessToken = null);
+
+        /// <summary>
+        /// Get tracks from the current user’s recently played tracks.
+        /// </summary>
+        /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
+        /// <param name="after">Optional. A Unix timestamp in milliseconds. Returns all items after 
+        /// (but not including) this cursor position. If after is specified, before must not be specified.</param>
+        /// <param name="before">Optional. A Unix timestamp in milliseconds. Returns all items before 
+        /// (but not including) this cursor position. If before is specified, after must not be specified.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>An array of play history objects serialized as T</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-recently-played/ </remarks>
+        Task<T> GetRecentlyPlayedTracks<T>(
+            int? limit = null,
+            string after = null,
+            string before = null,
+            string accessToken = null);
+
+        #endregion
+
+        #region GetCurrentlyPlayingTrack
+
+        /// <summary>
+        /// Get the object currently being played on the user’s Spotify account.
+        /// </summary>
+        /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
+        /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Information about the currently playing track or episode and its context. The information 
+        /// returned is for the last known state, which means an inactive device could be returned if 
+        /// it was the last one to execute playback.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
+        Task<CurrentPlaybackContext> GetCurrentlyPlayingTrack(
+            string market = null,
+            string[] additionalTypes = null,
+            string accessToken = null);
+
+        /// <summary>
+        /// Get the object currently being played on the user’s Spotify account.
+        /// </summary>
+        /// <param name="market">Optional. A <see cref="SpotifyCountryCodes" /> or the string from_token.
+        /// Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="additionalTypes">Optional. A comma-separated list of item types that your client 
+        /// supports besides the default track type. Valid types are: track and episode. An unsupported 
+        /// type in the response is expected to be represented as null value in the item field. Note: 
+        /// This parameter was introduced to allow existing clients to maintain their current behaviour 
+        /// and might be deprecated in the future. In addition to providing this parameter, make sure 
+        /// that your client properly handles cases of new types in the future by checking against the 
+        /// currently_playing_type field.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns>Information about the currently playing track or episode and its context serialized
+        /// as T.</returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/get-the-users-currently-playing-track/ </remarks>
+        Task<T> GetCurrentlyPlayingTrack<T>(
+            string market = null,
+            string[] additionalTypes = null,
+            string accessToken = null);
+
+        #endregion
+
+        #region TransferPlayback
+
+        /// <summary>
+        /// Transfer playback to a new device and determine if it should start playing.
+        /// </summary>
+        /// <param name="deviceId">ID of the device on which playback should be started/transferred.</param>
+        /// <param name="play">Optional. true: ensure playback happens on new device. false or not provided: 
+        /// keep the current playback state.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service,
+        /// used for this call only. See constructors for other ways to provide an access token.</param>
+        /// <returns></returns>
+        /// <remarks> https://developer.spotify.com/documentation/web-api/reference/player/transfer-a-users-playback/ </remarks>
+        Task TransferPlayback(string deviceId, bool? play = null, string accessToken = null);
+
+        #endregion
     }
 }

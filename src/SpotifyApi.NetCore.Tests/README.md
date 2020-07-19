@@ -4,3 +4,4 @@
 - Add "SpotifyClientId" and "SpotifyClientSecret" inside appsettings.local.json
 - run 'dotnet test'
 
+See also: /CONTRIB.md

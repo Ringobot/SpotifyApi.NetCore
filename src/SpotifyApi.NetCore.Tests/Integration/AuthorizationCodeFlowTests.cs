@@ -37,14 +37,25 @@ namespace SpotifyApi.NetCore.Tests.Integration
             // controller calls Helper to get Auth URL (userHash, state)
             string url = _accounts.AuthorizeUrl(state, new[]
             {
-                //"user-modify-playback-state",
-                //"user-read-playback-state",
+                "user-modify-playback-state",
+                "user-read-playback-state",
+                "user-read-currently-playing",
+
+                "user-library-modify",
+                "user-library-read",
+                "user-top-read",
+                "user-read-playback-position",
+                "user-read-recently-played",
+                "user-follow-read",
+                "user-follow-modify"
+
                 //"playlist-read-collaborative",
                 //"playlist-modify-public",
                 //"playlist-modify-private",
                 //"playlist-read-private",
                 //"user-read-email",
-                "user-read-private"
+                //"user-read-private",
+
             });
 
             Trace.WriteLine(url);
@@ -56,11 +67,7 @@ namespace SpotifyApi.NetCore.Tests.Integration
         public async Task ControllerAuthorize2()
         {
             // spotify calls back to localhost /authorize/spotify
-            const string codeParam = "AQAV2EQJ1D87ZMpPe7xE5yTIkuzI7FgX5rNMpCKjwJu2wgdPc8tXJh9l7LdKDwvG99S3bxXvE6yde3-oMpBWZWsaD_sN4xHqxCqmsns6A3Kv_Elj_TsdHDIPJjhmmYNN99VFvTXbb83_miw8ZQKPnwAV_R1Rq-eVhr6DXDHwZuMckC719NaC3vX9VVsilcqBfUZx76EJwGINGwUudeBlaaJLn9LJz8aLbIYNbraGu0B2hQNF3IyO9clWIlx1r5ApUyETnLaRdeE6QbjNw4oaPoI98hqkE4zO_LYf1osEQH8F1yupHoQTysTpLl9zu4zTYC2msnQ-lP0-_4IT5ILBuzCSTdqdPoaPinArG9PBGtA21Qnvg14yjK5M6ak_wqxVvtCEbgRedBB6XjjT2eRWonc5Vw9dLFGr38-PajKWzyoMCzzb1BFPYcni";
-
-            // decodes state, gets hash, checks state
-            //Assert.AreEqual(_userHashstate.UserHash, decoded.userHash);
-            //Assert.AreEqual(_userHashstate.State, decoded.state);
+            const string codeParam = "AQArbSU1WPqZfcCiwsUUihPDqC4fc2_UPA-BZ3vgdMuJ6005YFgQsJjEaUS28g9Cq8ifBo9K-EaV2uL7APHgzrFPNxTO6hkWQFKay9YoFxXyNmhRZx1wQ9u7WsWLXyur-GrYxYLrz6mMfPI0zEy2frLV8a9uoCfZXcZqpVGLseWUYSltraikCX78VlsMyxs0oqp_h8-MdWk0-GjzOdUMKRUs5PAQArpE81GCGhsyyT4J28PUv50dPzGbb5dWnI0oQc2xEpFdRVhMdai0-uWQO9Ej9vUN3wp7YBjC_LlOuYsw8PMAPpEhaAHSvZOjOpRgt7DMdvLOCJr7Fc44mgHe26eeOuqHpVIKNLSYjCOMjpJecblnEbHE5uly4XimJ-ZuYzns5tUs-swmMi2zWl0RADEfqwL9C9K-TzBgMR8umTKcV_rMrGMNbLtGvODUtDKg51Uq8TqrzMp_b84aQDdzbgeXecJez7N1vRGHPLPhtLln6s8&state=000ad7aba70a453490ecb0228bbf39e9";
 
             // controller calls Accounts Service to get access and refresh tokens
             // account service updates store

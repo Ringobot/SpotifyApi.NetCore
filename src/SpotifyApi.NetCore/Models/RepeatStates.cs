@@ -1,4 +1,4 @@
-﻿namespace SpotifyApi.NetCore.Models
+﻿namespace SpotifyApi.NetCore
 {
     /// <summary>
     /// Repeat States constants

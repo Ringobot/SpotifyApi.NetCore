@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SpotifyApi.NetCore.Models
+﻿namespace SpotifyApi.NetCore
 {
     public enum TimeRange
     {
