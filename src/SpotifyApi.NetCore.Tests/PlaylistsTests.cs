@@ -5,12 +5,29 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Castle.Core.Internal;
 
 namespace SpotifyApi.NetCore.Tests
 {
     [TestClass]
     public class PlaylistsTests
     {
+        PlaylistsApi api;
+        UsersProfileApi usersApi;
+        string bearerAccessToken;
+
+        public void Initialize()
+        {
+            var http = new HttpClient();
+            IConfiguration testConfig = TestsHelper.GetLocalConfig();
+            bearerAccessToken = testConfig.GetValue(typeof(string),
+                "SpotifyUserBearerAccessToken").ToString();
+            var accounts = new AccountsService(http, testConfig);
+            api = new PlaylistsApi(http, accounts);
+            usersApi = new UsersProfileApi(http, accounts);
+        }
+
         [TestMethod]
         public async Task BasicUsage()
         {
@@ -144,6 +161,29 @@ namespace SpotifyApi.NetCore.Tests
 
             var pl_page_2 = await plapi.GetTracks("4h4urfIy5cyCdFOc1Ff4iN", offset: 100);
             var pl_page_2_tr = pl_page_2.Items.ElementAt(0).Track.Name;
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task AddItemsToPlaylist_PlaylistId_Uris_IsTrue()
+        {
+            Initialize();
+            // assert
+            Assert.IsTrue(!(await api.AddItemsToPlaylist(
+                "7drl9CTMIGaISOxYrWpgkX",
+                new string[] { "spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M" },
+                accessToken: bearerAccessToken)).SnapshotID.IsNullOrEmpty());
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task ChangePlaylistDetails_PlaylistId()
+        {
+            Initialize();
+            // assert
+            await api.ChangePlaylistDetails("7drl9CTMIGaISOxYrWpgkX", "Akshay Srinivasan's Great Music",
+                accessToken: bearerAccessToken);
+            Assert.IsTrue(true);
         }
     }
 }

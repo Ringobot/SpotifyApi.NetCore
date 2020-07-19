@@ -269,4 +269,16 @@ namespace SpotifyApi.NetCore
         [JsonProperty("total")]
         public int Total { get; set; }
     }
+
+    /// <summary>
+    /// Upon adding items to a playlist a snapshot_id is returned.
+    /// </summary>
+    public partial class PlaylistSnapshotID
+    {
+        /// <summary>
+        /// A snapshot_id which identifies a version of the playlist for future requests.
+        /// </summary>
+        [JsonProperty("snapshot_id")]
+        public string SnapshotID { get; set; }
+    }
 }

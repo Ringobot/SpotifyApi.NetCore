@@ -226,5 +226,23 @@ namespace SpotifyApi.NetCore
 
             return response;
         }
+
+        protected internal async Task<HttpResponseMessage> PutJsonString(Uri uri, string jsonString, string accessToken = null)
+        {
+            Logger.Debug($"PUT {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
+
+            _http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()));
+
+            var content = new StringContent(jsonString);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await _http.PutAsync(uri, content);
+
+            Logger.Information($"PUT {uri} {response.StatusCode}", nameof(RestHttpClient));
+
+            await RestHttpClient.CheckForErrors(response);
+
+            return response;
+        }
     }
 }

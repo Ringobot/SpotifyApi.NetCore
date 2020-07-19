@@ -14,6 +14,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="showId">Required. The Spotify ID for the show.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="Show"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/shows/get-a-show/
@@ -29,6 +30,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="showId">Required. The Spotify ID for the show.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="Show"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/shows/get-a-show/
@@ -46,6 +48,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="showIds">Required. A comma-separated list of the Spotify IDs for the shows. Minimum: 1 ID. Maximum: 50 IDs.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedShows"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/shows/get-several-shows/
@@ -61,6 +64,7 @@ namespace SpotifyApi.NetCore
         /// </summary>
         /// <param name="showIds">Required. A comma-separated list of the Spotify IDs for the shows. Minimum: 1 ID. Maximum: 50 IDs.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedShows"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/shows/get-several-shows/
@@ -80,6 +84,7 @@ namespace SpotifyApi.NetCore
         /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedEpisodes"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/shows/get-shows-episodes/
@@ -99,6 +104,7 @@ namespace SpotifyApi.NetCore
         /// <param name="limit">Optional. The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.</param>
         /// <param name="offset">Optional. The index of the first object to return. Default: 0 (i.e., the first object). Use with limit to get the next set of objects.</param>
         /// <param name="market">Optional. An ISO 3166-1 alpha-2 country code or the string from_token or the string from_token <see cref="SpotifyCountryCodes" />. Provide this parameter if you want to apply Track Relinking.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="PagedEpisodes"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/shows/get-shows-episodes/
