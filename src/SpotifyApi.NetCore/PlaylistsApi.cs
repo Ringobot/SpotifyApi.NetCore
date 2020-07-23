@@ -281,8 +281,8 @@ namespace SpotifyApi.NetCore
             var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}");
             StringBuilder jsonString = new StringBuilder("{ ");
             if (!string.IsNullOrWhiteSpace(name)) jsonString.Append($"\"name\": \"{name}\", ");
-            if (makePublic != null) jsonString.Append($"\"public\": \"{makePublic.ToString()}\", ");
-            if (collaborative != null) jsonString.Append($"\"collaborative\": \"{collaborative.ToString()}\", ");
+            if (makePublic != null) jsonString.Append($"\"public\": \"{makePublic?.ToString()}\", ");
+            if (collaborative != null) jsonString.Append($"\"collaborative\": \"{collaborative?.ToString()}\", ");
             if (!string.IsNullOrWhiteSpace(description)) jsonString.Append($"\"description\": \"{description}\", ");
             await PutJsonString(builder.Uri, jsonString.Remove(jsonString.Length - 2, 2).Append(" }").ToString(), accessToken);
         }
