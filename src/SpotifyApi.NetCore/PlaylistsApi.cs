@@ -249,6 +249,46 @@ namespace SpotifyApi.NetCore
         #endregion
 
         #region ChangePlaylistDetails
+        class PutDataPayloadPlaylistDetails
+        {
+            [JsonProperty("name")]
+            public string Name { get; set; }
+            [JsonProperty("public")]
+            public bool? Public { get; set; }
+            [JsonProperty("collaborative")]
+            public bool? Collaborative { get; set; }
+            [JsonProperty("description")]
+            public string Description { get; set; }
+
+            public PutDataPayloadPlaylistDetails(string name, bool? makePublic, bool? collaborative, string description)
+            {
+                Name = name;
+                Public = makePublic;
+                Collaborative = collaborative;
+                Description = description;
+            }
+
+            public bool ShouldSerializeName()
+            {
+                return !string.IsNullOrEmpty(Name);
+            }
+
+            public bool ShouldSerializePublic()
+            {
+                return Public != null;
+            }
+
+            public bool ShouldSerializeCollaborative ()
+            {
+                return Collaborative != null;
+            }
+
+            public bool ShouldSerializeDescription()
+            {
+                return !string.IsNullOrEmpty(Description);
+            }
+        }
+
         /// <summary>
         /// Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
         /// </summary>
@@ -279,12 +319,8 @@ namespace SpotifyApi.NetCore
                     ArgumentException("At least one of the optional parameters must be supplied.");
 
             var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}");
-            StringBuilder jsonString = new StringBuilder("{ ");
-            if (!string.IsNullOrWhiteSpace(name)) jsonString.Append($"\"name\": \"{name}\", ");
-            if (makePublic != null) jsonString.Append($"\"public\": \"{makePublic?.ToString()}\", ");
-            if (collaborative != null) jsonString.Append($"\"collaborative\": \"{collaborative?.ToString()}\", ");
-            if (!string.IsNullOrWhiteSpace(description)) jsonString.Append($"\"description\": \"{description}\", ");
-            await PutJsonString(builder.Uri, jsonString.Remove(jsonString.Length - 2, 2).Append(" }").ToString(), accessToken);
+            var data = new PutDataPayloadPlaylistDetails(name, makePublic, collaborative, description);
+            await Put(builder.Uri, data, accessToken);
         }
         #endregion
     }
