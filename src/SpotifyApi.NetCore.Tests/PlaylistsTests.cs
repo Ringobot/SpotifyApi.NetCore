@@ -170,7 +170,8 @@ namespace SpotifyApi.NetCore.Tests
             Initialize();
             // assert
             Assert.IsTrue(!(await api.AddItemsToPlaylist(
-                "7drl9CTMIGaISOxYrWpgkX",
+                //"7drl9CTMIGaISOxYrWpgkX",
+                "36VigQERhufZcP4Sh7rG5I",
                 new string[] { "spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M" },
                 accessToken: bearerAccessToken)).SnapshotID.IsNullOrEmpty());
         }
