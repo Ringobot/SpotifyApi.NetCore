@@ -145,32 +145,38 @@ namespace SpotifyApi.NetCore
         /// Helper to PUT an object as JSON body
         /// </summary>
         [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
-        protected internal virtual async Task<HttpResponseMessage> Put(string url, object data, string accessToken = null)
-            => await PostOrPut("PUT", new Uri(url), data, accessToken);
+        protected internal virtual async Task<SpotifyResponse> Put(string url, object data, string accessToken = null)
+            => await PostOrPut<dynamic>("PUT", new Uri(url), data, accessToken);
 
         /// <summary>
         /// Helper to POST an object as JSON body
         /// </summary>
         [Obsolete("Use UriBuilder to construct Uri using AppendToQuery extensions")]
-        protected internal virtual async Task<HttpResponseMessage> Post(string url, object data, string accessToken = null)
-            => await PostOrPut("POST", new Uri(url), data, accessToken);
+        protected internal virtual async Task<SpotifyResponse> Post(string url, object data, string accessToken = null)
+            => await PostOrPut<dynamic>("POST", new Uri(url), data, accessToken);
 
         /// <summary>
         /// Helper to PUT an object as JSON body
         /// </summary>
-        protected internal virtual async Task<HttpResponseMessage> Put(Uri uri, object data, string accessToken = null)
-            => await PostOrPut("PUT", uri, data, accessToken);
+        protected internal virtual async Task<SpotifyResponse> Put(Uri uri, object data, string accessToken = null)
+            => await PostOrPut<dynamic>("PUT", uri, data, accessToken);
 
         /// <summary>
         /// Helper to POST an object as JSON body
         /// </summary>
-        protected internal virtual async Task<HttpResponseMessage> Post(Uri uri, object data, string accessToken = null)
-            => await PostOrPut("POST", uri, data, accessToken);
+        protected internal virtual async Task<SpotifyResponse> Post(Uri uri, object data, string accessToken = null)
+            => await PostOrPut<dynamic>("POST", uri, data, accessToken);
+
+        /// <summary>
+        /// Helper to POST an object as JSON body and deserialize response as T
+        /// </summary>
+        protected internal virtual async Task<SpotifyResponse<T>> Post<T>(Uri uri, object data, string accessToken = null)
+            => await PostOrPut<T>("POST", uri, data, accessToken);
 
         /// <summary>
         /// Helper to DELETE an object
         /// </summary>
-        protected internal virtual async Task<HttpResponseMessage> Delete(Uri uri, string accessToken = null)
+        protected internal virtual async Task<SpotifyResponse> Delete(Uri uri, string accessToken = null)
         {
             Logger.Debug($"DELETE {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
 
@@ -184,10 +190,14 @@ namespace SpotifyApi.NetCore
 
             await RestHttpClient.CheckForErrors(response);
 
-            return response;
+            return new SpotifyResponse
+            {
+                StatusCode = response.StatusCode,
+                ReasonPhrase = response.ReasonPhrase
+            };
         }
 
-        private async Task<HttpResponseMessage> PostOrPut(string verb, Uri uri, object data, string accessToken = null)
+        private async Task<SpotifyResponse<T>> PostOrPut<T>(string verb, Uri uri, object data, string accessToken = null)
         {
             Logger.Debug($"{verb} {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
 
@@ -224,7 +234,19 @@ namespace SpotifyApi.NetCore
 
             await RestHttpClient.CheckForErrors(response);
 
-            return response;
+            var spotifyResponse = new SpotifyResponse<T>
+            {
+                StatusCode = response.StatusCode,
+                ReasonPhrase = response.ReasonPhrase
+            };
+
+            if (response.Content != null)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(json)) spotifyResponse.Data = JsonConvert.DeserializeObject<T>(json);
+            }
+
+            return spotifyResponse;
         }
     }
 }

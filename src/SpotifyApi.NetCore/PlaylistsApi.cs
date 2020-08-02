@@ -243,9 +243,9 @@ namespace SpotifyApi.NetCore
                      ArgumentException("The position if supplied has to be 0 or greater than 0.");
 
             var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/tracks");
-            var response = await Post(builder.Uri, new { uris, position }, accessToken);
-            return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+            return (await Post<T>(builder.Uri, new { uris, position }, accessToken)).Data;
         }
+
         #endregion
 
         #region ChangePlaylistDetails
