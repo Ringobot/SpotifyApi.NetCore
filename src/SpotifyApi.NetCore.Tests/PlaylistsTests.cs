@@ -172,7 +172,7 @@ namespace SpotifyApi.NetCore.Tests
             Assert.IsTrue(!(await api.AddItemsToPlaylist(
                 "7drl9CTMIGaISOxYrWpgkX",
                 new string[] { "spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M" },
-                accessToken: bearerAccessToken)).SnapshotID.IsNullOrEmpty());
+                accessToken: bearerAccessToken)).SnapshotId.IsNullOrEmpty());
         }
 
         [TestCategory("Integration")]
@@ -184,6 +184,18 @@ namespace SpotifyApi.NetCore.Tests
             await api.ChangePlaylistDetails("7drl9CTMIGaISOxYrWpgkX", "Akshay Srinivasan's Great Music",
                 accessToken: bearerAccessToken);
             Assert.IsTrue(true);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task CreatePlaylist_UserId()
+        {
+            Initialize();
+            // assert
+            Playlist playlist = await api.CreatePlaylist((await usersApi.GetCurrentUsersProfile(
+                bearerAccessToken)).Id, "Akshay Srinivasan Test Playlist",
+                accessToken: bearerAccessToken);
+            Assert.IsTrue(playlist.Name == "Akshay Srinivasan Test Playlist");
         }
     }
 }

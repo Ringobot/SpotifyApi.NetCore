@@ -131,7 +131,7 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
         /// </remarks>
-        Task<PlaylistSnapshotID> AddItemsToPlaylist(
+        Task<ModifyPlaylistResponse> AddItemsToPlaylist(
             string playlistId,
             string[] uris,
             int? position = null,
@@ -174,6 +174,52 @@ namespace SpotifyApi.NetCore
         Task ChangePlaylistDetails(
             string playlistId,
             string name = null,
+            bool? makePublic = null,
+            bool? collaborative = null,
+            string description = null,
+            string accessToken = null
+            );
+        #endregion
+
+        #region CreatePlaylist
+        /// <summary>
+        /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+        /// </summary>
+        /// <param name="userId">Required. The user’s Spotify user ID.</param>
+        /// <param name="name">Required. The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be unique; a user may have several playlists with the same name.</param>
+        /// <param name="makePublic">Optional. Defaults to true . If true the playlist will be public, if false it will be private. To be able to create private playlists, the user must have granted the playlist-modify-private scope .</param>
+        /// <param name="collaborative">Optional. Defaults to false . If true the playlist will be collaborative. Note that to create a collaborative playlist you must also set public to false . To create collaborative playlists you must have granted playlist-modify-private and playlist-modify-public scopes.</param>
+        /// <param name="description">Optional. value for playlist description as displayed in Spotify Clients and in the Web API.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+        /// </remarks>
+        Task<Playlist> CreatePlaylist(
+            string userId,
+            string name = null,
+            bool? makePublic = null,
+            bool? collaborative = null,
+            string description = null,
+            string accessToken = null
+            );
+
+        /// <summary>
+        /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+        /// </summary>
+        /// <param name="userId">Required. The user’s Spotify user ID.</param>
+        /// <param name="name">Required. The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be unique; a user may have several playlists with the same name.</param>
+        /// <param name="makePublic">Optional. Defaults to true . If true the playlist will be public, if false it will be private. To be able to create private playlists, the user must have granted the playlist-modify-private scope .</param>
+        /// <param name="collaborative">Optional. Defaults to false . If true the playlist will be collaborative. Note that to create a collaborative playlist you must also set public to false . To create collaborative playlists you must have granted playlist-modify-private and playlist-modify-public scopes.</param>
+        /// <param name="description">Optional. value for playlist description as displayed in Spotify Clients and in the Web API.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+        /// </remarks>
+        Task<T> CreatePlaylist<T>(
+            string userId,
+            string name,
             bool? makePublic = null,
             bool? collaborative = null,
             string description = null,

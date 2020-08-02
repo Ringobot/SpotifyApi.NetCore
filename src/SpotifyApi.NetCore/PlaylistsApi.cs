@@ -204,16 +204,16 @@ namespace SpotifyApi.NetCore
         /// <param name="uris">Required. A JSON array of the Spotify URIs to add, can be track or episode URIs. For example: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"]} A maximum of 100 items can be added in one request.</param>
         /// <param name="position">Optional. The position to insert the items, a zero-based index. For example, to insert the items in the first position: position=0 ; to insert the items in the third position: position=2. If omitted, the items will be appended to the playlist. Items are added in the order they appear in the uris array. For example: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"], "position": 3}</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a full <see cref="PlaylistSnapshotID"/> object.</returns>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="ModifyPlaylistResponse"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
         /// </remarks>
-        public Task<PlaylistSnapshotID> AddItemsToPlaylist(
+        public Task<ModifyPlaylistResponse> AddItemsToPlaylist(
             string playlistId,
             string[] uris,
             int? position = null,
             string accessToken = null
-            ) => AddItemsToPlaylist<PlaylistSnapshotID>(playlistId, uris, position, accessToken);
+            ) => AddItemsToPlaylist<ModifyPlaylistResponse>(playlistId, uris, position, accessToken);
 
         /// <summary>
         /// Add one or more items to a user’s playlist.
@@ -222,7 +222,7 @@ namespace SpotifyApi.NetCore
         /// <param name="uris">Required. A JSON array of the Spotify URIs to add, can be track or episode URIs. For example: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"]} A maximum of 100 items can be added in one request.</param>
         /// <param name="position">Optional. The position to insert the items, a zero-based index. For example, to insert the items in the first position: position=0 ; to insert the items in the third position: position=2. If omitted, the items will be appended to the playlist. Items are added in the order they appear in the uris array. For example: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"], "position": 3}</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a full <see cref="PlaylistSnapshotID"/> object.</returns>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="ModifyPlaylistResponse"/> object.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
         /// </remarks>
@@ -249,46 +249,6 @@ namespace SpotifyApi.NetCore
         #endregion
 
         #region ChangePlaylistDetails
-        class PutDataPayloadPlaylistDetails
-        {
-            [JsonProperty("name")]
-            public string Name { get; set; }
-            [JsonProperty("public")]
-            public bool? Public { get; set; }
-            [JsonProperty("collaborative")]
-            public bool? Collaborative { get; set; }
-            [JsonProperty("description")]
-            public string Description { get; set; }
-
-            public PutDataPayloadPlaylistDetails(string name, bool? makePublic, bool? collaborative, string description)
-            {
-                Name = name;
-                Public = makePublic;
-                Collaborative = collaborative;
-                Description = description;
-            }
-
-            public bool ShouldSerializeName()
-            {
-                return !string.IsNullOrEmpty(Name);
-            }
-
-            public bool ShouldSerializePublic()
-            {
-                return Public != null;
-            }
-
-            public bool ShouldSerializeCollaborative ()
-            {
-                return Collaborative != null;
-            }
-
-            public bool ShouldSerializeDescription()
-            {
-                return !string.IsNullOrEmpty(Description);
-            }
-        }
-
         /// <summary>
         /// Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
         /// </summary>
@@ -319,8 +279,74 @@ namespace SpotifyApi.NetCore
                     ArgumentException("At least one of the optional parameters must be supplied.");
 
             var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}");
-            var data = new PutDataPayloadPlaylistDetails(name, makePublic, collaborative, description);
+            var data = new PlaylistDetails();
+            if (!string.IsNullOrWhiteSpace(name)) data.Name = name;
+            if (makePublic != null) data.Public = makePublic;
+            if (collaborative != null) data.Collaborative = collaborative;
+            if (!string.IsNullOrWhiteSpace(description)) data.Description = description;
             await Put(builder.Uri, data, accessToken);
+        }
+        #endregion
+
+        #region CreatePlaylist
+        /// <summary>
+        /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+        /// </summary>
+        /// <param name="userId">Required. The user’s Spotify user ID.</param>
+        /// <param name="name">Required. The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be unique; a user may have several playlists with the same name.</param>
+        /// <param name="makePublic">Optional. Defaults to true . If true the playlist will be public, if false it will be private. To be able to create private playlists, the user must have granted the playlist-modify-private scope .</param>
+        /// <param name="collaborative">Optional. Defaults to false . If true the playlist will be collaborative. Note that to create a collaborative playlist you must also set public to false . To create collaborative playlists you must have granted playlist-modify-private and playlist-modify-public scopes.</param>
+        /// <param name="description">Optional. value for playlist description as displayed in Spotify Clients and in the Web API.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+        /// </remarks>
+        public Task<Playlist> CreatePlaylist(
+            string userId,
+            string name = null,
+            bool? makePublic = null,
+            bool? collaborative = null,
+            string description = null,
+            string accessToken = null
+            ) => CreatePlaylist<Playlist>(userId, name, makePublic, collaborative, description, accessToken);
+
+        /// <summary>
+        /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+        /// </summary>
+        /// <param name="userId">Required. The user’s Spotify user ID.</param>
+        /// <param name="name">Required. The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be unique; a user may have several playlists with the same name.</param>
+        /// <param name="makePublic">Optional. Defaults to true . If true the playlist will be public, if false it will be private. To be able to create private playlists, the user must have granted the playlist-modify-private scope .</param>
+        /// <param name="collaborative">Optional. Defaults to false . If true the playlist will be collaborative. Note that to create a collaborative playlist you must also set public to false . To create collaborative playlists you must have granted playlist-modify-private and playlist-modify-public scopes.</param>
+        /// <param name="description">Optional. value for playlist description as displayed in Spotify Clients and in the Web API.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+        /// </remarks>
+        public async Task<T> CreatePlaylist<T>(
+            string userId,
+            string name,
+            bool? makePublic = null,
+            bool? collaborative = null,
+            string description = null,
+            string accessToken = null
+            )
+        {
+            if (string.IsNullOrWhiteSpace(userId)) throw new
+                    ArgumentException("A valid Spotify user id must be specified.");
+
+            if (string.IsNullOrWhiteSpace(name)) throw new
+                    ArgumentException("A valid new playlist name must be specified.");
+
+            var builder = new UriBuilder($"{BaseUrl}/users/{userId}/playlists");
+            var data = new PlaylistDetails();
+            if (!string.IsNullOrWhiteSpace(name)) data.Name = name;
+            if (makePublic != null) data.Public = makePublic;
+            if (collaborative != null) data.Collaborative = collaborative;
+            if (!string.IsNullOrWhiteSpace(description)) data.Description = description;
+            var response = await Post(builder.Uri, data, accessToken);
+            return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
         }
         #endregion
     }
