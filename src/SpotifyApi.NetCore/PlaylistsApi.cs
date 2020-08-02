@@ -345,8 +345,7 @@ namespace SpotifyApi.NetCore
             if (makePublic != null) data.Public = makePublic;
             if (collaborative != null) data.Collaborative = collaborative;
             if (!string.IsNullOrWhiteSpace(description)) data.Description = description;
-            var response = await Post(builder.Uri, data, accessToken);
-            return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+            return (await Post<T>(builder.Uri, data, accessToken)).Data;
         }
         #endregion
     }
