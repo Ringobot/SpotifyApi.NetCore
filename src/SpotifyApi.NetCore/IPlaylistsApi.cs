@@ -120,6 +120,7 @@ namespace SpotifyApi.NetCore
         #endregion
 
         #region AddItemsToPlaylist
+
         /// <summary>
         /// Add one or more items to a user’s playlist.
         /// </summary>
