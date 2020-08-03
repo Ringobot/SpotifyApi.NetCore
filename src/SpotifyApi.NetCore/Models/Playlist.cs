@@ -87,7 +87,7 @@ namespace SpotifyApi.NetCore
         /// Information about the tracks of the playlist.
         /// </summary>
         [JsonProperty("tracks")]
-        public PlaylistTrack[] Tracks { get; set; }
+        public Paged<PlaylistTrack> Tracks { get; set; }
 
         /// <summary>
         /// The object type: “playlist”

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Castle.Core.Internal;
+using System;
 
 namespace SpotifyApi.NetCore.Tests
 {
@@ -15,17 +16,14 @@ namespace SpotifyApi.NetCore.Tests
     {
         PlaylistsApi api;
         UsersProfileApi usersApi;
-        string bearerAccessToken;
 
+        [TestInitialize]
         public void Initialize()
         {
             var http = new HttpClient();
             IConfiguration testConfig = TestsHelper.GetLocalConfig();
-            bearerAccessToken = testConfig.GetValue(typeof(string),
-                "SpotifyUserBearerAccessToken").ToString();
-            var accounts = new AccountsService(http, testConfig);
-            api = new PlaylistsApi(http, accounts);
-            usersApi = new UsersProfileApi(http, accounts);
+            api = new PlaylistsApi(http);
+            usersApi = new UsersProfileApi(http);
         }
 
         [TestMethod]
@@ -163,40 +161,55 @@ namespace SpotifyApi.NetCore.Tests
             var pl_page_2_tr = pl_page_2.Items.ElementAt(0).Track.Name;
         }
 
+        private async Task<Playlist> CreatePlaylist(string accessToken)
+        {
+            string playlistName = $"_Test{Guid.NewGuid():N}";
+            var details = new PlaylistDetails { Name = playlistName };
+            
+
+            return await api.CreatePlaylist(
+                (await usersApi.GetCurrentUsersProfile(accessToken)).Id,
+                details,
+                accessToken: accessToken);
+        }
+
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task AddItemsToPlaylist_PlaylistId_Uris_IsTrue()
+        public async Task AddItemsToPlaylist_PlaylistId_SnapshotIdIsNotNull()
         {
-            Initialize();
+            // arrange
+            string accessToken = await TestsHelper.GetUserAccessToken();
+            var playlist = await CreatePlaylist(accessToken);
+
             // assert
-            Assert.IsTrue(!(await api.AddItemsToPlaylist(
-                "7drl9CTMIGaISOxYrWpgkX",   //akshay
-                //"36VigQERhufZcP4Sh7rG5I", //dan
+            Assert.IsNotNull((await api.AddItemsToPlaylist(
+                playlist.Id,
                 new string[] { "spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M" },
-                accessToken: bearerAccessToken)).SnapshotId.IsNullOrEmpty());
+                accessToken: accessToken)).SnapshotId);
         }
 
         [TestCategory("Integration")]
         [TestMethod]
         public async Task ChangePlaylistDetails_PlaylistId()
         {
-            Initialize();
+            string accessToken = await TestsHelper.GetUserAccessToken();
+            var playlist = await CreatePlaylist(accessToken);
+
             // assert
-            await api.ChangePlaylistDetails("7drl9CTMIGaISOxYrWpgkX", "Akshay Srinivasan's Great Music",
-                accessToken: bearerAccessToken);
+            await api.ChangePlaylistDetails(playlist.Id, $"_Test{Guid.NewGuid():N}",
+                accessToken: await TestsHelper.GetUserAccessToken());
             Assert.IsTrue(true);
         }
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task CreatePlaylist_UserId()
+        public async Task CreatePlaylist_PublicNotSpecified_ResultPublicEqualsTrue()
         {
-            Initialize();
-            // assert
-            Playlist playlist = await api.CreatePlaylist((await usersApi.GetCurrentUsersProfile(
-                bearerAccessToken)).Id, "Akshay Srinivasan Test Playlist",
-                accessToken: bearerAccessToken);
-            Assert.IsTrue(playlist.Name == "Akshay Srinivasan Test Playlist");
+            string accessToken = await TestsHelper.GetUserAccessToken();
+            var playlist = await CreatePlaylist(accessToken);
+            Assert.IsNotNull(playlist.Public);
+            Assert.IsTrue(playlist.Public.Value, "New playlist should default to Public = true");
         }
+
     }
 }

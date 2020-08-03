@@ -293,10 +293,7 @@ namespace SpotifyApi.NetCore
         /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
         /// </summary>
         /// <param name="userId">Required. The user’s Spotify user ID.</param>
-        /// <param name="name">Required. The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be unique; a user may have several playlists with the same name.</param>
-        /// <param name="makePublic">Optional. Defaults to true . If true the playlist will be public, if false it will be private. To be able to create private playlists, the user must have granted the playlist-modify-private scope .</param>
-        /// <param name="collaborative">Optional. Defaults to false . If true the playlist will be collaborative. Note that to create a collaborative playlist you must also set public to false . To create collaborative playlists you must have granted playlist-modify-private and playlist-modify-public scopes.</param>
-        /// <param name="description">Optional. value for playlist description as displayed in Spotify Clients and in the Web API.</param>
+        /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing the new Playlist details.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
         /// <remarks>
@@ -304,21 +301,15 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public Task<Playlist> CreatePlaylist(
             string userId,
-            string name = null,
-            bool? makePublic = null,
-            bool? collaborative = null,
-            string description = null,
+            PlaylistDetails details,
             string accessToken = null
-            ) => CreatePlaylist<Playlist>(userId, name, makePublic, collaborative, description, accessToken);
+            ) => CreatePlaylist<Playlist>(userId, details, accessToken: accessToken);
 
         /// <summary>
         /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
         /// </summary>
         /// <param name="userId">Required. The user’s Spotify user ID.</param>
-        /// <param name="name">Required. The name for the new playlist, for example "Your Coolest Playlist" . This name does not need to be unique; a user may have several playlists with the same name.</param>
-        /// <param name="makePublic">Optional. Defaults to true . If true the playlist will be public, if false it will be private. To be able to create private playlists, the user must have granted the playlist-modify-private scope .</param>
-        /// <param name="collaborative">Optional. Defaults to false . If true the playlist will be collaborative. Note that to create a collaborative playlist you must also set public to false . To create collaborative playlists you must have granted playlist-modify-private and playlist-modify-public scopes.</param>
-        /// <param name="description">Optional. value for playlist description as displayed in Spotify Clients and in the Web API.</param>
+        /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing the new Playlist details.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
         /// <remarks>
@@ -326,27 +317,19 @@ namespace SpotifyApi.NetCore
         /// </remarks>
         public async Task<T> CreatePlaylist<T>(
             string userId,
-            string name,
-            bool? makePublic = null,
-            bool? collaborative = null,
-            string description = null,
-            string accessToken = null
-            )
+            PlaylistDetails details,
+            string accessToken = null)
         {
             if (string.IsNullOrWhiteSpace(userId)) throw new
                     ArgumentException("A valid Spotify user id must be specified.");
 
-            if (string.IsNullOrWhiteSpace(name)) throw new
-                    ArgumentException("A valid new playlist name must be specified.");
+            if (details == null || string.IsNullOrWhiteSpace(details.Name)) throw new
+                    ArgumentException("A PlaylistDetails object param with new playlist name must be provided.");
 
             var builder = new UriBuilder($"{BaseUrl}/users/{userId}/playlists");
-            var data = new PlaylistDetails();
-            if (!string.IsNullOrWhiteSpace(name)) data.Name = name;
-            if (makePublic != null) data.Public = makePublic;
-            if (collaborative != null) data.Collaborative = collaborative;
-            if (!string.IsNullOrWhiteSpace(description)) data.Description = description;
-            return (await Post<T>(builder.Uri, data, accessToken)).Data;
+            return (await Post<T>(builder.Uri, details, accessToken)).Data;
         }
+
         #endregion
     }
 }
