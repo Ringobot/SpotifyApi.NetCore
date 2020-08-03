@@ -116,6 +116,12 @@ namespace SpotifyApi.NetCore
         public bool Collaborative { get; set; }
 
         /// <summary>
+        /// The playlist description. Only returned for modified, verified playlists, otherwise null.
+        /// </summary>
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        /// <summary>
         /// Known external URLs for this playlist.
         /// </summary>
         [JsonProperty("external_urls")]

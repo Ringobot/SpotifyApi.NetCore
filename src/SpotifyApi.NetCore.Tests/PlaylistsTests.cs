@@ -161,10 +161,10 @@ namespace SpotifyApi.NetCore.Tests
             var pl_page_2_tr = pl_page_2.Items.ElementAt(0).Track.Name;
         }
 
-        private async Task<Playlist> CreatePlaylist(string accessToken)
+        private async Task<Playlist> CreatePlaylist(string accessToken, string description = null)
         {
             string playlistName = $"_Test{Guid.NewGuid():N}";
-            var details = new PlaylistDetails { Name = playlistName };
+            var details = new PlaylistDetails { Name = playlistName, Description = description };
             
 
             return await api.CreatePlaylist(
@@ -190,15 +190,38 @@ namespace SpotifyApi.NetCore.Tests
 
         [TestCategory("Integration")]
         [TestMethod]
-        public async Task ChangePlaylistDetails_PlaylistId()
+        public async Task ChangePlaylistDetails_NewName_PlaylistNameEqualsNewName()
         {
             string accessToken = await TestsHelper.GetUserAccessToken();
-            var playlist = await CreatePlaylist(accessToken);
+            string description = $"_Test{Guid.NewGuid():N}";
+            string newName = $"_Test{Guid.NewGuid():N}";
+            var playlist = await CreatePlaylist(accessToken, description);
+
+            // act
+            await api.ChangePlaylistDetails(playlist.Id, new PlaylistDetails { Name = newName },
+                accessToken: await TestsHelper.GetUserAccessToken());
+            
+            // assert
+            var changedPlaylist = await api.GetPlaylist(playlist.Id, accessToken);
+            Assert.AreEqual(newName, changedPlaylist.Name);
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task ChangePlaylistDetails_NewNameDescriptionNotChanged_PlaylistDescriptionEqualsOriginalDescription()
+        {
+            string accessToken = await TestsHelper.GetUserAccessToken();
+            string description = $"_Test{Guid.NewGuid():N}";
+            string newName = $"_Test{Guid.NewGuid():N}";
+            var playlist = await CreatePlaylist(accessToken, description);
+
+            // act
+            await api.ChangePlaylistDetails(playlist.Id, new PlaylistDetails { Name = newName },
+                accessToken: await TestsHelper.GetUserAccessToken());
 
             // assert
-            await api.ChangePlaylistDetails(playlist.Id, $"_Test{Guid.NewGuid():N}",
-                accessToken: await TestsHelper.GetUserAccessToken());
-            Assert.IsTrue(true);
+            var changedPlaylist = await api.GetPlaylist(playlist.Id, accessToken);
+            Assert.AreEqual(description, changedPlaylist.Description);
         }
 
         [TestCategory("Integration")]
