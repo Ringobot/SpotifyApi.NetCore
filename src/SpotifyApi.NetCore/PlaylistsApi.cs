@@ -237,7 +237,8 @@ namespace SpotifyApi.NetCore
         /// Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
         /// </summary>
         /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
-        /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing the new Playlist details.</param>        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing Playlist details to change.</param>        
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
         /// <remarks>
         /// At least one optional parameter must be supplied.
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/change-playlist-details/
@@ -281,7 +282,7 @@ namespace SpotifyApi.NetCore
         /// <param name="userId">Required. The user’s Spotify user ID.</param>
         /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing the new Playlist details.</param>
         /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
-        /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
+        /// <returns>A Task that, once successfully completed, returns the response deserialized as T.</returns>
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
         /// </remarks>
