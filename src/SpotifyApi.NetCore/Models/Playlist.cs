@@ -87,7 +87,7 @@ namespace SpotifyApi.NetCore
         /// Information about the tracks of the playlist.
         /// </summary>
         [JsonProperty("tracks")]
-        public PlaylistTrack[] Tracks { get; set; }
+        public Paged<PlaylistTrack> Tracks { get; set; }
 
         /// <summary>
         /// The object type: “playlist”
@@ -114,6 +114,12 @@ namespace SpotifyApi.NetCore
         /// </summary>
         [JsonProperty("collaborative")]
         public bool Collaborative { get; set; }
+
+        /// <summary>
+        /// The playlist description. Only returned for modified, verified playlists, otherwise null.
+        /// </summary>
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Known external URLs for this playlist.
@@ -268,5 +274,17 @@ namespace SpotifyApi.NetCore
 
         [JsonProperty("total")]
         public int Total { get; set; }
+    }
+
+    /// <summary>
+    /// Upon adding items to a playlist a snapshot_id is returned.
+    /// </summary>
+    public partial class PlaylistSnapshotID
+    {
+        /// <summary>
+        /// A snapshot_id which identifies a version of the playlist for future requests.
+        /// </summary>
+        [JsonProperty("snapshot_id")]
+        public string SnapshotID { get; set; }
     }
 }

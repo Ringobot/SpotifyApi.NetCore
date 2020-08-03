@@ -118,5 +118,78 @@ namespace SpotifyApi.NetCore
         Task<PlaylistsSearchResult> SearchPlaylists(string query, int? limit = null, int offset = 0, string accessToken = null);
 
         #endregion
+
+        #region AddItemsToPlaylist
+
+        /// <summary>
+        /// Add one or more items to a user’s playlist.
+        /// </summary>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
+        /// <param name="uris">Required. A JSON array of the Spotify URIs to add, can be track or episode URIs. For example: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"]} A maximum of 100 items can be added in one request.</param>
+        /// <param name="position">Optional. The position to insert the items, a zero-based index. For example, to insert the items in the first position: position=0 ; to insert the items in the third position: position=2. If omitted, the items will be appended to the playlist. Items are added in the order they appear in the uris array. For example: {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M", "spotify:episode:512ojhOuo1ktJprKbVcKyQ"], "position": 3}</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="ModifyPlaylistResponse"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
+        /// </remarks>
+        Task<ModifyPlaylistResponse> AddItemsToPlaylist(
+            string playlistId,
+            string[] uris,
+            int? position = null,
+            string accessToken = null
+            );
+
+        #endregion
+
+        #region ChangePlaylistDetails
+
+        /// <summary>
+        /// Change a playlist’s name and public/private state. (The user must, of course, own the playlist.)
+        /// </summary>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
+        /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing Playlist details to change.</param>        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <remarks>
+        /// At least one optional parameter must be supplied.
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/change-playlist-details/
+        /// </remarks>
+        Task ChangePlaylistDetails(
+            string playlistId,
+            PlaylistDetails details,
+            string accessToken = null);
+
+        #endregion
+
+        #region CreatePlaylist
+
+        /// <summary>
+        /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+        /// </summary>
+        /// <param name="userId">Required. The user’s Spotify user ID.</param>
+        /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing the new Playlist details.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns the response deserialized as T.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+        /// </remarks>
+        Task<Playlist> CreatePlaylist(
+            string userId,
+            PlaylistDetails details,
+            string accessToken = null);
+
+        /// <summary>
+        /// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.)
+        /// </summary>
+        /// <param name="userId">Required. The user’s Spotify user ID.</param>
+        /// <param name="details">Required. A <see cref="PlaylistDetails"/> objects containing the new Playlist details.</param>
+        /// <param name="accessToken">The bearer token which is gotten during the authentication/authorization process.</param>
+        /// <returns>A Task that, once successfully completed, returns a full <see cref="Playlist"/> object.</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
+        /// </remarks>
+        Task<T> CreatePlaylist<T>(
+            string userId,
+            PlaylistDetails details,
+            string accessToken = null);
+        #endregion
     }
 }
