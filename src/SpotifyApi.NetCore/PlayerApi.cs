@@ -405,6 +405,9 @@ namespace SpotifyApi.NetCore
             builder.AppendToQueryAsCsv("additional_types", additionalTypes);
             var jObject = await GetJObject(builder.Uri, accessToken: accessToken);
 
+            // Todo #25 return 204 no content result 
+            if (jObject == null) return null;
+
             // Deserialize as Items of Track or Items of Episode
             if (jObject["currently_playing_type"].ToString() == "episode")
                 return jObject.ToObject<CurrentEpisodePlaybackContext>();
@@ -714,6 +717,9 @@ namespace SpotifyApi.NetCore
             builder.AppendToQueryIfValueNotNullOrWhiteSpace("market", market);
             builder.AppendToQueryAsCsv("additional_types", additionalTypes);
             var jObject = await GetJObject(builder.Uri, accessToken: accessToken);
+
+            // Todo #25 return 204 no content result 
+            if (jObject == null) return null;
 
             // Deserialize as Items of Track or Items of Episode
             if (jObject["currently_playing_type"].ToString() == "episode")
