@@ -778,6 +778,19 @@ namespace SpotifyApi.NetCore
                 accessToken: accessToken);
         }
 
+
+        #endregion
+
+
+        #region AddToQueue
+        public async Task AddToQueue(string itemUri, string accessToken = null, string deviceId = null)
+        {
+            var builder = new UriBuilder($"{BaseUrl}/me/player/queue");
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
+            builder.AppendToQueryIfValueNotNullOrWhiteSpace("uri", itemUri);
+            await Post(builder.Uri, null, accessToken);
+        }
+
         #endregion
     }
 }

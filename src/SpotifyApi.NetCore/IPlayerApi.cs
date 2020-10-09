@@ -581,5 +581,23 @@ namespace SpotifyApi.NetCore
         Task TransferPlayback(string deviceId, bool? play = null, string accessToken = null);
 
         #endregion
+
+        #region AddToQueue
+
+        /// <summary>
+        /// BETA. Skips to next track in the user’s queue.
+        /// </summary>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/add-to-queue/
+        /// </remarks>
+        Task AddToQueue(string itemUri, string accessToken = null, string deviceId = null);
+
+        #endregion
     }
 }
