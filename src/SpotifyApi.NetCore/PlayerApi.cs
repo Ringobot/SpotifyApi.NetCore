@@ -783,8 +783,10 @@ namespace SpotifyApi.NetCore
 
 
         #region AddToQueue
-        public async Task AddToQueue(string itemUri, string accessToken = null, string deviceId = null)
+        public async Task AddToQueue(string itemUri, string deviceId = null, string accessToken = null)
         {
+            if (string.IsNullOrEmpty(itemUri)) throw new ArgumentNullException(nameof(itemUri));
+
             var builder = new UriBuilder($"{BaseUrl}/me/player/queue");
             builder.AppendToQueryIfValueNotNullOrWhiteSpace("device_id", deviceId);
             builder.AppendToQueryIfValueNotNullOrWhiteSpace("uri", itemUri);

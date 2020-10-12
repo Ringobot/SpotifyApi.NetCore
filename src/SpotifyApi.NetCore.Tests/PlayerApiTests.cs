@@ -504,6 +504,34 @@ namespace SpotifyApi.NetCore.Tests
                 .GetCurrentPlaybackInfo(accessToken: await TestsHelper.GetUserAccessToken());
         }
 
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task AddToQueue_ItemUri_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .AddToQueue(
+                    "spotify:track:6jmVOhtad54Xpx35gMB3qY",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task AddToQueue_ItemUri_Empty_ArgumentNullException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .AddToQueue(
+                    null,
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        
+
     }
 
     class BearerTokenStore
