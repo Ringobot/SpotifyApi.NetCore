@@ -581,5 +581,34 @@ namespace SpotifyApi.NetCore
         Task TransferPlayback(string deviceId, bool? play = null, string accessToken = null);
 
         #endregion
+
+        #region AddToQueue
+
+        /// <summary>
+        /// BETA. Add an item to the end of the user’s current playback queue.
+        /// </summary>
+        /// <param name="itemUri">Required. The uri of the item to add to the queue. Must be a track or an episode uri.</param>
+        /// <param name="deviceId">Optional. The id of the device this command is targeting. If not supplied, the user’s 
+        /// currently active device is the target.</param>
+        /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service. 
+        /// The access token must have been issued on behalf of a user. The access token must have the 
+        /// `user-modify-playback-state` scope authorized in order to control playback. <seealso cref="UserAccountsService"/>
+        /// </param>
+        /// <returns>A completed request will return no response, and then issue the command to the player. 
+        /// Due to the asynchronous nature of the issuance of the command, you should use the <see cref="GetCurrentPlaybackInfo(string, string, string[])"/> 
+        /// endpoint to check that your issued command was handled correctly by the player.
+        /// 
+        /// When performing an action that is restricted, 404 NOT FOUND or 403 FORBIDDEN will be returned 
+        /// together with a player error message. For example, if there are no active devices found, 
+        /// the request will return 404 NOT FOUND response code and the reason NO_ACTIVE_DEVICE, or, 
+        /// if the user making the request is non-premium, a 403 FORBIDDEN response code will be returned 
+        /// together with the PREMIUM_REQUIRED reason.
+        /// </returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/player/add-to-queue/
+        /// </remarks>
+        Task AddToQueue(string itemUri, string deviceId = null, string accessToken = null);
+
+        #endregion
     }
 }
