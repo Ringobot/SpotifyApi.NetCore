@@ -147,13 +147,13 @@ See tests and [SpotifyApi.NetCore.Samples] for more usage examples.
 | Follow | 7 | 7 | 100% | ✅ |
 | Library | 8 | 8 | 100% | ✅ |
 | Personalization | 1 | 1 | 100% | ✅ |
-| Player | 13 | 10 | 77% |
-| Playlists | 12 | 2 | 17% |
+| Player | 14 | 14 | 100% | ✅ |
+| Playlists | 12 | 6 | 50% | |
 | Search | 1 | 1 | 100% | ✅ |
 | Shows | 3 | 3 | 100% | ✅ |
 | Tracks | 5 | 5 | 100% | ✅ |
 | Users Profile | 2 | 2 | 100% | ✅ |
-| **Total** | **69** | **56** | **81%** |
+| **Total** | **70** | **64** | **91%** |
 
 Feature requests welcomed! (create an issue)
 

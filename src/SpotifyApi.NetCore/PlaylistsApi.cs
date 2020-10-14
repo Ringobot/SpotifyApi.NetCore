@@ -318,10 +318,6 @@ namespace SpotifyApi.NetCore
 
             if (details == null) throw new ArgumentNullException(nameof(details));
 
-            if (string.IsNullOrWhiteSpace(details.Name) && details.Public == null &&
-                details.Collaborative == null && string.IsNullOrWhiteSpace(details.Description))
-                throw new ArgumentException("At least one playlist property has to be provided to be changed.");
-
             var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}");
             await Put(builder.Uri, details, accessToken);
         }

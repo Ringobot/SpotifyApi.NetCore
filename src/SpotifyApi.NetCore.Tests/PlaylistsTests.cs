@@ -239,7 +239,7 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetCurrentUsersPlaylists_AtLeastOnePlaylistReturnedIsTrue()
         {
             string accessToken = await TestsHelper.GetUserAccessToken();
-            _ = await CreatePlaylist(accessToken);
+            await CreatePlaylist(accessToken);
             var playlists = await api.GetCurrentUsersPlaylists<PagedPlaylists>(accessToken: accessToken);
             Assert.IsTrue(playlists.Total > 0, "No playlists found.");
         }
