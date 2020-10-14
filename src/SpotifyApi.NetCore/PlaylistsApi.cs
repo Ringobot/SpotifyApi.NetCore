@@ -378,10 +378,13 @@ namespace SpotifyApi.NetCore
         /// first object). Maximum offset: 100,000. Use with limit to get the next set of playlists.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="PagedPlaylists"/></returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/
+        /// </remarks>
         public Task<PagedPlaylists> GetCurrentUsersPlaylists(
             int? limit = null,
             int offset = 0,
-            string accessToken = null) => throw new NotImplementedException();
+            string accessToken = null) => GetCurrentUsersPlaylists<PagedPlaylists>(limit, offset, accessToken);
 
         /// <summary>
         /// Get a list of the playlists owned or followed by the current Spotify user.
@@ -392,10 +395,19 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <typeparam name="T">Optional. Type to deserialise response to.</typeparam>
         /// <returns>Task of T</returns>
-        public Task<T> GetCurrentUsersPlaylists<T>(
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/
+        /// </remarks>
+        public async Task<T> GetCurrentUsersPlaylists<T>(
             int? limit = null,
             int offset = 0,
-            string accessToken = null) => throw new NotImplementedException();
+            string accessToken = null)
+        {
+            var builder = new UriBuilder($"{BaseUrl}/users/me/playlists");
+            builder.AppendToQueryIfValueGreaterThan0("limit", limit);
+            builder.AppendToQueryIfValueGreaterThan0("offset", offset);
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
 
         #endregion
 
@@ -404,23 +416,36 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Get the current image associated with a specific playlist.
         /// </summary>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="Image[]"/></returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/
+        /// </remarks>
         public Task<Image[]> GetPlaylistCoverImage(
             string playlistId,
-            string accessToken = null) => throw new NotImplementedException();
+            string accessToken = null) => GetPlaylistCoverImage<Image[]>(playlistId, accessToken);
 
         /// <summary>
         /// Get the current image associated with a specific playlist.
         /// </summary>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <typeparam name="T">Optional. Type to deserialise response to.</typeparam>
         /// <returns>Task of T</returns>
-        public Task<T> GetPlaylistCoverImage<T>(
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/
+        /// </remarks>
+        public async Task<T> GetPlaylistCoverImage<T>(
             string playlistId,
-            string accessToken = null) => throw new NotImplementedException();
+            string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(playlistId)) throw new
+                    ArgumentException("A valid Spotify playlist id must be specified.");
+
+            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/images");
+            return await GetModel<T>(builder.Uri, accessToken);
+        }
 
         #endregion
 
@@ -429,13 +454,16 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Remove one or more items from a user’s playlist.
         /// </summary>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
-        /// <param name="spotifyUris">An array of Spotify URIs of the tracks and episodes to remove.</param>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
+        /// <param name="spotifyUris">Required. An array of Spotify URIs of the tracks and episodes to remove.</param>
         /// <param name="snapshotId">Optional. The playlist’s snapshot ID against which you want to 
         /// make the changes. The API will validate that the specified items exist and in the specified 
         /// positions and make the changes, even if more recent changes have been made to the playlist.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="ModifyPlaylistResponse"/></returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/
+        /// </remarks>
         public Task<ModifyPlaylistResponse> RemoveItems(
             string playlistId,
             string[] spotifyUris,
@@ -445,7 +473,7 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Remove one or more items from a user’s playlist.
         /// </summary>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
         /// <param name="spotifyUriPositions">An array of tuples containing Spotify URIs of the tracks 
         /// and episodes to remove with their current positions in the playlist of the tracks and 
         /// episodes to remove.</param>
@@ -454,6 +482,9 @@ namespace SpotifyApi.NetCore
         /// positions and make the changes, even if more recent changes have been made to the playlist.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="ModifyPlaylistResponse"/></returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/
+        /// </remarks>
         public Task<ModifyPlaylistResponse> RemoveItems(
             string playlistId,
             (string uri, int[] positions)[] spotifyUriPositions,

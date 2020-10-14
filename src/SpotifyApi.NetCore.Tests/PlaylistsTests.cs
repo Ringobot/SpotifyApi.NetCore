@@ -234,5 +234,23 @@ namespace SpotifyApi.NetCore.Tests
             Assert.IsTrue(playlist.Public.Value, "New playlist should default to Public = true");
         }
 
+        [TestCategory("User")]
+        [TestMethod]
+        public async Task GetCurrentUsersPlaylists_AtLeastOnePlaylistReturnedIsTrue()
+        {
+            string accessToken = await TestsHelper.GetUserAccessToken();
+            await CreatePlaylist(accessToken);
+            var playlists = await api.GetCurrentUsersPlaylists<PagedPlaylists>(accessToken: accessToken);
+            Assert.IsTrue(playlists.Total > 0, "No playlists found.");
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod]
+        public async Task GetPlaylistCoverImage_PlaylistId_AtLeastOnePlalistCoverImageReturnedIsTrue()
+        {
+            string accessToken = await TestsHelper.GetUserAccessToken();
+            var playlistCoverImages = await api.GetPlaylistCoverImage<Image[]>("3cEYpjA9oz9GiPac4AsH4n", accessToken);
+            Assert.IsTrue(playlistCoverImages.Length > 0, "No playlist images were found.");
+        }
     }
 }

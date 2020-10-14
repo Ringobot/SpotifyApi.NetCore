@@ -257,6 +257,9 @@ namespace SpotifyApi.NetCore
         /// first object). Maximum offset: 100,000. Use with limit to get the next set of playlists.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <returns>Task of <see cref="PagedPlaylists"/></returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/
+        /// </remarks>
         Task<PagedPlaylists> GetCurrentUsersPlaylists(
             int? limit = null,
             int offset = 0,
@@ -271,6 +274,9 @@ namespace SpotifyApi.NetCore
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <typeparam name="T">Optional. Type to deserialise response to.</typeparam>
         /// <returns>Task of T</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-a-list-of-current-users-playlists/
+        /// </remarks>
         Task<T> GetCurrentUsersPlaylists<T>(
             int? limit = null,
             int offset = 0,
@@ -283,9 +289,13 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Get the current image associated with a specific playlist.
         /// </summary>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
-        /// <returns>Task of <see cref="Image[]"/></returns>
+        /// <typeparam name="T">Optional. Type to deserialise response to.</typeparam>
+        /// <returns>Task of T</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/
+        /// </remarks>
         Task<Image[]> GetPlaylistCoverImage(
             string playlistId,
             string accessToken = null);
@@ -293,10 +303,13 @@ namespace SpotifyApi.NetCore
         /// <summary>
         /// Get the current image associated with a specific playlist.
         /// </summary>
-        /// <param name="playlistId">The Spotify ID for the playlist.</param>
+        /// <param name="playlistId">Required. The Spotify ID for the playlist.</param>
         /// <param name="accessToken">Optional. A valid access token from the Spotify Accounts service.</param>
         /// <typeparam name="T">Optional. Type to deserialise response to.</typeparam>
         /// <returns>Task of T</returns>
+        /// <remarks>
+        /// https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/
+        /// </remarks>
         Task<T> GetPlaylistCoverImage<T>(
             string playlistId,
             string accessToken = null);
