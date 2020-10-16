@@ -252,5 +252,44 @@ namespace SpotifyApi.NetCore.Tests
             var playlistCoverImages = await api.GetPlaylistCoverImage<Image[]>("3cEYpjA9oz9GiPac4AsH4n", accessToken);
             Assert.IsTrue(playlistCoverImages.Length > 0, "No playlist images were found.");
         }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task RemoveItems_PlaylistId_SpotifyUris_SnapshotIdIsNotNull()
+        {
+            // act
+            Assert.IsNotNull(await api.RemoveItems("46sqDMykUCnssu2F3zWXEF", new string[] { "spotify:track:5ArQzSBevAdXTxRY6Ulhbq" },
+                    accessToken: await TestsHelper.GetUserAccessToken()));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task RemoveItems_PlaylistId_SpotifyUris_SnapshotId_SnapshotIdIsNotNull()
+        {
+            // act
+            Assert.IsNotNull(await api.RemoveItems("46sqDMykUCnssu2F3zWXEF", new string[] { "spotify:track:5ArQzSBevAdXTxRY6Ulhbq" },
+                    "MTQsMWNlNjE5NWJkYWFjOTNmNDM1M2NjZDM4NGNjMWViMTZlNzk0ZWEyYw==", accessToken: await TestsHelper.GetUserAccessToken()));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task RemoveItems_PlaylistId_SpotifyUriLocations_SnapshotIdIsNotNull()
+        {
+            // act
+            Assert.IsNotNull(await api.RemoveItems("46sqDMykUCnssu2F3zWXEF", 
+                new (string uri, int[] positions)[] { ("spotify:track:1Eolhana7nKHYpcYpdVcT5", new int[] { 0 }) },
+                    accessToken: await TestsHelper.GetUserAccessToken()));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task RemoveItems_PlaylistId_SpotifyUriLocations_SnapshotId_SnapshotIdIsNotNull()
+        {
+            // act
+            Assert.IsNotNull(await api.RemoveItems("46sqDMykUCnssu2F3zWXEF",
+                new (string uri, int[] positions)[] { ("spotify:track:7iL6o9tox1zgHpKUfh9vuC", new int[] { 0 }) },
+                    "MTQsMWNlNjE5NWJkYWFjOTNmNDM1M2NjZDM4NGNjMWViMTZlNzk0ZWEyYw==", accessToken: await TestsHelper.GetUserAccessToken()));
+        }
+
     }
 }

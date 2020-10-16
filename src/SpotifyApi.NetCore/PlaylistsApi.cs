@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
+using SpotifyApi.NetCore.Models;
 
 namespace SpotifyApi.NetCore
 {
@@ -464,11 +465,21 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/
         /// </remarks>
-        public Task<ModifyPlaylistResponse> RemoveItems(
+        public async Task<ModifyPlaylistResponse> RemoveItems(
             string playlistId,
             string[] spotifyUris,
             string snapshotId = null,
-            string accessToken = null) => throw new NotImplementedException();
+            string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(playlistId)) throw new
+                ArgumentException("A valid Spotify playlist id must be specified.");
+
+            if (spotifyUris?.Length < 1 || spotifyUris?.Length > 100) throw new
+                     ArgumentException("A minimum of 1 and a maximum of 100 Spotify uri must be specified.");
+
+            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/tracks");
+            return (await Delete<ModifyPlaylistResponse>(builder.Uri, new PlaylistRemoveItemsPayloadDataUriItems(spotifyUris, snapshotId), accessToken)).Data;
+        }
 
         /// <summary>
         /// Remove one or more items from a user’s playlist.
@@ -485,11 +496,21 @@ namespace SpotifyApi.NetCore
         /// <remarks>
         /// https://developer.spotify.com/documentation/web-api/reference/playlists/remove-tracks-playlist/
         /// </remarks>
-        public Task<ModifyPlaylistResponse> RemoveItems(
+        public async Task<ModifyPlaylistResponse> RemoveItems(
             string playlistId,
             (string uri, int[] positions)[] spotifyUriPositions,
             string snapshotId = null,
-            string accessToken = null) => throw new NotImplementedException();
+            string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(playlistId)) throw new
+                ArgumentException("A valid Spotify playlist id must be specified.");
+
+            if (spotifyUriPositions?.Length < 1 || spotifyUriPositions?.Length > 100) throw new
+                     ArgumentException("A minimum of 1 and a maximum of 100 Spotify uri and positions must be specified.");
+
+            var builder = new UriBuilder($"{BaseUrl}/playlists/{playlistId}/tracks");
+            return (await Delete<ModifyPlaylistResponse>(builder.Uri, new PlaylistRemoveItemsPayloadDataUriItems(spotifyUriPositions, snapshotId), accessToken)).Data;
+        }
 
         #endregion
 

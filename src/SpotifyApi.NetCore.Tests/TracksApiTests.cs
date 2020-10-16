@@ -52,8 +52,8 @@ namespace SpotifyApi.NetCore.Tests
         public async Task GetTrack_TrackIdMarket_AvailableMarketsIsNull()
         {
             // arrange
-            const string trackId = "5lA3pwMkBdd24StM90QrNR";
-            const string market = SpotifyCountryCodes.New_Zealand;
+            const string trackId = "11dFghVXANMlKmJXsNCbd8";
+            const string market = SpotifyCountryCodes.Spain;
 
             var http = new HttpClient();
             var accounts = new AccountsService(http, TestsHelper.GetLocalConfig());
@@ -64,7 +64,7 @@ namespace SpotifyApi.NetCore.Tests
             var response = await api.GetTrack(trackId, market);
 
             // assert
-            Assert.IsNull(response.AvailableMarkets);
+            Assert.IsNull(response?.AvailableMarkets?.Length == 0 ? null : "Array not empty.");
         }
 
         [TestCategory("Integration")]
