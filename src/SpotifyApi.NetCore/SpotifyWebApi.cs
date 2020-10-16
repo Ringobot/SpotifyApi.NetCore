@@ -120,8 +120,12 @@ namespace SpotifyApi.NetCore
         protected internal virtual async Task<T> GetModelFromProperty<T>(
             Uri uri,
             string rootPropertyName,
-            string accessToken = null) 
-            => (await GetJObject(uri, accessToken: accessToken))[rootPropertyName].ToObject<T>();
+            string accessToken = null)
+        {
+            var jObject = await GetJObject(uri, accessToken: accessToken);
+            if (jObject == null) return default;
+            return jObject[rootPropertyName].ToObject<T>();
+        }
 
         /// <summary>
         /// GET uri and deserialize as <see cref="JObject"/>
@@ -133,6 +137,9 @@ namespace SpotifyApi.NetCore
                 uri,
                 new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()))
             );
+
+            // Todo #25 return 204 no content result 
+            if (string.IsNullOrEmpty(json)) return null;
 
             JObject deserialized = JsonConvert.DeserializeObject(json) as JObject;
             if (deserialized == null) 

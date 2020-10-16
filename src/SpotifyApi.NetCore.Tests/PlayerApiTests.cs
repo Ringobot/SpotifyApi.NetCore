@@ -298,7 +298,7 @@ namespace SpotifyApi.NetCore.Tests
         [TestMethod]
         [TestCategory("Integration")]
         [TestCategory("User")]
-        public async Task GetCurrentlyPlayingTrack_UserAccessToken_NotNull()
+        public async Task GetCurrentlyPlayingTrack_UserAccessToken_NoException()
         {
             // arrange
             var http = new HttpClient();
@@ -309,9 +309,6 @@ namespace SpotifyApi.NetCore.Tests
             var context = await player.GetCurrentlyPlayingTrack(
                 additionalTypes: new[] { "episode" },
                 accessToken: accessToken);
-
-            // assert
-            Assert.IsNotNull(context);
         }
 
         [TestMethod]
@@ -326,7 +323,7 @@ namespace SpotifyApi.NetCore.Tests
             var devices = await player.GetDevices(accessToken: accessToken);
 
             // act
-            await player.TransferPlayback(devices[0].Id, accessToken: accessToken);
+            if (devices.Any()) await player.TransferPlayback(devices[0].Id, accessToken: accessToken);
         }
 
         [TestMethod]
@@ -341,7 +338,7 @@ namespace SpotifyApi.NetCore.Tests
             var devices = await player.GetDevices(accessToken: accessToken);
 
             // act
-            await player.TransferPlayback(devices.Last().Id, play: true, accessToken: accessToken);
+            if (devices.Any()) await player.TransferPlayback(devices.Last().Id, play: true, accessToken: accessToken);
         }
 
         [TestMethod]
@@ -500,14 +497,40 @@ namespace SpotifyApi.NetCore.Tests
         [TestMethod]
         [TestCategory("Integration")]
         [TestCategory("User")]
-        public async Task GetCurrentPlaybackInfo_AccessToken_ResultIsNotNull()
+        public async Task GetCurrentPlaybackInfo_AccessToken_NoException()
         {
             // act
             var result = await new PlayerApi(new HttpClient())
                 .GetCurrentPlaybackInfo(accessToken: await TestsHelper.GetUserAccessToken());
-
-            Assert.IsNotNull(result);
         }
+
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        public async Task AddToQueue_ItemUri_NoException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .AddToQueue(
+                    "spotify:track:6jmVOhtad54Xpx35gMB3qY",
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        [TestCategory("User")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task AddToQueue_ItemUri_Empty_ArgumentNullException()
+        {
+            // act
+            await new PlayerApi(new HttpClient())
+                .AddToQueue(
+                    null,
+                    accessToken: await TestsHelper.GetUserAccessToken());
+        }
+
+        
 
     }
 
