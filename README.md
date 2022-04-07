@@ -169,16 +169,3 @@ Contributions welcomed. Read [CONTRIB.md](./CONTRIB.md)
 
 [SpotifyApi.NetCore.Samples]:https://github.com/Ringobot/SpotifyApi.NetCore.Samples
 
-
-
-
-
-
-
-To be all deleted by Daniel Larson only contributed by "um" scary me everyone will not follow etc.:::::
-Hey Daniel Larson you are a greatest guy in your NZ place who got collaped by some assholes like this who
-talk about why I am given the exception here in Mumbai/Dumbai/"um"WhatsItsName and they are all talking
-about my skin color here in Moms apartment still. Lol. Take care of yourself buddy now you know the game
-just stay alive long as you can as the non-whites at Otters club say while I breeze through them. Play
-your role to perfection as you always do. Hey you had to explain to me how this thing github works
-THX BRO!!!
