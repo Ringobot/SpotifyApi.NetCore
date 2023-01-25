@@ -181,6 +181,54 @@ namespace SpotifyApi.NetCore
             => await PostOrPut<T>("POST", uri, data, accessToken);
 
         /// <summary>
+        /// Helper to DELETE an object with content to put in request body.
+        /// </summary>
+        protected internal virtual async Task<SpotifyResponse<T>> Delete<T>(Uri uri, object data, string accessToken = null)
+        {
+            Logger.Debug($"DELETE {uri}. Token = {accessToken?.ToString()?.Substring(0, 4)}...", nameof(SpotifyWebApi));
+
+            _http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", accessToken ?? (await GetAccessToken()));
+
+            StringContent content = null;
+
+            if (data == null)
+            {
+                content = null;
+            }
+            else
+            {
+                content = new StringContent(JsonConvert.SerializeObject(data));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            }
+
+            HttpResponseMessage response = null;
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, uri);
+            request.Content = content;
+
+            response = await _http.SendAsync(request);
+
+            Logger.Information($"DELETE {uri} {response.StatusCode}", nameof(RestHttpClient));
+
+            await RestHttpClient.CheckForErrors(response);
+
+            var spotifyResponse = new SpotifyResponse<T>
+            {
+                StatusCode = response.StatusCode,
+                ReasonPhrase = response.ReasonPhrase
+            };
+
+            if (response.Content != null)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(json)) spotifyResponse.Data = JsonConvert.DeserializeObject<T>(json);
+            }
+
+            return spotifyResponse;
+        }
+
+        /// <summary>
         /// Helper to DELETE an object
         /// </summary>
         protected internal virtual async Task<SpotifyResponse> Delete(Uri uri, string accessToken = null)
