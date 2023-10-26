@@ -51,7 +51,7 @@ namespace SpotifyApi.NetCore
             string accessToken = null,
             int? limit = null,
             int offset = 0)
-            => await GetPlaylists<PlaylistsSearchResult>(username, accessToken);
+            => await GetPlaylists<PlaylistsSearchResult>(username, accessToken, limit: limit, offset: offset);
 
         /// <summary>
         /// Get a list of a user's playlists.
